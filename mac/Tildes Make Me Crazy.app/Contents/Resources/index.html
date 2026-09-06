@@ -1,0 +1,2229 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d0b12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tildes">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Tildes Make Me Crazy</title>
+<style>
+:root{
+  --neon:#39ff88; --hot:#ff2e88; --sun:#ffd21e; --cy:#22d3ee; --pur:#a855f7;
+  --ink:#0d0b12; --card1:rgba(30,23,42,.94); --card2:rgba(16,12,24,.94);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  color:#fff; font-family:"Segoe UI",system-ui,sans-serif; overflow-x:hidden;
+  background:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.35) 0 2px,transparent 2px 64px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.35) 0 2px,transparent 2px 128px),
+    linear-gradient(160deg,#241c2e,#0d0b12 70%);
+  background-attachment:fixed;
+}
+/* ---- manchas de spray que se mueven ---- */
+.blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.35;pointer-events:none;z-index:0}
+.b1{width:46vw;height:46vw;left:-8vw;top:-8vw;background:var(--hot);animation:drift1 26s ease-in-out infinite alternate}
+.b2{width:40vw;height:40vw;right:-6vw;top:4vh;background:var(--neon);animation:drift2 31s ease-in-out infinite alternate}
+.b3{width:52vw;height:52vw;right:2vw;bottom:-14vw;background:var(--pur);animation:drift3 37s ease-in-out infinite alternate}
+.b4{width:34vw;height:34vw;left:6vw;bottom:-6vw;background:var(--cy);animation:drift1 29s ease-in-out infinite alternate-reverse}
+@keyframes drift1{to{transform:translate(9vw,7vh) scale(1.18)}}
+@keyframes drift2{to{transform:translate(-11vw,10vh) scale(.84)}}
+@keyframes drift3{to{transform:translate(6vw,-9vh) scale(1.12)}}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.4;mix-blend-mode:overlay;
+  background-image:radial-gradient(1px 1px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 60% 70%,#fff,transparent),
+  radial-gradient(2px 2px at 80% 20%,#fff,transparent),radial-gradient(1px 1px at 35% 80%,#fff,transparent);
+  background-size:180px 180px,240px 240px,300px 300px,200px 200px}
+.tag{position:fixed;font-family:Impact,"Arial Black",sans-serif;pointer-events:none;z-index:1;
+  opacity:.12;font-size:clamp(40px,9vw,120px);letter-spacing:-2px;user-select:none}
+.tag.a{top:3%;left:-1%;transform:rotate(-14deg);color:var(--hot);animation:sway 9s ease-in-out infinite}
+.tag.b{bottom:2%;right:-1%;transform:rotate(9deg);color:var(--cy);animation:sway 11s ease-in-out infinite reverse}
+@keyframes sway{50%{transform:rotate(-8deg) translateY(-10px)}}
+
+/* ---- muralla de palabras rayadas ---- */
+#wall{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;user-select:none}
+#wall b{position:absolute;white-space:nowrap;line-height:1.05;font-weight:900;
+  font-family:Georgia,"Times New Roman",serif;text-shadow:2px 2px 0 rgba(0,0,0,.55)}
+#wall b i{font-style:normal;display:block;font-family:Impact,"Arial Black",sans-serif;
+  font-size:.42em;letter-spacing:3px;opacity:.85;margin-top:3px}
+
+.wrap{position:relative;z-index:2;max-width:860px;margin:0 auto;padding:14px 14px 40px}
+h1{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(30px,7.6vw,58px);margin:2px 0 0;line-height:.95;
+  letter-spacing:-1px;transform:rotate(-2.5deg);text-align:center;color:var(--sun);
+  -webkit-text-stroke:3px #0d0b12;text-shadow:5px 5px 0 var(--hot),9px 9px 0 rgba(0,0,0,.6)}
+h1 span{color:var(--neon);display:inline-block;transform:rotate(1.5deg)}
+h1:hover{animation:wob .5s ease}
+@keyframes wob{25%{transform:rotate(1deg) scale(1.03)}75%{transform:rotate(-5deg) scale(.99)}}
+.sub{text-align:center;font-weight:800;letter-spacing:4px;font-size:11px;color:#cbb9e6;margin:16px 0 14px}
+.card{background:linear-gradient(180deg,var(--card1),var(--card2));border:3px solid #000;border-radius:18px;padding:16px;
+  box-shadow:8px 8px 0 rgba(0,0,0,.65),inset 0 0 0 2px rgba(255,255,255,.06);animation:cardIn .3s ease both}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px)}}
+label{display:block;font-size:11px;font-weight:800;letter-spacing:2px;color:#9d8fb8;margin-bottom:6px}
+input,select{width:100%;padding:13px;border-radius:12px;border:3px solid #000;background:#100d18;color:#fff;
+  font-size:19px;font-weight:800;outline:none;font-family:inherit}
+input:focus,select:focus{border-color:var(--neon);box-shadow:0 0 0 4px rgba(57,255,136,.18)}
+button{font-family:Impact,"Arial Black",sans-serif;letter-spacing:1px;cursor:pointer;border:3px solid #000;
+  border-radius:14px;padding:13px 16px;font-size:18px;color:#0d0b12;background:var(--neon);
+  box-shadow:4px 4px 0 rgba(0,0,0,.7);transition:transform .07s,box-shadow .07s,filter .15s}
+button:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 rgba(0,0,0,.7);filter:brightness(1.08)}
+button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 rgba(0,0,0,.7)}
+button.hot{background:var(--hot);color:#fff}
+button.cy{background:var(--cy)}
+button.sun{background:var(--sun)}
+button.ghost{background:#2a2138;color:#e9e2f5}
+button.sm{font-size:13px;padding:8px 11px;border-radius:11px;box-shadow:3px 3px 0 rgba(0,0,0,.7)}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.row>*{flex:1 1 130px}
+.rowt{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+.rowt>*{flex:0 0 auto}
+
+/* ---- barra superior ---- */
+.top{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap}
+.me{display:flex;align-items:center;gap:8px;background:#2a2138;border:3px solid #000;border-radius:99px;padding:4px 12px 4px 6px;
+  box-shadow:3px 3px 0 rgba(0,0,0,.6)}
+.me .av{font-size:22px;line-height:1}
+.me b{font-size:14px}
+.me i{font-style:normal;font-size:11px;color:#a89ac2;display:block;letter-spacing:1px}
+
+/* ---- modos ---- */
+.modes{display:flex;gap:6px;margin-bottom:12px}
+.modes button{flex:1;font-size:13px;padding:9px 6px;background:#2a2138;color:#cfc3e6;border-radius:12px}
+.modes button.on{background:var(--sun);color:#0d0b12;transform:translateY(-2px)}
+
+/* ---- HUD ---- */
+.hud{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+.badge{font-family:Impact,"Arial Black",sans-serif;font-size:15px;padding:5px 11px;border-radius:10px;border:3px solid #000;
+  color:#0d0b12;box-shadow:3px 3px 0 rgba(0,0,0,.6);transform:rotate(-2deg)}
+.stat{font-size:11px;color:#a89ac2;font-weight:800;letter-spacing:1px;text-align:center}
+.stat b{display:block;font-size:26px;color:#fff;font-family:Impact,"Arial Black",sans-serif;letter-spacing:0}
+.stat b.bump{animation:bump .5s cubic-bezier(.2,1.7,.4,1)}
+@keyframes bump{35%{transform:scale(1.9) rotate(-5deg);color:var(--sun);text-shadow:0 0 22px var(--sun)}}
+.lvlbox{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:112px;padding:6px 16px 9px;
+  border:4px solid var(--sun);border-radius:18px;background:rgba(0,0,0,.42);
+  box-shadow:5px 5px 0 rgba(0,0,0,.6),0 0 26px rgba(255,210,30,.28),inset 0 0 22px rgba(255,210,30,.12)}
+.lvlbox span{font-size:11px;font-weight:800;letter-spacing:4px;color:#cbb9e6}
+.lvlbox b{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(44px,11vw,62px);line-height:.92;
+  color:#fff;-webkit-text-stroke:3px #000;text-shadow:0 0 26px currentColor,4px 4px 0 rgba(0,0,0,.75)}
+.lvlbox.up{animation:lvlpop 1s cubic-bezier(.2,1.7,.4,1)}
+@keyframes lvlpop{0%{transform:scale(1)}30%{transform:scale(1.55) rotate(-7deg)}55%{transform:scale(.94) rotate(3deg)}100%{transform:scale(1)}}
+.lvlbox.cerca{animation:casi 1.1s ease-in-out infinite}
+@keyframes casi{50%{box-shadow:5px 5px 0 rgba(0,0,0,.6),0 0 42px rgba(57,255,136,.75),inset 0 0 26px rgba(57,255,136,.25)}}
+#fire{display:inline-block}
+#fire.hot1{color:var(--sun);animation:flame 1.1s ease-in-out infinite}
+#fire.hot2{color:var(--hot);text-shadow:0 0 20px var(--hot);animation:flame .6s ease-in-out infinite}
+@keyframes flame{50%{transform:scale(1.32) rotate(-6deg)}}
+.bar{height:22px;border:3px solid #000;border-radius:12px;background:#100d18;overflow:hidden;margin-top:8px;position:relative}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--neon));transition:width .4s cubic-bezier(.2,1.4,.4,1)}
+.bar>i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+  animation:shine 2.2s linear infinite}
+@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.tbar{height:9px;border:3px solid #000;border-radius:8px;background:#100d18;overflow:hidden;margin:10px 0 2px}
+.tbar>i{display:block;height:100%;width:100%;background:var(--neon);transition:width .1s linear,background .3s}
+
+/* ---- la palabra ---- */
+.probwrap{position:relative;text-align:center}
+.frase{font-size:clamp(15px,3.7vw,21px);font-weight:800;color:#e8dcff;line-height:1.55;margin:8px 0 2px;
+  animation:probIn .35s cubic-bezier(.2,1.7,.4,1) both}
+.frase u{text-decoration:none;color:var(--sun);border-bottom:3px dashed var(--sun);padding-bottom:1px}
+.tipo{display:inline-block;background:var(--pur);color:#fff;font-size:11.5px;font-weight:800;letter-spacing:1px;
+  padding:4px 10px;border-radius:99px;border:2px solid #000;margin:6px 0 0}
+.word{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;align-items:stretch;margin:10px 0 2px;
+  animation:probIn .42s cubic-bezier(.2,1.7,.4,1) both}
+@keyframes probIn{from{opacity:0;transform:translateY(-26px) rotate(-4deg) scale(.78)}}
+.word.shake{animation:shake .55s}
+@keyframes shake{
+  8%{transform:translateX(-9px) rotate(-2deg)}24%{transform:translateX(16px) rotate(2deg)}
+  42%{transform:translateX(-18px) rotate(-3deg)}60%{transform:translateX(13px) rotate(2deg)}
+  78%{transform:translateX(-7px)}100%{transform:none}}
+.lt{position:relative;font-family:Impact,"Arial Black",sans-serif;font-size:clamp(30px,8.2vw,56px);line-height:1.05;
+  padding:6px 9px 4px;border-radius:12px;border:3px solid #000;background:#241c33;color:#fff;letter-spacing:0;
+  box-shadow:4px 4px 0 rgba(0,0,0,.6);min-width:38px;text-align:center;font-weight:400}
+.lt.v{background:#3a2c52;color:var(--sun);cursor:pointer;transition:transform .08s,background .12s,box-shadow .08s}
+.lt.v:hover{transform:translate(-2px,-3px);background:var(--pur);color:#fff;box-shadow:6px 7px 0 rgba(0,0,0,.6)}
+.lt.v:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(0,0,0,.6)}
+.lt.c{cursor:default;opacity:.82}
+.lt.sp{background:none;border:none;box-shadow:none;min-width:16px}
+.lt sup{position:absolute;top:1px;right:4px;font-size:10.5px;color:#bdb0d4;font-family:"Segoe UI",sans-serif;font-weight:800}
+.lt.ok{background:var(--neon);color:#0d0b12;animation:bump .55s cubic-bezier(.2,1.7,.4,1)}
+.lt.err{background:var(--hot);color:#fff}
+.lt.real{outline:4px dashed var(--neon);outline-offset:3px}
+.timer{font-weight:900;font-size:14px;color:var(--sun);letter-spacing:1px}
+.repaso{display:inline-block;background:var(--pur);color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;
+  padding:3px 9px;border-radius:99px;border:2px solid #000;margin-bottom:2px}
+#bNoTilde{width:100%;font-size:21px;margin-top:12px;background:var(--cy)}
+
+/* ---- ruedas de apoyo (niveles bajos) ---- */
+.ayuda{background:rgba(0,0,0,.42);border:3px solid #000;border-left:8px solid var(--cy);border-radius:0 14px 14px 0;
+  padding:11px 13px;margin-top:12px;font-size:13.5px;line-height:1.7;color:#e4d9f5;animation:fbIn .3s ease both}
+.ayuda b{color:var(--sun);font-family:Impact,"Arial Black",sans-serif;letter-spacing:1px;font-size:15px}
+.ayuda .li{margin-top:6px}
+.ayuda .k{color:var(--neon);font-weight:800}
+
+/* ---- feedback ---- */
+.fb{border-left:8px solid var(--neon);background:rgba(0,0,0,.4);padding:12px 14px;border-radius:0 12px 12px 0;margin-top:12px;
+  animation:fbIn .25s ease both}
+@keyframes fbIn{from{opacity:0;transform:translateX(-12px)}}
+.fb.bad{border-color:var(--hot)}
+.fb h3{margin:0 0 6px;font-family:Impact,"Arial Black",sans-serif;letter-spacing:1px;font-size:19px}
+.fb p{margin:0;line-height:1.55;font-size:15px;color:#efe9f7}
+.fb p b{color:var(--sun)}
+.hint{margin-top:8px;font-size:13px;color:#bdb0d4}
+.pop{position:absolute;left:50%;top:6px;transform:translateX(-50%);font-family:Impact,"Arial Black",sans-serif;
+  font-size:clamp(42px,11vw,66px);color:var(--neon);-webkit-text-stroke:3px #000;
+  text-shadow:0 0 26px currentColor,4px 4px 0 rgba(0,0,0,.8);pointer-events:none;
+  animation:floatUp 1.5s cubic-bezier(.15,1.2,.4,1) forwards;z-index:5;white-space:nowrap}
+@keyframes floatUp{
+  0%{opacity:0;transform:translate(-50%,18px) scale(.4)}
+  22%{opacity:1;transform:translate(-50%,-6px) scale(1.35)}
+  40%{transform:translate(-50%,-14px) scale(1.1)}
+  100%{opacity:0;transform:translate(-50%,-135px) scale(1.5)}
+}
+
+/* ---- overlays ---- */
+.flash{position:fixed;inset:0;z-index:40;pointer-events:none;opacity:0}
+.flash.go{animation:flash .55s ease-out}
+@keyframes flash{from{opacity:.62}to{opacity:0}}
+#conf{position:fixed;inset:0;z-index:45;pointer-events:none;overflow:hidden}
+.cf{position:absolute;width:17px;height:25px;top:-30px;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(108vh) rotate(900deg);opacity:.9}}
+#lvlup{position:fixed;inset:0;z-index:50;display:none;place-items:center;background:rgba(10,6,16,.88);text-align:center}
+#lvlup.go{display:grid;animation:flash2 .3s ease}
+@keyframes flash2{from{opacity:0}}
+#lvlup .big .lbl{display:block;font-size:.24em;letter-spacing:9px;color:#fff;-webkit-text-stroke:2px #000;
+  text-shadow:4px 4px 0 rgba(0,0,0,.7);margin-bottom:-.04em}
+#lvlup .big{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(76px,26vw,230px);line-height:.9;color:var(--sun);
+  -webkit-text-stroke:5px #000;text-shadow:11px 11px 0 rgba(0,0,0,.9),0 0 70px currentColor;
+  animation:zoomIn .65s cubic-bezier(.2,1.8,.35,1), latido 1.1s .65s ease-in-out infinite}
+@keyframes zoomIn{0%{transform:scale(.2) rotate(-18deg);opacity:0}70%{transform:scale(1.16) rotate(3deg)}100%{transform:scale(1) rotate(-2deg);opacity:1}}
+@keyframes latido{50%{transform:scale(1.06) rotate(1deg)}}
+#lvlup .liga{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(20px,5.5vw,34px);letter-spacing:3px;margin-top:12px;
+  -webkit-text-stroke:2px #000;animation:cardIn .5s ease}
+#lvlup .onda{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;
+  border:8px solid var(--neon);animation:onda 1.4s ease-out infinite}
+#lvlup .onda.b{animation-delay:.45s;border-color:var(--hot)}
+@keyframes onda{from{transform:scale(.4);opacity:.85}to{transform:scale(15);opacity:0}}
+#toasts{position:fixed;right:14px;top:14px;z-index:60;display:flex;flex-direction:column;gap:8px;max-width:80vw}
+.toast{background:var(--sun);color:#0d0b12;border:3px solid #000;border-radius:14px;padding:10px 14px;font-weight:800;
+  box-shadow:5px 5px 0 rgba(0,0,0,.6);animation:tin .35s cubic-bezier(.2,1.6,.4,1) both}
+.toast b{display:block;font-family:Impact,"Arial Black",sans-serif;font-size:17px;letter-spacing:1px}
+.toast.out{animation:tout .35s ease forwards}
+@keyframes tin{from{opacity:0;transform:translateX(70px) rotate(4deg)}}
+@keyframes tout{to{opacity:0;transform:translateX(70px)}}
+
+/* ---- modal ---- */
+#modal{position:fixed;inset:0;z-index:55;display:none;background:rgba(8,5,14,.8);padding:16px;overflow:auto}
+#modal.go{display:block}
+#modalCard{max-width:660px;margin:24px auto;animation:mIn .28s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes mIn{from{opacity:0;transform:translateY(24px) scale(.96)}}
+h2{font-family:Impact,"Arial Black",sans-serif;letter-spacing:2px;margin:0 0 12px;font-size:24px;color:var(--sun)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:7px 5px;border-bottom:2px solid rgba(255,255,255,.08)}
+th{font-size:10px;letter-spacing:2px;color:#9d8fb8}
+tr.yo{background:rgba(255,210,30,.12)}
+.opbar{height:12px;background:#100d18;border:2px solid #000;border-radius:7px;overflow:hidden}
+.opbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--hot),var(--sun),var(--neon));transition:width .5s}
+.medals{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px}
+.medal{background:#2a2138;border:3px solid #000;border-radius:14px;padding:10px;text-align:center;opacity:.35;filter:grayscale(1)}
+.medal.on{opacity:1;filter:none;box-shadow:3px 3px 0 rgba(0,0,0,.6);animation:cardIn .3s ease both}
+.medal .e{font-size:30px}
+.medal b{display:block;font-size:12px;letter-spacing:1px;margin-top:3px}
+.medal i{font-style:normal;font-size:10.5px;color:#a89ac2;display:block;margin-top:3px;line-height:1.35}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.pill{font-size:12px;font-weight:800;padding:7px 11px;border-radius:99px;background:#2a2138;border:2px solid #000;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px}
+.pill:hover{background:#392c4d}
+.pill .x{font-size:12px;color:#8e81a8;padding:0 3px;border-radius:99px;line-height:1.4}
+.pill .x:hover{background:var(--hot);color:#fff}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:8px;margin-top:4px}
+.chk{display:flex;align-items:center;gap:10px;background:#2a2138;border:3px solid #000;border-radius:14px;
+  padding:11px 12px;cursor:pointer;font-weight:800;font-size:13px;letter-spacing:.5px;color:#e9e2f5;margin:0}
+.chk:hover{background:#392c4d}
+.chk.on{background:var(--neon);color:#0d0b12}
+.chk input{width:22px;height:22px;flex:0 0 auto;accent-color:#0d0b12;cursor:pointer}
+.chk span{min-width:0;overflow-wrap:anywhere}
+.ligaline{display:flex;gap:3px;margin:10px 0}
+.ligaline>div{flex:1;height:10px;border:2px solid #000;border-radius:4px;background:#221a30}
+.ligaline>div.on{background:var(--sun)}
+.reglas{font-size:14px;line-height:1.85}
+.reglas h3{font-family:Impact,"Arial Black",sans-serif;letter-spacing:1px;font-size:17px;color:var(--neon);margin:16px 0 4px}
+.reglas em{font-style:normal;color:var(--sun);font-weight:800}
+/* ---- lobby ---- */
+.hero{display:flex;gap:14px;align-items:center;background:linear-gradient(120deg,rgba(255,46,136,.22),rgba(34,211,238,.16));
+  border:3px solid #000;border-radius:16px;padding:14px;box-shadow:5px 5px 0 rgba(0,0,0,.55)}
+.hero .bigav{font-size:54px;line-height:1;filter:drop-shadow(3px 3px 0 rgba(0,0,0,.6));animation:bobo 3.4s ease-in-out infinite}
+@keyframes bobo{50%{transform:translateY(-7px) rotate(-5deg)}}
+.hero .info{flex:1;min-width:0}
+.hero .nom{font-family:Impact,"Arial Black",sans-serif;font-size:27px;letter-spacing:1px;line-height:1.1}
+.hero .sub2{font-size:12px;font-weight:800;color:#cbb9e6;letter-spacing:1px;margin-top:2px}
+#lbPlay{width:100%;font-size:27px;padding:20px;margin:14px 0 4px;background:var(--neon);
+  animation:latir 2.2s ease-in-out infinite}
+@keyframes latir{50%{transform:scale(1.022);box-shadow:6px 6px 0 rgba(0,0,0,.7),0 0 30px rgba(57,255,136,.4)}}
+#lbPlaySub{text-align:center;font-size:12px;color:#a89ac2;font-weight:800;letter-spacing:1px;margin-bottom:14px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:#241c33;border:3px solid #000;border-radius:16px;padding:13px;cursor:pointer;text-align:left;
+  box-shadow:4px 4px 0 rgba(0,0,0,.6);transition:transform .1s,box-shadow .1s;color:#fff;font-family:inherit}
+.tile:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.6);background:#2e2440}
+.tile .ic{font-size:26px}
+.tile b{display:block;font-family:Impact,"Arial Black",sans-serif;font-size:17px;letter-spacing:1px;margin:3px 0 2px}
+.tile i{font-style:normal;font-size:11.5px;color:#a89ac2;line-height:1.4;display:block}
+.mision{background:rgba(0,0,0,.35);border:3px solid #000;border-radius:14px;padding:12px;margin-top:12px}
+.mision b{font-family:Impact,"Arial Black",sans-serif;letter-spacing:1px;font-size:15px;color:var(--sun)}
+.mision.ok{border-color:var(--neon);background:rgba(57,255,136,.12)}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;justify-content:center}
+.chip{background:#2a2138;border:2px solid #000;border-radius:99px;padding:6px 11px;font-size:12px;font-weight:800;color:#d9cfe9}
+.chip b{color:#fff;font-family:Impact,"Arial Black",sans-serif;letter-spacing:1px}
+/* ---- pausa ---- */
+#pause{position:fixed;inset:0;z-index:52;display:none;background:rgba(8,5,14,.86);padding:16px;overflow:auto}
+#pause.go{display:block;animation:flash2 .18s ease}
+#pauseCard{max-width:460px;margin:6vh auto;animation:mIn .25s cubic-bezier(.2,1.5,.4,1) both}
+#pause h2{text-align:center;font-size:40px;color:var(--sun);margin-bottom:4px}
+#pauseInfo{text-align:center;font-size:13px;color:#b7a9d0;margin-bottom:14px;line-height:1.6}
+.hide{display:none!important}
+.warn{background:var(--sun);color:#0d0b12;font-weight:800;padding:10px;border:3px solid #000;border-radius:12px;margin-bottom:12px}
+.mini{font-size:11.5px;color:#8e81a8;text-align:center;margin-top:16px;line-height:1.7}
+.kbd{font-size:11px;color:#7d7194;text-align:center;margin-top:8px}
+textarea{width:100%;height:110px;background:#100d18;color:#9ef;border:3px solid #000;border-radius:12px;padding:10px;font-family:monospace;font-size:11px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:520px){.stat b{font-size:18px}.lt{min-width:30px;padding:5px 6px 3px}}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+<div class="grain"></div>
+<div id="wall"></div>
+<div class="tag a">TILDES</div><div class="tag b">CRAZY</div>
+<div id="flash" class="flash"></div><div id="conf"></div>
+<div id="lvlup"><div class="onda"></div><div class="onda b"></div>
+  <div style="position:relative"><div class="big" id="lvlupTxt"><span class="lbl">NIVEL</span><span id="lvlupNum">2</span></div>
+  <div class="liga" id="lvlupSub"></div></div></div>
+<div id="toasts"></div>
+
+<div id="modal"><div id="modalCard" class="card"><div id="modalBody"></div>
+  <div class="row" style="margin-top:14px"><button id="modalClose" class="ghost">CERRAR</button></div></div></div>
+
+<div id="pause"><div id="pauseCard" class="card">
+  <h2>⏸ PAUSA</h2>
+  <div id="pauseInfo"></div>
+  <button id="pSeguir" style="width:100%;font-size:22px;padding:17px">▶ SEGUIR JUGANDO</button>
+  <div class="rowt" style="margin-top:10px">
+    <button class="sm ghost bStats">📊 NÚMEROS</button>
+    <button class="sm ghost bMedals">🏅 MEDALLAS</button>
+    <button class="sm ghost bRank">🏆 RANKING</button>
+    <button class="sm ghost bReglas">📘 REGLAS</button>
+    <button class="sm ghost bHelp">❓ AYUDA</button>
+    <button class="sm ghost bSound">🔊</button>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <button id="pLobby" class="cy">🏠 IR AL LOBBY</button>
+    <button id="pSalir" class="hot">CAMBIAR USUARIO</button>
+  </div>
+  <div class="kbd">Esc o Enter para volver al juego. El cronómetro está detenido.</div>
+</div></div>
+
+<div class="wrap">
+  <h1>TILDES <span>MAKE ME</span> CRAZY</h1>
+  <div class="sub">PONLE LA TILDE · RÁPIDO · ANTES QUE SE ACABE EL TIEMPO</div>
+  <div id="warn" class="warn hide"></div>
+
+  <!-- ================= LOGIN ================= -->
+  <section id="login" class="card">
+    <label>TU NOMBRE (crea tu cuenta o entra a la tuya)</label>
+    <input id="name" maxlength="18" placeholder="Ej: Rafa 7B" autocomplete="off">
+    <label style="margin-top:12px">PIN DE 4 DIGITOS (opcional, para que nadie te toque el progreso)</label>
+    <input id="pin" maxlength="4" inputmode="numeric" placeholder="----" autocomplete="off">
+    <label style="margin-top:12px">ELIGE TU CARA</label>
+    <div id="avatars" class="pills"></div>
+    <div class="row" style="margin-top:14px">
+      <button id="enter">ENTRAR ▶</button>
+      <button id="toRank" class="ghost">🏆 RANKING</button>
+      <button id="toCuentas" class="ghost">🗑 CUENTAS</button>
+    </div>
+    <label id="usersLbl" style="margin-top:16px" class="hide">CUENTAS EN ESTE COMPUTADOR (toca la tuya y sigues donde ibas)</label>
+    <div id="users" class="pills"></div>
+  </section>
+
+  <!-- ================= LOBBY ================= -->
+  <section id="lobby" class="card hide">
+    <div class="hero">
+      <div class="bigav" id="lbAv">✏️</div>
+      <div class="lvlbox" id="lbLvlBox"><span>NIVEL</span><b id="lbLvl">1</b></div>
+      <div class="info">
+        <div class="nom" id="lbName">-</div>
+        <div class="sub2" id="lbLiga">BRONCE</div>
+        <div class="bar" style="margin-top:8px"><i id="lbBar"></i></div>
+        <div class="sub2" id="lbTxt" style="margin-top:5px">0 de 5 palabras rápidas</div>
+      </div>
+    </div>
+
+    <button id="lbPlay">▶ JUGAR</button>
+    <div id="lbPlaySub">Continúa tu carrera donde la dejaste</div>
+
+    <div class="tiles">
+      <button class="tile" id="tCarrera"><div class="ic">🏁</div><b>CARRERA</b><i>Sube de nivel juntando palabras rápidas. El modo principal.</i></button>
+      <button class="tile" id="tEntrenar"><div class="ic">🎯</div><b>ENTRENAR</b><i>Eliges el bloque de reglas y la dificultad. Sin presión.</i></button>
+      <button class="tile" id="tArcade"><div class="ic">⏱</div><b>CONTRARRELOJ</b><i>De 1 a 10 minutos, y cada acierto te suma medio segundo. <span id="lbRec"></span></i></button>
+    </div>
+
+    <div class="mision" id="lbMision"></div>
+    <div class="chips" id="lbChips"></div>
+
+    <div class="rowt" style="margin-top:14px">
+      <button class="sm ghost bStats">📊 MIS NÚMEROS</button>
+      <button class="sm ghost bMedals">🏅 MEDALLAS</button>
+      <button class="sm ghost bRank">🏆 RANKING</button>
+      <button class="sm sun bReglas">📘 TODAS LAS REGLAS</button>
+      <button class="sm ghost bHelp">❓ CÓMO SE JUEGA</button>
+      <button class="sm ghost bSound">🔊</button>
+      <button class="sm hot" id="lbSalir">CAMBIAR USUARIO</button>
+    </div>
+  </section>
+
+  <!-- ================= JUEGO ================= -->
+  <section id="game" class="card hide">
+    <div class="top">
+      <div class="me"><span class="av" id="meAv">✏️</span><span><b id="who">-</b><i id="meLiga">BRONCE</i></span></div>
+      <div class="rowt">
+        <button class="sm sun" id="bPause">⏸ PAUSA <span style="opacity:.6">(Esc)</span></button>
+        <button class="sm ghost" id="bLobby">🏠 LOBBY</button>
+      </div>
+    </div>
+
+    <div class="modes">
+      <button id="mCarrera" class="on">🏁 CARRERA</button>
+      <button id="mEntrenar">🎯 ENTRENAR</button>
+      <button id="mArcade">⏱ CONTRARRELOJ</button>
+    </div>
+
+    <div id="trainBox" class="hide" style="margin-bottom:10px">
+      <div class="row">
+        <select id="trainCat">
+          <option value="all">Los bloques que ticaste al entrar</option>
+          <option value="1">1 · Agudas, graves, esdrújulas</option>
+          <option value="2">2 · Hiatos y diptongos</option>
+          <option value="3">3 · Tildes diacríticas y porqués</option>
+          <option value="4">4 · Compuestas y adverbios en -mente</option>
+          <option value="5">5 · Plurales que cambian</option>
+          <option value="6">6 · Excepciones y casos raros</option>
+        </select>
+        <select id="trainLvl"></select>
+      </div>
+      <div class="kbd">Entrenar no sube de nivel: es para machacar el bloque que te cuesta. Igual suma medallas y estadísticas.</div>
+    </div>
+
+    <div class="hud">
+      <div class="lvlbox" id="lvlbox"><span>NIVEL</span><b id="lvl">1</b></div>
+      <div><span id="badge" class="badge">BRONCE</span></div>
+      <div class="stat">PUNTOS<b id="pts">0</b></div>
+      <div class="stat">RACHA<b id="streak"><span id="fire">0</span></b></div>
+      <div class="stat" id="accBox">PRECISION<b id="acc">-</b></div>
+    </div>
+    <div class="bar"><i id="xpbar"></i></div>
+    <div class="stat" style="margin-top:6px;text-align:left">LLEVAS <span id="xptxt">0 de 5</span> para el nivel siguiente</div>
+
+    <div class="tbar"><i id="tbar"></i></div>
+    <div class="probwrap">
+      <div id="repaso" class="repaso hide">🔁 REPASO: esta te la comiste antes</div>
+      <div id="frase" class="frase hide"></div>
+      <div class="word" id="word"></div>
+      <div id="tipo" class="tipo hide"></div>
+      <div class="timer" id="timer">0.0 s</div>
+    </div>
+
+    <div id="answerBox" style="margin-top:6px">
+      <div class="kbd" id="comoResponder">Toca la vocal que lleva la tilde · o el botón de abajo si no lleva ninguna · (teclas 1-9 y 0)</div>
+      <button id="bNoTilde">0 · NO LLEVA TILDE</button>
+      <div class="row" style="margin-top:9px">
+        <button id="bPista" class="sun sm">💡 PISTA</button>
+        <button id="bSkip" class="ghost sm">SALTAR</button>
+        <button id="bReglasJuego" class="ghost sm bReglas">📘 REGLAS</button>
+      </div>
+      <div id="ayudaFija" class="ayuda hide"></div>
+    </div>
+
+    <div id="fb" class="fb hide"><h3 id="fbTitle"></h3><p id="fbText"></p><div class="hint" id="fbPts"></div>
+      <div class="row" style="margin-top:12px">
+        <button id="again" class="hot hide">REINTENTAR ESTA</button>
+        <button id="next">SEGUIR ▶</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="mini" id="legend">
+    Para subir de nivel juntas palabras: del nivel 1 al 2 son 5, en el nivel 3 son 10, y en el 160 ya son 30.<br>
+    Cada acierto vale según lo que te demores: ⚡ RELÁMPAGO 1,5 · ✔ RÁPIDO 1 · 🐢 LENTO 0,6 · 😴 MUY LENTO 0,3.<br>
+    Niveles 1-10 con las reglas a la vista · 11-30 sin ayuda y con hiatos, plurales y -mente · 31+ diacríticas, porqués y excepciones a toda velocidad.
+  </div>
+  <div class="kbd">Atajos: <b>1-9</b> elegir vocal · <b>0</b> no lleva tilde · <b>Enter</b> seguir · <b>P</b> pista · <b>S</b> saltar · <b>Esc</b> pausa</div>
+</div>
+<script>
+"use strict";
+/* ============================================================
+   TILDES MAKE ME CRAZY - todo en un archivo, sin internet ni instalacion
+   Hermano chico de "Maths Make Me Crazy": mismo diseno, mismas animaciones,
+   mismas cuentas locales y mismo ranking, pero en vez de calcular
+   aca hay que ponerle la tilde a la vocal correcta.
+   Llave de guardado: 'tildes' (la de matematicas es 'crazymath', no se tocan).
+   ============================================================ */
+var $ = function(s){ return document.querySelector(s); };
+var ri = function(a,b){ return a + Math.floor(Math.random()*(b-a+1)); };
+var pick = function(a){ return a[ri(0,a.length-1)]; };
+var fmt = function(n){ return (Math.round(n*100)/100).toString().replace('.',','); };
+function fmtN(n){
+  var neg = n<0; n = Math.abs(n);
+  var e = Math.floor(n), dec = Math.round((n-e)*100);
+  var s = e.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  if(dec) s += ','+('0'+dec).slice(-2).replace(/0$/,'');
+  return (neg?'-':'')+s;
+}
+var hoy = function(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); };
+function ayerDe(f){ var d=new Date(f+'T12:00:00'); d.setDate(d.getDate()-1);
+  return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+/* ---------- almacenamiento ---------- */
+var memOnly=false, DB={};
+function load(){ try{ DB = JSON.parse(localStorage.getItem('tildes') || '{}'); }catch(e){ DB={}; } }
+function save(){
+  try{ localStorage.setItem('tildes', JSON.stringify(DB)); }
+  catch(e){ if(!memOnly){ memOnly=true;
+    $('#warn').textContent='Ojo: este navegador no deja guardar. El progreso durara solo mientras la ventana este abierta.';
+    $('#warn').classList.remove('hide'); } }
+}
+load();
+
+/* ---------- ligas ---------- */
+var LIGAS=[[1,'BRONCE','#c98b4b'],[21,'PLATA','#cfd8e3'],[46,'ORO','#ffd21e'],[71,'PLATINO','#22d3ee'],
+           [96,'DIAMANTE','#a855f7'],[121,'MAESTRO','#ff2e88'],[151,'LEYENDA','#39ff88']];
+function liga(l){ var t=LIGAS[0]; for(var i=0;i<LIGAS.length;i++){ if(l>=LIGAS[i][0]) t=LIGAS[i]; } return t; }
+
+/* ---------- cuanto cuesta subir de nivel ----------
+   metaSeg = segundos en que la palabra cuenta como "rapida" (nv1: 10,9 s · nv30: 6,8 s · nv50 en adelante: 4 s)
+   reqEjer = palabras rapidas para pasar de nivel (nv1: 5, nv3: 10, nv160: 30)  */
+function metaSeg(l){ return Math.max(4, 11 - 0.14*l); }
+function reqEjer(l){ return Math.round(5 + 5*Math.log(l)); }
+function credito(l, secs){
+  var m = metaSeg(l);
+  if(secs <= m/2) return {c:1.5, tag:'RELAMPAGO', ico:'⚡'};
+  if(secs <= m)   return {c:1.0, tag:'RAPIDO',    ico:'✔'};
+  if(secs <= 2*m) return {c:0.6, tag:'LENTO',     ico:'🐢'};
+  return               {c:0.3, tag:'MUY LENTO',  ico:'😴'};
+}
+function scorePts(l, secs, streak){
+  var speed = Math.min(2.5, Math.max(0.15, metaSeg(l)/Math.max(0.4,secs)));
+  var comboM = Math.min(1.5, 1 + streak*0.05);
+  return Math.max(1, Math.round((8 + 0.6*l) * speed * comboM));
+}
+
+/* ============================================================
+   MOTOR DE ACENTUACION
+   silabea, ubica la fuerza, clasifica y decide si la palabra
+   necesita tilde. Con esto se arman solas las explicaciones
+   y ademas el autotest revisa que el banco no tenga errores.
+   ============================================================ */
+var CON_TILDE='áéíóú', SIN_TILDE='aeiou';
+var MAY_CON='ÁÉÍÓÚ', MAY_SIN='AEIOU';
+function quitarTildes(s){
+  var r='';
+  for(var i=0;i<s.length;i++){
+    var c=s[i], k=CON_TILDE.indexOf(c), k2=MAY_CON.indexOf(c);
+    r += k>=0 ? SIN_TILDE[k] : (k2>=0 ? MAY_SIN[k2] : c);
+  }
+  return r;
+}
+function tieneTilde(s){ for(var i=0;i<s.length;i++){ if(CON_TILDE.indexOf(s[i])>=0||MAY_CON.indexOf(s[i])>=0) return true; } return false; }
+function posTilde(s){ for(var i=0;i<s.length;i++){ if(CON_TILDE.indexOf(s[i])>=0||MAY_CON.indexOf(s[i])>=0) return i; } return -1; }
+
+/* una vocal es "nucleo" si puede llevar la fuerza (y por lo tanto la tilde).
+   La u de que/qui y la de gue/gui son mudas: no se pueden tildar. La u de gue/gui
+   con dieresis (ü) si suena. La y siempre la trato como consonante. */
+function esNucleo(w,i){
+  var c=w[i]; if('aeiouáéíóúü'.indexOf(c)<0) return false;
+  if(c==='u'||c==='ú'){
+    var a=w[i-1];
+    if(a==='q') return false;
+    if(a==='g' && 'eiéí'.indexOf(w[i+1])>=0) return false;
+  }
+  return true;
+}
+function fuerte(c){ return 'aeoáéó'.indexOf(c)>=0; }
+function debil(c){ return 'iuü'.indexOf(c)>=0; }
+function debilTonica(c){ return c==='í'||c==='ú'; }
+
+/* corta la palabra en silabas. Devuelve un array de trozos que concatenados
+   dan exactamente la palabra original (el autotest lo comprueba). */
+var GRUPOS=['ch','ll','rr','pr','br','tr','dr','cr','gr','fr','pl','bl','cl','gl','fl','tl'];
+function silabas(pal){
+  var w=pal.toLowerCase();
+  if(w.length<2) return [pal];
+  var n=w.length, i, esN=[];
+  for(i=0;i<n;i++) esN.push(esNucleo(w,i));
+  var corte=[]; for(i=0;i<n;i++) corte.push(false);
+  /* 1) hiatos: dos vocales que NO forman diptongo se separan (la h del medio se va con la segunda) */
+  for(i=0;i<n;i++){
+    if(!esN[i]) continue;
+    var j=i+1, hache=false;
+    if(w[j]==='h' && esN[j+1]){ hache=true; j=j+1; }
+    if(!esN[j]) continue;
+    var a=w[i], b=w[j];
+    var hiato = (fuerte(a)&&fuerte(b)) || debilTonica(a) || debilTonica(b);
+    if(hiato) corte[hache?i+1:j]=true;
+  }
+  /* 2) consonantes entre dos nucleos */
+  i=0;
+  while(i<n){
+    if(!esN[i]){ i++; continue; }
+    var k=i+1;
+    while(k<n && !esN[k]) k++;
+    if(k>=n) break;
+    var ini=i+1, largo=k-ini;              /* consonantes entre el nucleo i y el nucleo k */
+    if(largo===1){
+      corte[ini]=true;
+    } else if(largo===2){
+      var par=w.substr(ini,2);
+      corte[GRUPOS.indexOf(par)>=0 ? ini : ini+1]=true;
+    } else if(largo===3){
+      var ult=w.substr(ini+1,2);
+      corte[GRUPOS.indexOf(ult)>=0 ? ini+1 : ini+2]=true;
+    } else if(largo>=4){
+      corte[ini+largo-2]=true;
+    }
+    i=k;
+  }
+  var out=[], act='';
+  for(i=0;i<n;i++){
+    if(corte[i] && act){ out.push(act); act=''; }
+    act += pal[i];
+  }
+  if(act) out.push(act);
+  return out.length? out : [pal];
+}
+/* en que silaba va la fuerza. Si hay tilde, es esa; si no, manda la regla general */
+function terminaEn(pal){
+  var w=quitarTildes(pal.toLowerCase());
+  return w[w.length-1];
+}
+function abiertaFinal(pal){
+  var u=terminaEn(pal);
+  return 'aeiou'.indexOf(u)>=0 || u==='n' || u==='s';
+}
+function silabaTonica(sil, pal){
+  var i;
+  for(i=0;i<sil.length;i++){ if(tieneTilde(sil[i])) return i; }
+  if(sil.length===1) return 0;
+  return abiertaFinal(pal) ? sil.length-2 : sil.length-1;
+}
+var NOMTIPO=['aguda','grave','esdrújula','sobresdrújula'];
+function clasifica(pal){
+  var sil=silabas(pal), t=silabaTonica(sil,pal);
+  var desdeElFinal = sil.length-t;                 /* 1 = ultima, 2 = penultima ... */
+  var tipo = NOMTIPO[Math.min(3,desdeElFinal-1)];
+  if(sil.length===1) tipo='monosílaba';
+  /* hiato: la fuerza cae en una i/u pegada a otra vocal (pa-is, ba-ul, Ma-ri-a) */
+  var k=posTilde(pal), hiato=false, vocHiato='';
+  if(k>=0 && (pal[k]==='í'||pal[k]==='ú')){
+    var w=pal.toLowerCase();
+    var ia=k-1; if(w[ia]==='h') ia--;
+    var ib=k+1; if(w[ib]==='h') ib++;
+    var pegada = (ia>=0 && esNucleo(w,ia)) || (ib<w.length && esNucleo(w,ib));
+    if(pegada){ hiato=true; vocHiato=pal[k]; }
+  }
+  return {sil:sil, t:t, tipo:tipo, desde:desdeElFinal, fin:terminaEn(pal), abierta:abiertaFinal(pal),
+          hiato:hiato, vocHiato:vocHiato, tilde:tieneTilde(pal), pos:k};
+}
+/* la regla pura: ¿esta palabra DEBERIA llevar tilde? */
+function exigeTilde(pal){
+  var c=clasifica(pal);
+  if(c.hiato) return true;                              /* el hiato manda sobre todo lo demas */
+  if(c.sil.length===1) return false;                    /* monosilabos: sin tilde (salvo diacritica) */
+  if(c.desde>=3) return true;                           /* esdrujulas y sobresdrujulas: siempre */
+  if(c.desde===1) return c.abierta;                     /* agudas: solo si terminan en n, s o vocal */
+  return !c.abierta;                                    /* graves: solo si NO terminan en n, s o vocal */
+}
+
+/* ============================================================
+   BANCO DE PALABRAS
+   p = palabra bien escrita (de ahi salen solas la version sin tilde,
+       la respuesta correcta y la explicacion)
+   c = bloque: 1 agudas/graves/esdrujulas · 2 hiatos y diptongos ·
+       3 diacriticas y porques · 4 compuestas y -mente · 5 plurales ·
+       6 excepciones y casos raros
+   d = dificultad 1-3 (1 sale desde el nivel 1, 2 desde el 11, 3 desde el 31)
+   f = frase de contexto, ___ es donde va la palabra
+   n = nota que se suma a la explicacion
+   x = 1 cuando la palabra NO se explica con la regla general:
+       son las excepciones, y el autotest exige que todas tengan nota.
+   ============================================================ */
+var BANCO=[
+/* ---------- 1. AGUDAS con tilde ---------- */
+{p:'canción',c:1,d:1},{p:'camión',c:1,d:1},{p:'avión',c:1,d:1},{p:'sofá',c:1,d:1},{p:'café',c:1,d:1},
+{p:'mamá',c:1,d:1},{p:'papá',c:1,d:1},{p:'ratón',c:1,d:1},{p:'jardín',c:1,d:1},{p:'corazón',c:1,d:1},
+{p:'balón',c:1,d:1},{p:'limón',c:1,d:1},{p:'melón',c:1,d:1},{p:'sillón',c:1,d:1},{p:'cajón',c:1,d:1},
+{p:'rincón',c:1,d:1},{p:'botón',c:1,d:1},{p:'salón',c:1,d:1},{p:'patín',c:1,d:1},{p:'jamás',c:1,d:1},
+{p:'además',c:1,d:1},{p:'común',c:1,d:1},{p:'jabón',c:1,d:1},{p:'colibrí',c:1,d:2},{p:'bambú',c:1,d:2},
+{p:'francés',c:1,d:1},{p:'inglés',c:1,d:1},{p:'compás',c:1,d:2},{p:'quizás',c:1,d:2},{p:'según',c:1,d:2},
+{p:'después',c:1,d:2},{p:'cinturón',c:1,d:2},{p:'champú',c:1,d:2},{p:'autobús',c:1,d:1},{p:'riñón',c:1,d:2},
+/* ---------- 1. AGUDAS sin tilde ---------- */
+{p:'reloj',c:1,d:1},{p:'papel',c:1,d:1},{p:'pared',c:1,d:1},{p:'feliz',c:1,d:1},{p:'cantar',c:1,d:1},
+{p:'amor',c:1,d:1},{p:'color',c:1,d:1},{p:'verdad',c:1,d:1},{p:'arroz',c:1,d:1},{p:'nariz',c:1,d:1},
+{p:'mantel',c:1,d:1},{p:'tambor',c:1,d:1},{p:'caracol',c:1,d:1},{p:'cristal',c:1,d:1},{p:'motor',c:1,d:1},
+{p:'doctor',c:1,d:1},{p:'animal',c:1,d:1},{p:'hospital',c:1,d:1},{p:'ferrocarril',c:1,d:2},{p:'pastor',c:1,d:1},
+{p:'virtud',c:1,d:2},{p:'altavoz',c:1,d:2},{p:'profesor',c:1,d:1},{p:'ciudad',c:1,d:1},
+/* ---------- 1. GRAVES con tilde ---------- */
+{p:'árbol',c:1,d:1},{p:'lápiz',c:1,d:1},{p:'cárcel',c:1,d:1},{p:'azúcar',c:1,d:1},{p:'fácil',c:1,d:1},
+{p:'difícil',c:1,d:1},{p:'útil',c:1,d:1},{p:'ángel',c:1,d:1},{p:'mármol',c:1,d:2},{p:'túnel',c:1,d:1},
+{p:'débil',c:1,d:1},{p:'móvil',c:1,d:1},{p:'frágil',c:1,d:2},{p:'ágil',c:1,d:2},
+{p:'dócil',c:1,d:2},{p:'huésped',c:1,d:2},{p:'cráter',c:1,d:2},{p:'néctar',c:1,d:2},{p:'carácter',c:1,d:2},
+{p:'césped',c:1,d:1},{p:'cóndor',c:1,d:2},{p:'ámbar',c:1,d:2},{p:'fémur',c:1,d:2},{p:'mástil',c:1,d:2},
+/* ---------- 1. GRAVES sin tilde ---------- */
+{p:'casa',c:1,d:1},{p:'mesa',c:1,d:1},{p:'libro',c:1,d:1},{p:'ventana',c:1,d:1},{p:'joven',c:1,d:1},
+{p:'examen',c:1,d:1},{p:'imagen',c:1,d:1},{p:'resumen',c:1,d:1},{p:'martes',c:1,d:1},{p:'zapato',c:1,d:1},
+{p:'cuaderno',c:1,d:1},{p:'camisa',c:1,d:1},{p:'pelota',c:1,d:1},{p:'escuela',c:1,d:1},{p:'montaña',c:1,d:1},
+{p:'silla',c:1,d:1},{p:'cocina',c:1,d:1},{p:'verano',c:1,d:1},{p:'semana',c:1,d:1},{p:'dinero',c:1,d:1},
+{p:'bosque',c:1,d:1},{p:'calle',c:1,d:1},{p:'volumen',c:1,d:2},{p:'origen',c:1,d:2},{p:'crimen',c:1,d:2},
+/* ---------- 1. ESDRUJULAS ---------- */
+{p:'música',c:1,d:1},{p:'médico',c:1,d:1},{p:'teléfono',c:1,d:1},{p:'sábado',c:1,d:1},{p:'miércoles',c:1,d:1},
+{p:'plátano',c:1,d:1},{p:'pájaro',c:1,d:1},{p:'lámpara',c:1,d:1},{p:'brújula',c:1,d:1},{p:'esdrújula',c:1,d:1},
+{p:'número',c:1,d:1},{p:'sílaba',c:1,d:1},{p:'cámara',c:1,d:1},{p:'fábrica',c:1,d:1},{p:'último',c:1,d:1},
+{p:'único',c:1,d:1},{p:'párrafo',c:1,d:1},{p:'rápido',c:1,d:1},{p:'público',c:1,d:1},{p:'química',c:1,d:1},
+{p:'física',c:1,d:1},{p:'océano',c:1,d:2},{p:'príncipe',c:1,d:2},{p:'murciélago',c:1,d:2},{p:'bolígrafo',c:1,d:1},
+{p:'oxígeno',c:1,d:2},{p:'ejército',c:1,d:2},{p:'película',c:1,d:1},{p:'matemáticas',c:1,d:1},{p:'América',c:1,d:1},
+{p:'cántaro',c:1,d:2},{p:'íntimo',c:1,d:2},{p:'dinámico',c:1,d:2},{p:'náutico',c:1,d:2},{p:'ánimo',c:1,d:2},
+/* ---------- 1. SOBRESDRUJULAS ---------- */
+{p:'dígamelo',c:1,d:2,n:'Es sobresdrújula: la fuerza cae antes de la antepenúltima. Todas llevan tilde.'},
+{p:'cuéntamelo',c:1,d:2},{p:'entrégaselo',c:1,d:2},{p:'devuélvemelo',c:1,d:3},{p:'cómpramelo',c:1,d:2},
+{p:'explícaselo',c:1,d:3},{p:'permítemelo',c:1,d:3},{p:'tráigamelo',c:1,d:3},{p:'repítemelo',c:1,d:2},
+
+/* ---------- 2. HIATOS (la i o la u tonica rompe la regla) ---------- */
+{p:'país',c:2,d:2},{p:'María',c:2,d:2},{p:'día',c:2,d:2},{p:'río',c:2,d:2},{p:'frío',c:2,d:2},
+{p:'tío',c:2,d:2},{p:'oído',c:2,d:2},{p:'baúl',c:2,d:2},{p:'raíz',c:2,d:2},{p:'maíz',c:2,d:2},
+{p:'ataúd',c:2,d:2},{p:'reír',c:2,d:2},{p:'oír',c:2,d:2},{p:'caída',c:2,d:2},{p:'sandía',c:2,d:2},
+{p:'energía',c:2,d:2},{p:'garantía',c:2,d:3},{p:'policía',c:2,d:2},{p:'todavía',c:2,d:2},{p:'ahí',c:2,d:2},
+{p:'increíble',c:2,d:3},{p:'egoísta',c:2,d:3},{p:'transeúnte',c:2,d:3},{p:'laúd',c:2,d:3},{p:'dúo',c:2,d:2},
+{p:'actúa',c:2,d:3},{p:'continúa',c:2,d:3},{p:'leído',c:2,d:2},{p:'traído',c:2,d:2},{p:'había',c:2,d:2},
+{p:'tenía',c:2,d:2},{p:'decía',c:2,d:2},{p:'vacío',c:2,d:2},{p:'judío',c:2,d:3},{p:'búho',c:2,d:3},
+{p:'prohíbe',c:2,d:3},{p:'sonríe',c:2,d:3},{p:'evalúa',c:2,d:3},{p:'geografía',c:2,d:2},{p:'mío',c:2,d:2},
+/* ---------- 2. DIPTONGOS (una sola silaba: no rompen nada) ---------- */
+{p:'aire',c:2,d:2},{p:'causa',c:2,d:2},{p:'peine',c:2,d:2},{p:'ruido',c:2,d:2},{p:'viuda',c:2,d:2},
+{p:'cuidado',c:2,d:2},{p:'agua',c:2,d:2},{p:'puerta',c:2,d:2},{p:'bueno',c:2,d:2},{p:'cielo',c:2,d:2},
+{p:'fuego',c:2,d:2},{p:'jaula',c:2,d:2},{p:'boina',c:2,d:2},{p:'reina',c:2,d:2},{p:'deuda',c:2,d:2},
+{p:'tiempo',c:2,d:2},{p:'fiesta',c:2,d:2},{p:'europeo',c:2,d:3},{p:'aplauso',c:2,d:2},{p:'caudillo',c:2,d:3},
+
+/* ---------- 3. TILDES DIACRITICAS (misma palabra, distinto trabajo) ---------- */
+{p:'él',c:3,d:3,x:1,f:'Ese regalo es para ___.',n:'Diacrítica: ÉL con tilde es el pronombre (la persona). EL sin tilde es el artículo: el perro.'},
+{p:'el',c:3,d:3,x:1,f:'___ perro de la esquina ladra mucho.',n:'Diacrítica: EL sin tilde es el artículo. Con tilde, ÉL, sería el pronombre: para él.'},
+{p:'tú',c:3,d:3,x:1,f:'___ sabes la respuesta mejor que nadie.',n:'Diacrítica: TÚ con tilde es el pronombre (la persona). TU sin tilde es posesivo: tu casa.'},
+{p:'tu',c:3,d:3,x:1,f:'___ casa es la más grande del barrio.',n:'Diacrítica: TU sin tilde es posesivo (de quién es). Con tilde, TÚ, sería la persona.'},
+{p:'mí',c:3,d:3,x:1,f:'A ___ nadie me avisó de la prueba.',n:'Diacrítica: MÍ con tilde es el pronombre (a mí, para mí). MI sin tilde es posesivo: mi hermano.'},
+{p:'mi',c:3,d:3,x:1,f:'___ hermano llegó tarde otra vez.',n:'Diacrítica: MI sin tilde es posesivo. Con tilde, MÍ, es el pronombre: a mí.'},
+{p:'sí',c:3,d:3,x:1,f:'Le preguntaron y dijo que ___ a todo.',n:'Diacrítica: SÍ con tilde es afirmación o pronombre (volvió en sí). SI sin tilde es condición: si llueve.'},
+{p:'si',c:3,d:3,x:1,f:'___ llueve mañana, no salimos.',n:'Diacrítica: SI sin tilde es condición. Con tilde, SÍ, es afirmar: dijo que sí.'},
+{p:'té',c:3,d:3,x:1,f:'Prefiero un ___ caliente antes de dormir.',n:'Diacrítica: TÉ con tilde es la bebida. TE sin tilde es pronombre: te llamé.'},
+{p:'te',c:3,d:3,x:1,f:'Ayer ___ llamé tres veces y no contestaste.',n:'Diacrítica: TE sin tilde es pronombre. Con tilde, TÉ, es la bebida.'},
+{p:'dé',c:3,d:3,x:1,f:'Espero que el profesor me ___ otra oportunidad.',n:'Diacrítica: DÉ con tilde es del verbo dar. DE sin tilde es la preposición: la casa de mi abuela.'},
+{p:'de',c:3,d:3,x:1,f:'Esta es la casa ___ mi abuela.',n:'Diacrítica: DE sin tilde es preposición. Con tilde, DÉ, es el verbo dar: que me dé permiso.'},
+{p:'sé',c:3,d:3,x:1,f:'Yo no ___ la respuesta de esa pregunta.',n:'Diacrítica: SÉ con tilde es del verbo saber (o ser: sé bueno). SE sin tilde es pronombre: se fue.'},
+{p:'se',c:3,d:3,x:1,f:'Ella ___ fue temprano de la fiesta.',n:'Diacrítica: SE sin tilde es pronombre. Con tilde, SÉ, es saber: yo sé.'},
+{p:'más',c:3,d:3,x:1,f:'Quiero ___ tiempo para terminar.',n:'Diacrítica: MÁS con tilde es cantidad. MAS sin tilde significa "pero" y casi no se usa.'},
+{p:'mas',c:3,d:3,x:1,f:'Lo intenté, ___ no lo conseguí.',n:'Diacrítica: MAS sin tilde equivale a "pero". Con tilde, MÁS, es cantidad: quiero más.'},
+{p:'qué',c:3,d:3,x:1,f:'¿___ hora es?',n:'Diacrítica: en preguntas y exclamaciones (directas o indirectas) siempre lleva tilde: qué, quién, cómo, cuándo, dónde, cuál, cuánto.'},
+{p:'que',c:3,d:3,x:1,f:'El libro ___ compré ayer es buenísimo.',n:'Diacrítica: aquí QUE solo une dos partes de la frase, no pregunta nada, así que va sin tilde.'},
+{p:'cómo',c:3,d:3,x:1,f:'¿___ te llamas?',n:'Diacrítica: pregunta, aunque sea indirecta (no sé cómo se llama), lleva tilde.'},
+{p:'como',c:3,d:3,x:1,f:'Lo hice ___ me dijiste.',n:'Diacrítica: aquí COMO significa "de la manera que", no pregunta: sin tilde.'},
+{p:'cuándo',c:3,d:3,x:1,f:'¿___ llegas a la casa?',n:'Diacrítica: pregunta directa o indirecta, con tilde.'},
+{p:'cuando',c:3,d:3,x:1,f:'Avísame ___ llegues.',n:'Diacrítica: aquí marca el momento, no pregunta: sin tilde.'},
+{p:'dónde',c:3,d:3,x:1,f:'¿___ vives ahora?',n:'Diacrítica: pregunta, con tilde. Ojo con "no sé dónde vive": también lleva.'},
+{p:'donde',c:3,d:3,x:1,f:'Esta es la casa ___ nací.',n:'Diacrítica: aquí señala un lugar conocido, no pregunta: sin tilde.'},
+{p:'quién',c:3,d:3,x:1,f:'¿___ llamó por teléfono?',n:'Diacrítica: pregunta, con tilde.'},
+{p:'quien',c:3,d:3,x:1,f:'___ avisa no traiciona.',n:'Diacrítica: aquí equivale a "la persona que": sin tilde.'},
+{p:'cuál',c:3,d:3,x:1,f:'¿___ prefieres, el rojo o el azul?',n:'Diacrítica: pregunta, con tilde.'},
+{p:'cual',c:3,d:3,x:1,f:'Ese es el motivo por el ___ vine.',n:'Diacrítica: aquí es relativo (por el cual): sin tilde.'},
+{p:'cuánto',c:3,d:3,x:1,f:'¿___ cuesta el pasaje?',n:'Diacrítica: pregunta, con tilde.'},
+{p:'cuanto',c:3,d:3,x:1,f:'En ___ llegue, te aviso.',n:'Diacrítica: "en cuanto" es una expresión de tiempo: sin tilde.'},
+{p:'aún',c:3,d:3,x:1,f:'___ no ha llegado el bus.',n:'Excepción clásica: AÚN con tilde cuando se puede cambiar por "todavía". Si se puede cambiar por "incluso", va sin tilde.'},
+{p:'aun',c:3,d:3,x:1,f:'___ así, siguió intentándolo.',n:'Excepción clásica: AUN sin tilde cuando equivale a "incluso" o va en "aun así". Con tilde solo si es "todavía".'},
+/* ---------- 3. LOS CUATRO PORQUES ---------- */
+{p:'por qué',c:3,d:3,x:1,f:'¿___ no viniste ayer?',n:'POR QUÉ (dos palabras, con tilde) es para preguntar, directa o indirectamente.'},
+{p:'porque',c:3,d:3,x:1,f:'No fui ___ estaba enfermo.',n:'PORQUE (una palabra, sin tilde) es para responder: da la causa.'},
+{p:'porqué',c:3,d:3,x:1,f:'Nadie entiende el ___ de su enojo.',n:'PORQUÉ (una palabra, con tilde) es un sustantivo: lleva el, un, los delante. Significa "el motivo".'},
+{p:'por que',c:3,d:3,x:1,f:'Este es el fin por ___ luchamos.',n:'POR QUE (dos palabras, sin tilde) equivale a "por el que / por la cual". Es el más raro de los cuatro.'},
+
+/* ---------- 4. COMPUESTAS Y ADVERBIOS EN -MENTE ---------- */
+{p:'rápidamente',c:4,d:2,n:'Adverbios en -mente: conservan la tilde del adjetivo original. Rápido lleva tilde, así que rápidamente también.'},
+{p:'fácilmente',c:4,d:2,n:'Adverbios en -mente: fácil lleva tilde, fácilmente también.'},
+{p:'difícilmente',c:4,d:2,n:'Adverbios en -mente: difícil lleva tilde, difícilmente también.'},
+{p:'últimamente',c:4,d:2,n:'Adverbios en -mente: último lleva tilde, últimamente también.'},
+{p:'únicamente',c:4,d:2,n:'Adverbios en -mente: único lleva tilde, únicamente también.'},
+{p:'comúnmente',c:4,d:3,n:'Adverbios en -mente: común lleva tilde, comúnmente también.'},
+{p:'cortésmente',c:4,d:3,n:'Adverbios en -mente: cortés lleva tilde, cortésmente también.'},
+{p:'prácticamente',c:4,d:2,n:'Adverbios en -mente: práctico lleva tilde, prácticamente también.'},
+{p:'tímidamente',c:4,d:2,n:'Adverbios en -mente: tímido lleva tilde, tímidamente también.'},
+{p:'claramente',c:4,d:2,n:'Adverbios en -mente: claro NO lleva tilde, así que claramente tampoco.'},
+{p:'lentamente',c:4,d:2,n:'Adverbios en -mente: lento no lleva tilde, lentamente tampoco.'},
+{p:'tranquilamente',c:4,d:2,n:'Adverbios en -mente: tranquilo no lleva tilde, tranquilamente tampoco.'},
+{p:'felizmente',c:4,d:2,n:'Adverbios en -mente: feliz no lleva tilde, felizmente tampoco.'},
+{p:'normalmente',c:4,d:2,n:'Adverbios en -mente: normal no lleva tilde, normalmente tampoco.'},
+{p:'alegremente',c:4,d:2,n:'Adverbios en -mente: alegre no lleva tilde, alegremente tampoco.'},
+{p:'decimoséptimo',c:4,d:3,n:'Compuesta sin guion: el primer elemento PIERDE su tilde (décimo + séptimo = decimoséptimo) y manda el último.'},
+{p:'asimismo',c:4,d:3,n:'Compuesta sin guion: así pierde su tilde al pegarse (así + mismo = asimismo).'},
+{p:'tiovivo',c:4,d:3,n:'Compuesta sin guion: tío pierde su tilde al pegarse (tío + vivo = tiovivo).'},
+{p:'veintidós',c:4,d:2,n:'Compuesta: manda el último elemento. Es aguda terminada en s, así que lleva tilde.'},
+{p:'veintitrés',c:4,d:2,n:'Compuesta: aguda terminada en s, lleva tilde.'},
+{p:'dieciséis',c:4,d:2,n:'Compuesta: aguda terminada en s, lleva tilde.'},
+{p:'ciempiés',c:4,d:2,n:'Compuesta sin guion: cien + pies. Aguda terminada en s, lleva tilde.'},
+{p:'puntapié',c:4,d:2,n:'Compuesta sin guion: aguda terminada en vocal, lleva tilde.'},
+{p:'balompié',c:4,d:3,n:'Compuesta sin guion: aguda terminada en vocal, lleva tilde.'},
+{p:'hincapié',c:4,d:3,n:'Compuesta sin guion: aguda terminada en vocal, lleva tilde.'},
+{p:'vaivén',c:4,d:2,n:'Compuesta sin guion: aguda terminada en n, lleva tilde.'},
+{p:'sacapuntas',c:4,d:2,n:'Compuesta sin guion: grave terminada en s, no lleva tilde.'},
+{p:'baloncesto',c:4,d:2,n:'Compuesta sin guion: grave terminada en vocal, no lleva tilde.'},
+{p:'abrelatas',c:4,d:2,n:'Compuesta sin guion: grave terminada en s, no lleva tilde.'},
+{p:'anglo-francés',c:4,d:3,x:1,n:'Compuesta CON guion: cada parte conserva su propia tilde. Aquí solo francés la necesita.'},
+{p:'hispano-alemán',c:4,d:3,x:1,n:'Compuesta CON guion: cada parte guarda su acentuación independiente.'},
+
+/* ---------- 5. PLURALES ---------- */
+{p:'orígenes',c:5,d:2,n:'Plural: origen es grave sin tilde, pero orígenes suma una sílaba y se vuelve esdrújula, así que gana tilde.'},
+{p:'exámenes',c:5,d:2,n:'Plural: examen (grave, sin tilde) pasa a exámenes (esdrújula, con tilde).'},
+{p:'imágenes',c:5,d:2,n:'Plural: imagen sin tilde, imágenes con tilde por volverse esdrújula.'},
+{p:'jóvenes',c:5,d:2,n:'Plural: joven sin tilde, jóvenes con tilde por volverse esdrújula.'},
+{p:'resúmenes',c:5,d:2,n:'Plural: resumen sin tilde, resúmenes con tilde.'},
+{p:'volúmenes',c:5,d:2,n:'Plural: volumen sin tilde, volúmenes con tilde.'},
+{p:'crímenes',c:5,d:2,n:'Plural: crimen sin tilde, crímenes con tilde.'},
+{p:'regímenes',c:5,d:3,x:1,n:'Plural irregular: régimen (esdrújula) pasa a regímenes y la fuerza se corre de sílaba, pero sigue siendo esdrújula.'},
+{p:'especímenes',c:5,d:3,x:1,n:'Plural irregular: espécimen pasa a especímenes y la fuerza se corre de sílaba.'},
+{p:'caracteres',c:5,d:3,x:1,n:'Plural irregular famoso: carácter pasa a caracteres (NO caracteres con tilde). La fuerza se corre y queda grave terminada en s: sin tilde.'},
+{p:'canciones',c:5,d:2,n:'Plural: canción pierde la tilde porque canciones ya es grave terminada en s.'},
+{p:'camiones',c:5,d:2,n:'Plural: camión pierde la tilde al pasar a camiones.'},
+{p:'ratones',c:5,d:2,n:'Plural: ratón pierde la tilde al pasar a ratones.'},
+{p:'corazones',c:5,d:2,n:'Plural: corazón pierde la tilde al pasar a corazones.'},
+{p:'jardines',c:5,d:2,n:'Plural: jardín pierde la tilde al pasar a jardines.'},
+{p:'franceses',c:5,d:2,n:'Plural: francés pierde la tilde al pasar a franceses.'},
+{p:'autobuses',c:5,d:2,n:'Plural: autobús pierde la tilde al pasar a autobuses.'},
+{p:'lápices',c:5,d:2,n:'Plural: lápiz sigue con tilde porque lápices es esdrújula.'},
+{p:'árboles',c:5,d:2,n:'Plural: árbol sigue con tilde porque árboles es esdrújula.'},
+{p:'ángeles',c:5,d:2,n:'Plural: ángel sigue con tilde porque ángeles es esdrújula.'},
+{p:'azúcares',c:5,d:3,n:'Plural: azúcar sigue con tilde porque azúcares es esdrújula.'},
+{p:'países',c:5,d:2,n:'Plural con hiato: país mantiene la tilde en la í porque el hiato manda siempre.'},
+{p:'marroquíes',c:5,d:3,n:'Plural con hiato: la í tónica pegada a la e mantiene la tilde.'},
+
+/* ---------- 6. EXCEPCIONES Y CASOS RAROS ---------- */
+{p:'fue',c:6,d:2,x:1,n:'Monosílabo: una sola sílaba, sin tilde. Igual pasa con fui, vio y dio (antes se tildaban, ya no).'},
+{p:'vio',c:6,d:2,x:1,n:'Monosílabo: sin tilde. Es una sola sílaba (vio), aunque parezca de dos.'},
+{p:'dio',c:6,d:2,x:1,n:'Monosílabo: sin tilde.'},
+{p:'ti',c:6,d:2,x:1,n:'Monosílabo sin pareja: TI nunca lleva tilde, aunque MÍ y TÚ sí la lleven.'},
+{p:'guion',c:6,d:3,x:1,n:'Excepción moderna: la RAE lo cuenta como monosílabo, así que se escribe sin tilde. Igual pasa con ion, truhan y fie.'},
+{p:'ion',c:6,d:3,x:1,n:'Excepción moderna: monosílabo ortográfico, sin tilde.'},
+{p:'truhan',c:6,d:3,x:1,n:'Excepción moderna: monosílabo ortográfico, sin tilde.'},
+{p:'ley',c:6,d:2,x:1,n:'Monosílabo terminado en y: sin tilde. Y ojo, la y final cuenta como consonante.'},
+{p:'muy',c:6,d:2,x:1,n:'Monosílabo: sin tilde.'},
+{p:'convoy',c:6,d:3,x:1,n:'Excepción de la Y: es aguda, pero la y final cuenta como CONSONANTE, así que no lleva tilde (igual que virrey o jersey).'},
+{p:'virrey',c:6,d:3,x:1,n:'Excepción de la Y: aguda terminada en y = consonante, sin tilde.'},
+{p:'jersey',c:6,d:3,x:1,n:'Excepción de la Y: aguda terminada en y = consonante, sin tilde.'},
+{p:'bíceps',c:6,d:3,x:1,n:'Excepción: es grave terminada en s, pero la s va detrás de otra consonante (p), y entonces sí lleva tilde. Igual fórceps y cómics.'},
+{p:'fórceps',c:6,d:3,x:1,n:'Excepción: grave terminada en s precedida de consonante, lleva tilde.'},
+{p:'cómics',c:6,d:3,x:1,n:'Excepción: grave terminada en s precedida de consonante, lleva tilde.'},
+{p:'currículum',c:6,d:3,x:1,n:'Latinismo adaptado: se acentúa como cualquier palabra española. Es grave terminada en m, así que lleva tilde.'},
+{p:'ítem',c:6,d:3,x:1,n:'Latinismo adaptado: grave terminada en m, lleva tilde.'},
+{p:'álbum',c:6,d:2,x:1,n:'Latinismo adaptado: grave terminada en m, lleva tilde. Su plural, álbumes, también.'},
+{p:'clímax',c:6,d:3,x:1,n:'Excepción: grave terminada en x, lleva tilde (la x no cuenta como s).'},
+{p:'hábitat',c:6,d:3,x:1,n:'Grave terminada en t: lleva tilde.'},
+{p:'récord',c:6,d:3,x:1,n:'Extranjerismo adaptado: grave terminada en d, lleva tilde.'},
+{p:'máster',c:6,d:3,x:1,n:'Extranjerismo adaptado: grave terminada en r, lleva tilde.'},
+{p:'wifi',c:6,d:3,x:1,n:'Extranjerismo adaptado: grave terminada en vocal, sin tilde.'},
+{p:'solo',c:6,d:3,x:1,f:'Me quedé ___ en la casa toda la tarde.',n:'Regla nueva: SOLO ya no lleva tilde nunca, ni cuando significa solamente. La RAE la quitó en 2010.'},
+{p:'este',c:6,d:3,x:1,f:'___ libro es el que buscaba.',n:'Regla nueva: los demostrativos (este, ese, aquel) ya no llevan tilde nunca.'},
+{p:'esa',c:6,d:3,x:1,f:'___ película ya la vi dos veces.',n:'Regla nueva: los demostrativos ya no llevan tilde nunca.'},
+{p:'África',c:6,d:2,x:1,n:'Las MAYÚSCULAS también llevan tilde: África, Ángela, Óscar. Que no te digan lo contrario.'},
+{p:'Óscar',c:6,d:2,x:1,n:'Las mayúsculas llevan tilde igual que las minúsculas.'},
+{p:'ojalá',c:6,d:2,n:'Aguda terminada en vocal: lleva tilde.'},
+{p:'quizá',c:6,d:2,n:'Aguda terminada en vocal: lleva tilde.'}
+];
+
+/* ---------- preparar el banco: version sin tilde + respuesta ---------- */
+function ponerTilde(s,i){
+  var c=s[i], k=SIN_TILDE.indexOf(c), k2=MAY_SIN.indexOf(c);
+  var t = k>=0 ? CON_TILDE[k] : (k2>=0 ? MAY_CON[k2] : c);
+  return s.substr(0,i)+t+s.substr(i+1);
+}
+var PORP={};
+BANCO.forEach(function(it){
+  it.vis = quitarTildes(it.p);          /* lo que se muestra: la palabra pelada */
+  it.ans = posTilde(it.p);              /* -1 = no lleva tilde */
+  PORP[it.p]=it;
+});
+
+/* que bloques y que dificultad tocan segun el nivel */
+function banda(L){ return L<=10 ? 1 : (L<=30 ? 2 : 3); }
+var CATS_BANDA={1:[1],2:[1,2,4,5],3:[1,2,3,4,5,6]};
+var CATNOM={1:'Agudas, graves y esdrújulas',2:'Hiatos y diptongos',3:'Tildes diacríticas y porqués',
+            4:'Compuestas y adverbios en -mente',5:'Plurales que cambian',6:'Excepciones y casos raros'};
+var CATTICK={1:'1 · AGUDAS / GRAVES / ESDRÚJULAS',2:'2 · HIATOS Y DIPTONGOS',3:'3 · DIACRÍTICAS Y PORQUÉS',
+             4:'4 · COMPUESTAS Y -MENTE',5:'5 · PLURALES',6:'6 · EXCEPCIONES'};
+var CATS={1:true,2:true,3:true,4:true,5:true,6:true};
+function catsElegidas(){
+  var l=[]; for(var k=1;k<=6;k++){ if(CATS[k]) l.push(k); }
+  return l.length? l : [1];
+}
+function bolsa(L, forzar){
+  var b=banda(L), permitidas=CATS_BANDA[b], elegidas=catsElegidas();
+  var out=BANCO.filter(function(it){
+    if(forzar) return it.c===forzar;
+    return permitidas.indexOf(it.c)>=0 && elegidas.indexOf(it.c)>=0 && it.d<=b;
+  });
+  /* si el alumno tico bloques que su nivel todavia no toca, igual le doy palabras */
+  if(!out.length) out=BANCO.filter(function(it){ return elegidas.indexOf(it.c)>=0 && it.d<=b; });
+  if(!out.length) out=BANCO.filter(function(it){ return elegidas.indexOf(it.c)>=0; });
+  if(!out.length) out=BANCO.filter(function(it){ return it.c===1; });
+  return out;
+}
+var ultimas=[];
+function sacarPalabra(L, forzar){
+  var b=bolsa(L,forzar), it=pick(b), n=0;
+  while(ultimas.indexOf(it.p)>=0 && n<25 && b.length>ultimas.length){ it=pick(b); n++; }
+  ultimas.push(it.p); if(ultimas.length>10) ultimas.shift();
+  return it;
+}
+
+/* ---------- explicaciones ---------- */
+var POSNOM={1:'última',2:'penúltima',3:'antepenúltima',4:'anterior a la antepenúltima'};
+function explica(it){
+  var c=clasifica(it.p), txt='';
+  if(it.p.indexOf(' ')>=0){ txt=''; }
+  else if(c.sil.length===1){
+    txt='<b>'+it.p+'</b> es monosílaba (una sola sílaba) y por regla general los monosílabos no llevan tilde. ';
+  } else {
+    txt='<b>'+it.p+'</b> se separa '+c.sil.join('-')+', la fuerza va en <b>'+c.sil[c.t]+'</b> y por eso es <b>'+c.tipo.toUpperCase()+'</b>. ';
+    if(c.desde>=3) txt+='Las esdrújulas y sobresdrújulas llevan tilde SIEMPRE. ';
+    else if(c.desde===1) txt+='Las agudas llevan tilde solo si terminan en n, s o vocal; esta termina en "'+c.fin+'", así que '+(c.abierta?'sí lleva':'no lleva')+'. ';
+    else txt+='Las graves llevan tilde solo si NO terminan en n, s o vocal; esta termina en "'+c.fin+'", así que '+(c.abierta?'no lleva':'sí lleva')+'. ';
+    if(c.hiato) txt+='Y además hay HIATO: la <b>'+c.vocHiato+'</b> tónica va pegada a otra vocal, y el hiato le gana a la regla: la tilde va sí o sí. ';
+  }
+  if(it.n) txt+=it.n;
+  return txt;
+}
+function pista(it){
+  if(it.c===3) return 'Mira qué trabajo hace la palabra en la frase: si pregunta, exclama o es la versión "fuerte" (la que se puede reemplazar por otra), lleva tilde.';
+  var c=clasifica(it.p);
+  if(c.sil.length===1) return 'Cuenta las sílabas: es una sola. Los monosílabos casi nunca llevan tilde.';
+  return 'Tiene '+c.sil.length+' sílabas y la fuerza va en la '+POSNOM[Math.min(4,c.desde)]+'. Ahora aplica la regla: la palabra termina en "'+c.fin+'".';
+}
+/* el cartel de ayuda que acompana en los niveles bajos */
+function textoAyuda(){
+  return '<b>LAS REGLAS QUE MANDAN</b>'+
+   '<div class="li"><span class="k">AGUDA</span> · la fuerza va en la ÚLTIMA sílaba. Lleva tilde SOLO si termina en <b>n, s o vocal</b>. (can-CIÓN, ja-MÁS, so-FÁ · pa-PEL no lleva)</div>'+
+   '<div class="li"><span class="k">GRAVE o LLANA</span> · la fuerza va en la PENÚLTIMA. Lleva tilde SOLO si <b>NO</b> termina en n, s o vocal. (ÁR-bol, LÁ-piz · CA-sa no lleva)</div>'+
+   '<div class="li"><span class="k">ESDRÚJULA</span> · la fuerza va en la ANTEPENÚLTIMA. Lleva tilde <b>SIEMPRE</b>. (MÚ-si-ca, PÁ-ja-ro)</div>'+
+   '<div class="li"><span class="k">SOBRESDRÚJULA</span> · la fuerza va todavía más atrás. Tilde <b>SIEMPRE</b>. (DÍ-ga-me-lo)</div>'+
+   '<div class="li" style="color:#a89ac2">Del nivel 11 en adelante este cartel desaparece y entran los hiatos, los plurales y las excepciones.</div>';
+}
+
+/* ---------- audio ---------- */
+var AC=null, mute=false;
+try{ mute = localStorage.getItem('tl_mute')==='1'; }catch(e){}
+function tono(f,d,type,vol,delay){
+  if(mute) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    var t0=AC.currentTime+(delay||0);
+    var o=AC.createOscillator(), g=AC.createGain();
+    o.type=type||'square'; o.frequency.setValueAtTime(f,t0); o.connect(g); g.connect(AC.destination);
+    g.gain.setValueAtTime(vol||0.05,t0); g.gain.exponentialRampToValueAtTime(0.0008,t0+d);
+    o.start(t0); o.stop(t0+d);
+  }catch(e){}
+}
+var SFX={
+  ok:function(){ tono(660,.09); tono(990,.12,null,.045,.06); },
+  rayo:function(){ tono(880,.07); tono(1320,.07,null,.05,.05); tono(1760,.16,null,.045,.1); },
+  mal:function(){ tono(200,.18,'sawtooth',.05); tono(150,.22,'sawtooth',.045,.08); },
+  nivel:function(){ [523,659,784,1047].forEach(function(f,i){ tono(f,.22,'triangle',.06,i*0.09); }); },
+  medalla:function(){ [784,1047,1319].forEach(function(f,i){ tono(f,.18,'triangle',.05,i*0.07); }); },
+  tick:function(){ tono(420,.05,'sine',.03); },
+  fin:function(){ [660,494,392].forEach(function(f,i){ tono(f,.25,'triangle',.06,i*0.14); }); },
+  clic:function(){ tono(300,.03,'square',.02); }
+};
+
+/* ---------- efectos visuales ---------- */
+function flash(color){
+  var f=$('#flash'); f.style.background=color; f.classList.remove('go'); void f.offsetWidth; f.classList.add('go');
+}
+function confetti(n){
+  var box=$('#conf'), cols=['#39ff88','#ff2e88','#ffd21e','#22d3ee','#a855f7'];
+  for(var i=0;i<n;i++){
+    var d=document.createElement('div'); d.className='cf';
+    d.style.left=Math.random()*100+'vw';
+    d.style.background=cols[i%cols.length];
+    d.style.animationDuration=(1.1+Math.random()*1.3)+'s';
+    d.style.animationDelay=(Math.random()*0.35)+'s';
+    d.style.transform='rotate('+ri(0,360)+'deg)';
+    box.appendChild(d);
+    (function(el){ setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); },2800); })(d);
+  }
+}
+function flota(txt,color){
+  var d=document.createElement('div'); d.className='pop'; d.textContent=txt;
+  if(color) d.style.color=color;
+  $('.probwrap').appendChild(d);
+  setTimeout(function(){ if(d.parentNode) d.parentNode.removeChild(d); },1200);
+}
+function toast(titulo,texto){
+  var d=document.createElement('div'); d.className='toast';
+  d.innerHTML='<b></b><span></span>';
+  d.firstChild.textContent=titulo; d.lastChild.textContent=texto;
+  $('#toasts').appendChild(d);
+  setTimeout(function(){ d.classList.add('out'); setTimeout(function(){ if(d.parentNode) d.parentNode.removeChild(d); },350); },3400);
+}
+function bump(sel){ var e=$(sel); e.classList.remove('bump'); void e.offsetWidth; e.classList.add('bump'); }
+
+/* ---------- muralla: palabras rayadas con su tipo ---------- */
+var MURO=[['canción','AGUDA'],['árbol','GRAVE'],['brújula','ESDRÚJULA'],['dígamelo','SOBRESDRÚJULA'],
+  ['país','HIATO'],['examen','SIN TILDE'],['exámenes','PLURAL'],['él','DIACRÍTICA'],['por qué','PREGUNTA'],
+  ['porque','RESPUESTA'],['rápidamente','-MENTE'],['baúl','HIATO'],['reloj','AGUDA'],['lápiz','GRAVE'],
+  ['música','ESDRÚJULA'],['aún','TODAVÍA'],['aun','INCLUSO'],['solo','SIN TILDE'],['guion','MONOSÍLABO'],
+  ['bíceps','EXCEPCIÓN'],['carácter','GRAVE'],['caracteres','PLURAL'],['jamás','AGUDA'],['maíz','HIATO'],
+  ['sofá','AGUDA'],['ángel','GRAVE'],['teléfono','ESDRÚJULA'],['ciempiés','COMPUESTA'],['jóvenes','PLURAL'],
+  ['tú','PRONOMBRE'],['tu','POSESIVO'],['más','CANTIDAD'],['mas','PERO'],['sí','AFIRMA'],['si','CONDICIÓN'],
+  ['esdrújula','ELLA MISMA'],['corazón','AGUDA'],['césped','GRAVE'],['pájaro','ESDRÚJULA'],['río','HIATO'],
+  ['virrey','LA Y NO CUENTA'],['álbum','LATINISMO'],['África','MAYÚSCULA'],['fácilmente','-MENTE'],
+  ['orígenes','PLURAL'],['qué','PREGUNTA'],['que','UNE'],['veintidós','COMPUESTA'],['todavía','HIATO'],
+  ['papel','SIN TILDE']];
+function pintarMuralla(){
+  var w=$('#wall'); if(!w) return;
+  var cols=Math.max(3,Math.round(window.innerWidth/195));
+  var rows=Math.max(8,Math.round(window.innerHeight/88));
+  var cols_=['#ff2e88','#39ff88','#ffd21e','#22d3ee','#a855f7','#ffffff'];
+  var html='', k=ri(0,MURO.length-1);
+  for(var y=0;y<rows;y++){
+    for(var x=0;x<cols;x++){
+      var f=MURO[k++ % MURO.length];
+      var left=(x+0.5)/cols*100 + (Math.random()*10-5);
+      var top =(y+0.5)/rows*100 + (Math.random()*7-3.5);
+      var st='left:'+left.toFixed(2)+'%;top:'+top.toFixed(2)+'%;'+
+        'transform:translate(-50%,-50%) rotate('+ri(-17,17)+'deg);'+
+        'font-size:'+ri(14,28)+'px;'+
+        'color:'+cols_[ri(0,cols_.length-1)]+';'+
+        'opacity:'+(0.10+Math.random()*0.12).toFixed(2)+';';
+      html+='<b style="'+st+'">'+f[0]+(f[1]?'<i>'+f[1]+'</i>':'')+'</b>';
+    }
+  }
+  w.innerHTML=html;
+}
+pintarMuralla();
+var wallT=null;
+window.addEventListener('resize',function(){ clearTimeout(wallT); wallT=setTimeout(pintarMuralla,400); });
+
+/* ---------- medallas ---------- */
+var MEDALLAS=[
+  {id:'primer', e:'👟', n:'PRIMER PASO',   d:'Responde tu primera palabra',        t:function(d){return d.ok>=1;}},
+  {id:'ok50',   e:'💪', n:'CINCUENTA',     d:'50 palabras correctas',              t:function(d){return d.ok>=50;}},
+  {id:'ok250',  e:'🦾', n:'DOSCIENTAS 50', d:'250 palabras correctas',             t:function(d){return d.ok>=250;}},
+  {id:'ok1000', e:'👑', n:'MIL',           d:'1000 palabras correctas',            t:function(d){return d.ok>=1000;}},
+  {id:'r10',    e:'🔥', n:'DIEZ SEGUIDAS', d:'Racha de 10 sin fallar',             t:function(d){return d.best>=10;}},
+  {id:'r25',    e:'🚀', n:'IMPARABLE',     d:'Racha de 25 sin fallar',             t:function(d){return d.best>=25;}},
+  {id:'r50',    e:'🌪', n:'HURACAN',       d:'Racha de 50 sin fallar',             t:function(d){return d.best>=50;}},
+  {id:'ray25',  e:'⚡', n:'DEDOS RAPIDOS', d:'25 respuestas relámpago',            t:function(d){return d.rayos>=25;}},
+  {id:'nv10',   e:'🥉', n:'NIVEL 10',      d:'Llega al nivel 10',                  t:function(d){return d.level>=10;}},
+  {id:'nv11',   e:'🚲', n:'SIN RUEDITAS',  d:'Nivel 11: se van las ayudas',        t:function(d){return d.level>=11;}},
+  {id:'nv25',   e:'🥈', n:'NIVEL 25',      d:'Llega al nivel 25',                  t:function(d){return d.level>=25;}},
+  {id:'nv31',   e:'🎓', n:'LAS DIFICILES', d:'Nivel 31: entran las diacríticas',   t:function(d){return d.level>=31;}},
+  {id:'nv50',   e:'🥇', n:'NIVEL 50',      d:'Llega al nivel 50',                  t:function(d){return d.level>=50;}},
+  {id:'nv100',  e:'💎', n:'NIVEL 100',     d:'Llega al nivel 100',                 t:function(d){return d.level>=100;}},
+  {id:'c1',     e:'📏', n:'LAS TRES BASES',d:'50 aciertos en agudas/graves/esdrújulas', t:function(d){return d.byCat['1'].ok>=50;}},
+  {id:'c2',     e:'🌊', n:'ROMPE HIATOS',  d:'30 aciertos en hiatos y diptongos',  t:function(d){return d.byCat['2'].ok>=30;}},
+  {id:'c3',     e:'🎭', n:'DIACRITICO',    d:'30 aciertos en diacríticas y porqués',t:function(d){return d.byCat['3'].ok>=30;}},
+  {id:'c4',     e:'🧩', n:'COMPUESTAS',    d:'25 aciertos en compuestas y -mente', t:function(d){return d.byCat['4'].ok>=25;}},
+  {id:'c5',     e:'👥', n:'PLURALERO',     d:'25 aciertos en plurales',            t:function(d){return d.byCat['5'].ok>=25;}},
+  {id:'c6',     e:'🃏', n:'EXCEPCIONES',   d:'25 aciertos en excepciones',         t:function(d){return d.byCat['6'].ok>=25;}},
+  {id:'arc20',  e:'⏱', n:'ARCADE 20',     d:'20 aciertos en los 60 segundos',     t:function(d){return d.arcadeBest>=20;}},
+  {id:'arc35',  e:'🏎', n:'ARCADE 35',     d:'35 aciertos en los 60 segundos',     t:function(d){return d.arcadeBest>=35;}},
+  {id:'dia3',   e:'📅', n:'TRES DIAS',     d:'Juega 3 días seguidos',              t:function(d){return d.dias.seguidos>=3;}},
+  {id:'dia7',   e:'🗓', n:'UNA SEMANA',    d:'Juega 7 días seguidos',              t:function(d){return d.dias.seguidos>=7;}},
+  {id:'limpio', e:'🎯', n:'PUNTERIA',      d:'80% de precisión con 100+ palabras', t:function(d){return (d.ok+d.fail)>=100 && d.ok/(d.ok+d.fail)>=0.8;}},
+  {id:'zen',    e:'🧘', n:'SIN AYUDA',     d:'40 aciertos sin pedir pista',        t:function(d){return d.sinPista>=40;}},
+  {id:'mis5',   e:'🎁', n:'CUMPLIDOR',     d:'Completa la misión del día 5 veces', t:function(d){return d.misiones>=5;}}
+];
+function chequearMedallas(){
+  var d=DB[user], nuevas=[];
+  MEDALLAS.forEach(function(m){
+    if(!d.medals[m.id]){ var v=false; try{ v=m.t(d); }catch(e){}
+      if(v){ d.medals[m.id]=true; nuevas.push(m); } }
+  });
+  nuevas.forEach(function(m,i){
+    setTimeout(function(){ toast(m.e+' MEDALLA: '+m.n, m.d); SFX.medalla(); confetti(18); }, i*450);
+  });
+  return nuevas.length;
+}
+
+/* ---------- cuentas ---------- */
+var AVATARS=['✏️','😎','🐯','🦊','👽','🤖','🐲','🦁','🐼','🚀','⚡','👾','🐸','🦄','🎧','🔥'];
+var avatarSel='✏️';
+function blank(){
+  return {v:1,pin:'',avatar:'✏️',level:1,cred:0,pts:0,ok:0,fail:0,best:0,streak:0,time:0,rayos:0,
+          pistas:0,sinPista:0,saltos:0,arcadeBest:0,arcadeRecs:{},arcDur:60,misiones:0,medals:{},mejorPartida:0,
+          cats:{1:true,2:true,3:true,4:true,5:true,6:true},
+          byCat:{'1':{ok:0,fail:0,t:0},'2':{ok:0,fail:0,t:0},'3':{ok:0,fail:0,t:0},
+                 '4':{ok:0,fail:0,t:0},'5':{ok:0,fail:0,t:0},'6':{ok:0,fail:0,t:0}},
+          dias:{last:'',seguidos:0,hechos:0,meta:15,cumplida:false}, repaso:[], hist:[]};
+}
+function metaDelDia(nivel){ return Math.min(30, 12 + Math.floor(nivel/6)); }
+/* cuentas de versiones viejas se rellenan sin perder nivel ni puntos */
+function migrar(d){
+  var base=blank();
+  for(var k in base){ if(!(k in d) || d[k]===null || d[k]===undefined) d[k]=base[k]; }
+  if(typeof d.cred!=='number') d.cred=0;
+  if(!d.byCat || typeof d.byCat!=='object') d.byCat={};
+  for(var c=1;c<=6;c++){ if(!d.byCat[String(c)]) d.byCat[String(c)]={ok:0,fail:0,t:0}; }
+  if(!d.dias || typeof d.dias!=='object') d.dias={last:'',seguidos:0,hechos:0,meta:15,cumplida:false};
+  if(typeof d.dias.hechos!=='number') d.dias.hechos=0;
+  if(typeof d.dias.meta!=='number') d.dias.meta=metaDelDia(d.level||1);
+  if(typeof d.dias.cumplida!=='boolean') d.dias.cumplida=false;
+  if(!d.cats || typeof d.cats!=='object') d.cats={};
+  for(var c2=1;c2<=6;c2++){ if(typeof d.cats[c2]!=='boolean' && typeof d.cats[String(c2)]!=='boolean') d.cats[c2]=true; }
+  if(typeof d.arcDur!=='number') d.arcDur=60;
+  if(!d.arcadeRecs || typeof d.arcadeRecs!=='object') d.arcadeRecs={};
+  if(!Array.isArray(d.repaso)) d.repaso=[];
+  if(!Array.isArray(d.hist)) d.hist=[];
+  if(!d.medals) d.medals={};
+  d.v=1; return d;
+}
+function marcarDia(d){
+  var h=hoy();
+  if(d.dias.last===h) return 0;
+  d.dias.seguidos = (d.dias.last===ayerDe(h)) ? d.dias.seguidos+1 : 1;
+  d.dias.last=h;
+  d.dias.hechos=0; d.dias.cumplida=false; d.dias.meta=metaDelDia(d.level);
+  return d.dias.seguidos;
+}
+
+/* ---------- estado ---------- */
+var user=null, IT=null, t0=0, tick=null, MODE='carrera', pistaUsada=false, desdeRepaso=false;
+var arcadeLeft=0, arcadeDur=60, arcadeTick=null, arcadeOk=0, arcadeFail=0, sesion=null;
+var BONO=0.5;
+var paused=false, pausaT=0;
+
+function show(id){ ['login','lobby','game'].forEach(function(s){ $('#'+s).classList.toggle('hide', s!==id); }); }
+function enJuego(){ return user && !$('#game').classList.contains('hide'); }
+function modal(html,sinCerrar){ $('#modalBody').innerHTML=html;
+  $('#modalClose').classList.toggle('hide',!!sinCerrar); $('#modal').classList.add('go'); }
+function cerrarModal(){ $('#modal').classList.remove('go'); }
+$('#modalClose').onclick=cerrarModal;
+$('#modal').onclick=function(e){ if(e.target===$('#modal')) cerrarModal(); };
+
+/* ---------- login ---------- */
+function renderAvatars(){
+  var box=$('#avatars'); box.innerHTML='';
+  AVATARS.forEach(function(a){
+    var d=document.createElement('span'); d.className='pill'; d.textContent=a; d.style.fontSize='19px';
+    if(a===avatarSel) d.style.background='var(--sun)';
+    d.onclick=function(){ avatarSel=a; SFX.clic(); renderAvatars(); };
+    box.appendChild(d);
+  });
+}
+function renderUsers(){
+  var box=$('#users'); box.innerHTML='';
+  var nombres=Object.keys(DB).sort();
+  $('#usersLbl').classList.toggle('hide', nombres.length===0);
+  $('#toCuentas').classList.toggle('hide', nombres.length===0);
+  nombres.forEach(function(n){
+    var d=document.createElement('span'); d.className='pill';
+    var txt=document.createElement('span');
+    txt.textContent=(DB[n].avatar||'✏️')+' '+n+' · Nv '+DB[n].level+' · '+liga(DB[n].level)[1];
+    var x=document.createElement('b'); x.className='x'; x.textContent='✕'; x.title='Borrar la cuenta de '+n;
+    x.onclick=function(e){ e.stopPropagation(); borrarCuenta(n); };
+    d.appendChild(txt); d.appendChild(x);
+    d.onclick=function(){
+      $('#name').value=n; SFX.clic();
+      if(DB[n].pin){ $('#pin').value=''; $('#pin').focus(); } else $('#enter').click();
+    };
+    box.appendChild(d);
+  });
+}
+function quitarCuenta(n){
+  if(!DB[n]) return false;
+  delete DB[n]; save(); renderUsers();
+  return true;
+}
+function borrarCuenta(n, alBorrar){
+  var d=DB[n]; if(!d) return;
+  if(d.pin && n!==user){
+    var p=prompt('La cuenta de "'+n+'" tiene PIN.\nEscríbelo para poder borrarla:');
+    if(p===null) return;
+    if(p.trim()!==d.pin){ alert('PIN incorrecto. No se borró nada.'); return; }
+  }
+  if(!confirm('¿BORRAR la cuenta de "'+n+'"?\n\n'+
+      'Nivel '+d.level+' · '+d.pts+' puntos · '+d.ok+' palabras correctas.\n\n'+
+      'Se pierde todo su progreso y NO se puede recuperar.')) return;
+  if(quitarCuenta(n)){
+    SFX.mal();
+    toast('🗑 CUENTA BORRADA','"'+n+'" ya no está en este computador.');
+    if(alBorrar) alBorrar();
+  }
+}
+function verCuentas(){
+  var nombres=Object.keys(DB).sort();
+  if(!nombres.length){ modal('<h2>🗑 CUENTAS</h2><p>No hay ninguna cuenta guardada en este computador.</p>'); return; }
+  var filas=nombres.map(function(n){
+    var d=DB[n], L=liga(d.level), tot=d.ok+d.fail;
+    return '<tr><td>'+(d.avatar||'✏️')+' <b>'+esc(n)+'</b>'+(d.pin?' 🔒':'')+'</td>'+
+      '<td style="color:'+L[2]+';font-weight:800">'+L[1]+'</td><td>Nv '+d.level+'</td>'+
+      '<td>'+fmtN(d.pts)+' pts</td><td>'+tot+' palabras</td>'+
+      '<td><button class="sm ghost bCopy" data-n="'+esc(n)+'">📤</button> '+
+          '<button class="sm hot bDel" data-n="'+esc(n)+'">🗑 BORRAR</button></td></tr>';
+  }).join('');
+  modal('<h2>🗑 CUENTAS EN ESTE COMPUTADOR</h2>'+
+    '<div class="warn">Borrar una cuenta elimina TODO su progreso y no se puede deshacer. '+
+    'Si la quieres guardar antes, aprieta 📤 y copia el texto.</div>'+
+    '<table><tbody>'+filas+'</tbody></table>'+
+    '<div id="ioBox"></div>'+
+    '<div class="row" style="margin-top:14px"><button id="delAll" class="hot sm">🗑 BORRAR TODAS LAS CUENTAS</button></div>');
+  wire('.bDel',function(e){
+    var n=e.target.getAttribute('data-n');
+    borrarCuenta(n,function(){ if(n===user) salirDeVerdad(); else verCuentas(); });
+  });
+  wire('.bCopy',function(e){
+    var n=e.target.getAttribute('data-n');
+    $('#ioBox').innerHTML='<label style="margin-top:12px">PROGRESO DE '+esc(n)+' — cópialo y guárdalo antes de borrar</label><textarea id="ioT"></textarea>';
+    $('#ioT').value=JSON.stringify({n:n,d:DB[n]}); $('#ioT').select();
+  });
+  $('#delAll').onclick=function(){
+    var cuantas=Object.keys(DB).length;
+    var r=prompt('Vas a borrar las '+cuantas+' cuentas de este computador con todo su progreso.\n\n'+
+                 'Si estás seguro, escribe BORRAR y acepta:');
+    if(r===null || r.trim().toUpperCase()!=='BORRAR'){ alert('No se borró nada.'); return; }
+    DB={}; save(); renderUsers(); cerrarModal();
+    if(user) salirDeVerdad();
+    toast('🗑 TODO BORRADO','Este computador quedó sin cuentas.');
+  };
+}
+$('#toCuentas').onclick=verCuentas;
+renderAvatars(); renderUsers();
+
+$('#enter').onclick=function(){
+  var n=$('#name').value.trim(), pin=$('#pin').value.trim();
+  if(n.length<2){ alert('Escribe tu nombre (mínimo 2 letras).'); return; }
+  var nueva=!DB[n];
+  if(nueva){ DB[n]=blank(); DB[n].pin=pin; DB[n].avatar=avatarSel; }
+  else if(DB[n].pin && DB[n].pin!==pin){ alert('PIN incorrecto para '+n+'.'); $('#pin').value=''; return; }
+  DB[n]=migrar(DB[n]);
+  user=n; leerCats();
+  var racha=marcarDia(DB[n]);
+  sesion={ok:0,fail:0,t:0,nivel0:DB[n].level,pts0:DB[n].pts};
+  save();
+  $('#who').textContent=n; $('#meAv').textContent=DB[n].avatar||'✏️';
+  llenarNiveles(); irAlLobby();
+  if(nueva) toast('¡BIENVENIDO!','Partes en el nivel 1 con las reglas a la vista. Junta 5 palabras rápidas y subes al 2.');
+  else if(racha>1) toast('🔥 RACHA DE '+racha+' DÍAS','Volviste. Sigue así y desbloqueas medallas.');
+  chequearMedallas();
+};
+function leerCats(){
+  var g=DB[user].cats||{};
+  for(var k=1;k<=6;k++){
+    var v = (typeof g[k]==='boolean') ? g[k] : (typeof g[String(k)]==='boolean' ? g[String(k)] : true);
+    CATS[k]=v;
+  }
+}
+$('#name').onkeydown=function(e){ if(e.key==='Enter') $('#pin').focus(); };
+$('#pin').onkeydown =function(e){ if(e.key==='Enter') $('#enter').click(); };
+$('#toRank').onclick=function(){ verRanking(); };
+
+/* ---------- LOBBY ---------- */
+function irAlLobby(){
+  clearInterval(tick); clearInterval(arcadeTick);
+  paused=false; $('#pause').classList.remove('go');
+  show('lobby'); renderLobby(); save();
+}
+function renderLobby(){
+  var d=DB[user], L=liga(d.level), need=reqEjer(d.level), tot=d.ok+d.fail;
+  $('#lbAv').textContent=d.avatar||'✏️';
+  $('#lbName').textContent=user;
+  $('#lbLiga').textContent='LIGA '+L[1];
+  $('#lbLiga').style.color=L[2];
+  $('#lbLvl').textContent=d.level;
+  $('#lbLvl').style.color=L[2];
+  $('#lbLvlBox').style.borderColor=L[2];
+  $('#lbLvlBox').style.boxShadow='5px 5px 0 rgba(0,0,0,.6),0 0 26px '+L[2]+'55,inset 0 0 22px '+L[2]+'22';
+  $('#lbBar').style.width=Math.min(100,d.cred/need*100)+'%';
+  $('#lbTxt').textContent=fmt(d.cred)+' de '+need+' palabras rápidas para el nivel '+(d.level+1);
+  $('#lbPlay').textContent = tot? '▶ SEGUIR JUGANDO' : '▶ JUGAR';
+  $('#lbPlaySub').textContent = tot
+    ? 'Carrera · nivel '+d.level+' · te faltan '+fmt(Math.max(0,need-d.cred))+' palabras'
+    : 'Nivel 1: con las reglas a la vista y sin apuro.';
+  $('#lbRec').textContent = d.arcadeBest? 'Tu récord en 60 s: '+d.arcadeBest+'.' : '';
+  var m=d.dias, pct=Math.min(100, m.hechos/m.meta*100);
+  $('#lbMision').className = 'mision'+(m.cumplida?' ok':'');
+  $('#lbMision').innerHTML = '<b>'+(m.cumplida?'🎁 MISIÓN DEL DÍA CUMPLIDA':'🎯 MISIÓN DE HOY')+'</b>'+
+    '<div style="font-size:13px;color:#d6cbe8;margin:5px 0 7px">'+
+    (m.cumplida ? 'Ya te ganaste el bono de hoy. Todo lo que hagas ahora es puro nivel.'
+                : 'Acierta <b>'+m.meta+'</b> palabras hoy y te llevas un bono de puntos.')+'</div>'+
+    '<div class="opbar"><i style="width:'+pct+'%"></i></div>'+
+    '<div style="font-size:12px;color:#a89ac2;margin-top:5px">'+Math.min(m.hechos,m.meta)+' / '+m.meta+' de hoy</div>';
+  var nMed=0; MEDALLAS.forEach(function(x){ if(d.medals[x.id]) nMed++; });
+  $('#lbChips').innerHTML =
+    '<span class="chip">PUNTOS <b>'+fmtN(d.pts)+'</b></span>'+
+    '<span class="chip">PRECISIÓN <b>'+(tot?Math.round(d.ok/tot*100)+'%':'-')+'</b></span>'+
+    '<span class="chip">MEJOR RACHA <b>'+d.best+'</b></span>'+
+    '<span class="chip">MEDALLAS <b>'+nMed+'/'+MEDALLAS.length+'</b></span>'+
+    '<span class="chip">DÍAS SEGUIDOS <b>'+d.dias.seguidos+'</b></span>';
+}
+function jugar(m){ show('game'); setMode(m); }
+$('#lbPlay').onclick =function(){ SFX.clic(); abrirSetup('carrera'); };
+$('#tCarrera').onclick=function(){ SFX.clic(); abrirSetup('carrera'); };
+$('#tEntrenar').onclick=function(){ SFX.clic(); abrirSetup('entrenar'); };
+$('#tArcade').onclick =function(){ SFX.clic(); abrirSetup('arcade'); };
+$('#bLobby').onclick  =function(){ SFX.clic(); salirAlLobby(); };
+$('#lbSalir').onclick =function(){ save(); resumenSesion(); };
+
+/* ---------- PAUSA ---------- */
+function pausar(){
+  if(paused || !enJuego()) return;
+  paused=true; pausaT=performance.now();
+  clearInterval(tick); clearInterval(arcadeTick);
+  var d=DB[user], tot=sesion.ok+sesion.fail;
+  var modo = MODE==='carrera'?'🏁 Carrera · nivel '+d.level : (MODE==='entrenar'?'🎯 Entrenamiento':'⏱ Contrarreloj de '+nomDur(arcadeDur));
+  $('#pauseInfo').innerHTML = modo+'<br>En esta sesión llevas <b>'+tot+'</b> palabras'+
+    (tot?' con <b>'+Math.round(sesion.ok/tot*100)+'%</b> de precisión':'')+'.'+
+    (MODE==='arcade'?'<br>Te quedan <b>'+mmss(arcadeLeft)+'</b> del reloj.':'');
+  $('#pause').classList.add('go');
+  SFX.clic();
+}
+function reanudar(){
+  if(!paused) return;
+  paused=false;
+  t0 += performance.now()-pausaT;
+  $('#pause').classList.remove('go');
+  if(MODE==='arcade' && arcadeLeft>0) arcadeTick=setInterval(arcadeStep,1000);
+  if($('#fb').classList.contains('hide')) startClock(true);
+}
+$('#bPause').onclick=pausar;
+$('#pSeguir').onclick=reanudar;
+$('#pLobby').onclick=function(){ salirAlLobby(); };
+$('#pSalir').onclick=function(){ paused=false; $('#pause').classList.remove('go'); save(); resumenSesion(); };
+$('#pause').onclick=function(e){ if(e.target===$('#pause')) reanudar(); };
+
+function salirDeVerdad(){
+  clearInterval(tick); clearInterval(arcadeTick);
+  paused=false; $('#pause').classList.remove('go');
+  user=null; $('#name').value=''; $('#pin').value='';
+  show('login'); renderUsers(); cerrarModal(); $('#name').focus();
+}
+function resumenSesion(){
+  var d=DB[user], tot=sesion.ok+sesion.fail;
+  var prec = tot? Math.round(sesion.ok/tot*100):0;
+  var med = sesion.ok? (sesion.t/sesion.ok):0;
+  modal('<h2>👋 HASTA LA PRÓXIMA, '+esc(user)+'</h2>'+
+    '<p style="line-height:1.8;font-size:15px">En esta sesión viste <b>'+tot+'</b> palabras con <b>'+prec+'%</b> de precisión'+
+    (sesion.ok? ', a un promedio de <b>'+med.toFixed(1)+' s</b> cada una':'')+'.<br>'+
+    'Subiste <b>'+(d.level-sesion.nivel0)+'</b> nivel(es) y ganaste <b>'+(d.pts-sesion.pts0)+'</b> puntos.<br>'+
+    'Tu progreso quedó guardado en este computador: cuando vuelvas, entra con tu nombre y sigues en el nivel '+d.level+'.</p>'+
+    cierrePartida()+
+    '<div class="row" style="margin-top:14px"><button id="okSalir" class="hot">CAMBIAR DE USUARIO</button>'+
+    '<button id="seguirJugando" class="ghost">🏠 VOLVER AL LOBBY</button></div>');
+  $('#okSalir').onclick=salirDeVerdad;
+  $('#seguirJugando').onclick=function(){ cerrarModal(); irAlLobby(); };
+}
+
+/* ---------- modos ---------- */
+function llenarNiveles(){
+  var s=$('#trainLvl'); s.innerHTML='';
+  for(var i=1;i<=200;i+=(i<20?1:5)){
+    var o=document.createElement('option'); o.value=i; o.textContent='Dificultad nivel '+i; s.appendChild(o);
+  }
+  s.value = Math.min(200, Math.max(1, DB[user].level));
+}
+function setMode(m){
+  MODE=m; clearInterval(tick); clearInterval(arcadeTick); nuevaPartida();
+  $('#mCarrera').classList.toggle('on',m==='carrera');
+  $('#mEntrenar').classList.toggle('on',m==='entrenar');
+  $('#mArcade').classList.toggle('on',m==='arcade');
+  $('#trainBox').classList.toggle('hide',m!=='entrenar');
+  $('#fb').classList.add('hide'); $('#answerBox').classList.remove('hide');
+  if(m==='arcade') arrancarArcade(); else { $('#legend').classList.remove('hide'); newWord(); }
+}
+$('#mCarrera').onclick=function(){ SFX.clic(); abrirSetup('carrera'); };
+$('#mEntrenar').onclick=function(){ SFX.clic(); abrirSetup('entrenar'); };
+$('#mArcade').onclick =function(){ SFX.clic(); abrirSetup('arcade'); };
+$('#trainCat').onchange=function(){ newWord(); };
+$('#trainLvl').onchange=function(){ newWord(); };
+
+function mmss(sg){
+  sg=Math.max(0,Math.ceil(sg));
+  var m=Math.floor(sg/60);
+  return m ? m+':'+('0'+(sg%60)).slice(-2) : sg+' s';
+}
+function nomDur(sg){ return sg<60 ? sg+' segundos' : (sg===60?'60 segundos':(sg/60)+' minutos'); }
+function arrancarArcade(){
+  arcadeOk=0; arcadeFail=0;
+  arcadeDur=DB[user].arcDur||60; arcadeLeft=arcadeDur;
+  toast('⏱ CONTRARRELOJ '+mmss(arcadeDur),'Cada acierto te regala medio segundo más. Fallar no descuenta, pero pierdes tiempo.');
+  newWord();
+  pintarReloj();
+  arcadeTick=setInterval(arcadeStep,1000);
+}
+function pintarReloj(){
+  $('#timer').textContent='⏱ QUEDAN '+mmss(arcadeLeft)+' · llevas '+arcadeOk;
+  var bar=$('#tbar');
+  bar.style.width=Math.max(0,Math.min(100,arcadeLeft/arcadeDur*100))+'%';
+  bar.style.background = arcadeLeft>20?'var(--neon)':(arcadeLeft>8?'var(--sun)':'var(--hot)');
+}
+function arcadeStep(){
+  arcadeLeft--;
+  pintarReloj();
+  if(arcadeLeft<=5 && arcadeLeft>0) SFX.tick();
+  if(arcadeLeft<=0) terminarArcade();
+}
+function terminarArcade(){
+  clearInterval(arcadeTick); clearInterval(tick);
+  var d=DB[user], k=String(arcadeDur), antes=d.arcadeRecs[k]||0, record=arcadeOk>antes;
+  if(record){ d.arcadeRecs[k]=arcadeOk; confetti(70); }
+  if(arcadeDur===60 && arcadeOk>d.arcadeBest) d.arcadeBest=arcadeOk;
+  var globArc=mejorGlobalArcade(arcadeDur,user);
+  if(record && arcadeOk>globArc.v){ confetti(90); toast('👑 RÉCORD DE LA TABLA','Nadie había hecho '+arcadeOk+' en '+nomDur(arcadeDur)+'.'); }
+  SFX.fin(); save(); chequearMedallas();
+  modal('<h2>⏱ SE ACABÓ EL TIEMPO</h2>'+
+    '<p style="font-size:17px;line-height:1.8">Acertaste <b style="font-size:30px;color:var(--neon)">'+arcadeOk+'</b> palabras en '+nomDur(arcadeDur)+
+    (arcadeFail?' (y fallaste '+arcadeFail+')':'')+'.<br>'+
+    lineasRecord(arcadeOk,antes,globArc,'aciertos')+'</p>'+
+    '<div class="row" style="margin-top:14px"><button id="arcOtra">OTRA VEZ ⏱</button>'+
+    '<button id="arcCambiar" class="sun">⚙ CAMBIAR</button>'+
+    '<button id="arcVolver" class="ghost">VOLVER A CARRERA</button></div>');
+  $('#arcOtra').onclick=function(){ cerrarModal(); setMode('arcade'); };
+  $('#arcCambiar').onclick=function(){ cerrarModal(); abrirSetup('arcade'); };
+  $('#arcVolver').onclick=function(){ cerrarModal(); abrirSetup('carrera'); };
+}
+
+/* ---------- ventana de antes de jugar ---------- */
+var DURS=[60,120,180,300,600];
+function abrirSetup(modo){
+  if(!user) return;
+  var d=DB[user], b=banda(d.level);
+  var titulo = modo==='carrera' ? '🏁 CARRERA' : (modo==='entrenar' ? '🎯 ENTRENAR' : '⏱ CONTRARRELOJ');
+  var checks=[1,2,3,4,5,6].map(function(o){
+    var on=CATS[o], toca=CATS_BANDA[b].indexOf(o)>=0;
+    return '<label class="chk'+(on?' on':'')+'"><input type="checkbox" data-cat="'+o+'"'+(on?' checked':'')+
+           '><span>'+CATTICK[o]+(toca?'':' <i style="font-style:normal;opacity:.6">(desde nivel '+(o===3||o===6?31:11)+')</i>')+'</span></label>';
+  }).join('');
+  var dur = modo!=='arcade' ? '' :
+    '<label style="margin-top:14px">¿CUÁNTO RATO AGUANTAS?</label><select id="setDur">'+
+    DURS.map(function(x){ return '<option value="'+x+'"'+(d.arcDur===x?' selected':'')+'>'+nomDur(x)+
+      (d.arcadeRecs[String(x)]?' · tu récord: '+d.arcadeRecs[String(x)]:'')+'</option>'; }).join('')+'</select>';
+  modal('<h2>'+titulo+'</h2>'+
+    '<label>¿CON QUÉ BLOQUES DE REGLAS QUIERES JUGAR?</label>'+
+    '<div class="checks">'+checks+'</div>'+
+    dur+
+    '<div class="kbd" style="margin-top:12px;text-align:left;line-height:1.7">'+
+      'Tica lo que quieras practicar. En <b>carrera</b> el nivel manda: del 1 al 10 salen solo las básicas y con las reglas a la vista; '+
+      'del 11 al 30 se van las ayudas y entran hiatos, plurales y compuestas; del 31 en adelante entran las diacríticas, los porqués y las excepciones.'+
+      (modo==='arcade'?'<br>Cada acierto te suma <b>medio segundo</b> al reloj.':'')+
+      (modo==='entrenar'?'<br>Adentro puedes además elegir un solo bloque y la dificultad.':'')+
+    '</div>'+
+    '<div class="row" style="margin-top:16px">'+
+      '<button id="setBack" class="ghost">◀ ATRÁS</button>'+
+      '<button id="setGo" style="flex:2 1 200px">▶ JUGAR</button>'+
+    '</div>', true);
+  Array.prototype.forEach.call(document.querySelectorAll('#modalBody .chk'),function(l){
+    var c=l.querySelector('input');
+    c.onchange=function(){ l.classList.toggle('on',c.checked); SFX.clic(); };
+  });
+  $('#setBack').onclick=function(){ SFX.clic(); cerrarModal(); };
+  $('#setGo').onclick=function(){
+    var sel={}, n=0;
+    Array.prototype.forEach.call(document.querySelectorAll('#modalBody .chk input'),function(c){
+      var o=parseInt(c.getAttribute('data-cat'),10); sel[o]=c.checked;
+      if(c.checked) n++;
+    });
+    if(!n){ alert('Tica al menos un bloque de reglas.'); return; }
+    d.cats=sel; leerCats();
+    if(modo==='arcade') d.arcDur=parseInt($('#setDur').value,10)||60;
+    save(); cerrarModal(); SFX.clic(); jugar(modo);
+  };
+}
+
+/* ---------- HUD ---------- */
+function nivelActivo(){
+  if(MODE==='entrenar') return parseInt($('#trainLvl').value,10)||DB[user].level;
+  return DB[user].level;
+}
+function hud(){
+  var d=DB[user], L=liga(d.level);
+  $('#lvl').textContent=d.level; $('#pts').textContent=fmtN(d.pts);
+  $('#fire').textContent=d.streak+(d.streak>=10?' 🔥🔥':(d.streak>=5?' 🔥':''));
+  $('#fire').className = d.streak>=10?'hot2':(d.streak>=5?'hot1':'');
+  var tot=d.ok+d.fail;
+  $('#acc').textContent = tot? Math.round(d.ok/tot*100)+'%' : '-';
+  var b=$('#badge'); b.textContent=L[1]; b.style.background=L[2];
+  $('#meLiga').textContent=L[1]+' · NIVEL '+d.level;
+  var need=reqEjer(d.level), pct=Math.min(100,d.cred/need*100);
+  $('#xpbar').style.width=pct+'%';
+  $('#xptxt').textContent=fmt(d.cred)+' de '+need+' palabras rápidas';
+  var lb=$('#lvlbox');
+  lb.style.borderColor=L[2];
+  lb.style.boxShadow='5px 5px 0 rgba(0,0,0,.6),0 0 26px '+L[2]+'55,inset 0 0 22px '+L[2]+'22';
+  $('#lvl').style.color=L[2];
+  lb.classList.toggle('cerca', MODE==='carrera' && pct>=75);
+}
+
+/* ---------- reloj de la palabra ---------- */
+function startClock(seguir){
+  if(!seguir) t0=performance.now();
+  clearInterval(tick);
+  var meta=metaSeg(nivelActivo()), avisado=false;
+  tick=setInterval(function(){
+    var s=(performance.now()-t0)/1000;
+    if(MODE!=='arcade'){
+      $('#timer').textContent='⏱ '+s.toFixed(1)+' s · rápido = bajo '+meta.toFixed(1)+' s';
+      var pct=Math.max(0,100-(s/(meta*2))*100);
+      var bar=$('#tbar');
+      bar.style.width=pct+'%';
+      bar.style.background = s<=meta/2?'var(--cy)':(s<=meta?'var(--neon)':(s<=meta*2?'var(--sun)':'var(--hot)'));
+      if(!avisado && s>meta){ avisado=true; SFX.tick(); }
+    }
+  },100);
+}
+
+/* ---------- pintar la palabra ---------- */
+var VOCALES=[];      /* indices clickeables, en orden: la tecla 1 es el primero */
+function pintarPalabra(){
+  var vis=IT.vis, bajo=vis.toLowerCase(), html='', num=0;
+  VOCALES=[];
+  for(var i=0;i<vis.length;i++){
+    var ch=vis[i];
+    if(ch===' '){ html+='<span class="lt sp"></span>'; continue; }
+    if(esNucleo(bajo,i)){
+      num++; VOCALES.push(i);
+      html+='<button class="lt v" data-i="'+i+'">'+ch+'<sup>'+num+'</sup></button>';
+    } else {
+      html+='<span class="lt c">'+esc(ch)+'</span>';
+    }
+  }
+  var w=$('#word');
+  w.classList.remove('shake'); w.style.animation='none'; void w.offsetWidth; w.style.animation='';
+  w.innerHTML=html;
+  Array.prototype.forEach.call(w.querySelectorAll('.lt.v'),function(b){
+    b.onclick=function(){ responder(parseInt(b.getAttribute('data-i'),10)); };
+  });
+  /* frase de contexto (diacriticas) */
+  if(IT.f){
+    $('#frase').innerHTML=esc(IT.f).replace('___','<u>'+esc(vis)+'</u>');
+    $('#frase').classList.remove('hide');
+  } else $('#frase').classList.add('hide');
+  /* en los primeros niveles le digo ademas que tipo de palabra es */
+  var L=nivelActivo(), c=clasifica(IT.p);
+  if(L<=5 && !IT.f){
+    $('#tipo').textContent='👉 Es '+c.tipo.toUpperCase()+' ('+c.sil.join('-')+') y termina en "'+c.fin+'"';
+    $('#tipo').classList.remove('hide');
+  } else $('#tipo').classList.add('hide');
+}
+function newWord(){
+  var d=DB[user];
+  desdeRepaso=false; pistaUsada=false;
+  $('#repaso').classList.add('hide');
+  var forzar=null;
+  if(MODE==='entrenar'){
+    var v=$('#trainCat').value;
+    if(v!=='all') forzar=parseInt(v,10);
+  }
+  if(MODE==='carrera' && d.repaso.length && Math.random()<0.28){
+    var p=d.repaso.shift(), r=PORP[p];
+    if(r){ IT=r; desdeRepaso=true; $('#repaso').classList.remove('hide'); }
+    else IT=sacarPalabra(nivelActivo(),forzar);
+  } else {
+    IT=sacarPalabra(nivelActivo(),forzar);
+  }
+  pintarPalabra();
+  $('#fb').classList.add('hide'); $('#answerBox').classList.remove('hide');
+  /* las ruedas de apoyo: niveles 1 a 10 */
+  var ay=$('#ayudaFija');
+  if(nivelActivo()<=10 && MODE!=='arcade'){ ay.innerHTML=textoAyuda(); ay.classList.remove('hide'); }
+  else ay.classList.add('hide');
+  hud(); startClock();
+}
+
+/* ---------- responder ---------- */
+function responder(idx){          /* idx = indice de la vocal, o -1 = "no lleva tilde" */
+  if(!$('#fb').classList.contains('hide')) return;
+  if(MODE==='arcade' && arcadeLeft<=0) return;
+  clearInterval(tick);
+  var secs=(performance.now()-t0)/1000, d=DB[user];
+  if(secs>180) secs=180;
+  var good = (idx===IT.ans);
+  var K=String(IT.c);
+  d.time+=secs; sesion.t+=secs;
+  d.byCat[K].t+=secs; d.byCat[K][good?'ok':'fail']++;
+  d.hist.unshift({t:IT.p,ok:good,s:Math.round(secs*10)/10}); if(d.hist.length>12) d.hist.pop();
+  if(good) misionDelDia(d);
+
+  /* pinto la respuesta sobre las letras */
+  var tiles=$('#word').querySelectorAll('.lt');
+  if(idx>=0 && tiles[idx]) tiles[idx].classList.add(good?'ok':'err');
+  if(!good && IT.ans>=0 && tiles[IT.ans]) tiles[IT.ans].classList.add('real');
+
+  if(MODE==='arcade'){
+    if(good){ arcadeOk++; d.ok++; sesion.ok++; anotarPartida(true,0); arcadeLeft+=BONO; pintarReloj();
+              SFX.ok(); flash('var(--neon)'); flota('+1 ⏱ +0,5 s'); }
+    else { arcadeFail++; d.fail++; sesion.fail++; anotarPartida(false); d.streak=0; SFX.mal(); flash('var(--hot)'); $('#word').classList.add('shake'); }
+    save();
+    if(arcadeLeft>0) newWord();      /* el contrarreloj no se detiene: sigue de largo */
+    return;
+  }
+
+  $('#answerBox').classList.add('hide');
+  $('#fb').classList.remove('hide');
+  $('#again').classList.toggle('hide',good);
+
+  if(good){
+    d.ok++; sesion.ok++; d.streak++; d.best=Math.max(d.best,d.streak);
+    if(!pistaUsada) d.sinPista++;
+    var cr=credito(nivelActivo(),secs);
+    if(cr.tag==='RELAMPAGO') d.rayos++;
+    var pts=Math.round(scorePts(nivelActivo(),secs,d.streak)*(pistaUsada?0.5:1));
+    d.pts+=pts; anotarPartida(true,pts);
+    var up=0;
+    if(MODE==='carrera'){
+      d.cred += cr.c*(pistaUsada?0.5:1);
+      while(d.cred>=reqEjer(d.level)){ d.cred-=reqEjer(d.level); d.level++; up++; }
+      d.cred=Math.round(d.cred*10)/10;
+    }
+    if(cr.tag==='RELAMPAGO'){ SFX.rayo(); flota('⚡ +'+fmt(cr.c)); confetti(14); }
+    else { SFX.ok(); flota('+'+fmt(cr.c)); }
+    flash('var(--neon)'); bump('#pts');
+    if(up){ subirNivel(d); }
+    $('#fb').classList.remove('bad');
+    $('#fbTitle').textContent = up ? ('¡NIVEL '+d.level+'! Ahora necesitas '+reqEjer(d.level)+' palabras rápidas')
+                                   : ('¡CORRECTO! Se escribe '+IT.p+' '+cr.ico+' '+cr.tag+(d.streak>=3?' · racha de '+d.streak+' 🔥':''));
+    $('#fbText').innerHTML=explica(IT);
+    $('#fbPts').textContent = (MODE==='entrenar'
+        ? 'Entrenamiento: no suma para el nivel, pero sí a tus estadísticas. '
+        : cr.ico+' '+cr.tag+' en '+secs.toFixed(1)+' s → vale '+fmt(cr.c)+' palabra'+(cr.c===1?'':'s')+
+          ' · te faltan '+fmt(Math.max(0,reqEjer(d.level)-d.cred))+' de '+reqEjer(d.level)+' · ')
+      + '+'+pts+' pts'+(pistaUsada?' (mitad por usar pista)':'');
+    $('#next').textContent='SEGUIR ▶';
+    $('#next').className='';
+  } else {
+    d.fail++; sesion.fail++; d.streak=0; anotarPartida(false);
+    SFX.mal(); flash('var(--hot)'); $('#word').classList.add('shake');
+    /* si la vuelve a fallar, vuelve a la cola de repaso (por eso no miro desdeRepaso) */
+    if(d.repaso.length<12 && d.repaso.indexOf(IT.p)<0) d.repaso.push(IT.p);
+    $('#fb').classList.add('bad');
+    $('#fbTitle').textContent = (IT.ans<0) ? ('CASI. Esa palabra NO lleva tilde: '+IT.p)
+                                           : ('CASI. Se escribe '+IT.p);
+    $('#fbText').innerHTML=explica(IT);
+    $('#fbPts').textContent='Esta no suma, pero te la voy a preguntar de nuevo más adelante 🔁 · se te cortó la racha';
+    $('#next').textContent='SEGUIR ▶ (mismo nivel)';
+    $('#next').className='cy';
+  }
+  save(); hud(); chequearMedallas();
+}
+function misionDelDia(d){
+  if(d.dias.last!==hoy()) marcarDia(d);
+  d.dias.hechos++;
+  if(!d.dias.cumplida && d.dias.hechos>=d.dias.meta){
+    d.dias.cumplida=true; d.misiones++;
+    var bono=50+d.level*3; d.pts+=bono;
+    toast('🎁 MISIÓN DEL DÍA CUMPLIDA','Las '+d.dias.meta+' de hoy: bono de '+bono+' puntos.');
+    SFX.medalla(); confetti(40);
+  }
+}
+function subirNivel(d){
+  var L=liga(d.level);
+  $('#lvlupNum').textContent=d.level;
+  $('#lvlupTxt').style.color=L[2];
+  $('#lvlupSub').textContent=L[1]+' · ahora necesitas '+reqEjer(d.level)+' palabras';
+  $('#lvlupSub').style.color=L[2];
+  var o=$('#lvlup'); o.classList.add('go');
+  SFX.nivel(); confetti(150);
+  setTimeout(function(){ confetti(60); },500);
+  var lb=$('#lvlbox'); lb.classList.remove('up'); void lb.offsetWidth; lb.classList.add('up');
+  setTimeout(function(){ o.classList.remove('go'); },2200);
+  if(d.level===11) toast('🚲 SE VAN LAS RUEDITAS','Desde ahora sin cartel de reglas, y entran hiatos, plurales y compuestas.');
+  if(d.level===31) toast('🎓 NIVEL EXPERTO','Entran las tildes diacríticas, los cuatro porqués y las excepciones. Y a toda velocidad.');
+}
+
+/* ---------- botones del juego ---------- */
+$('#bNoTilde').onclick=function(){ responder(-1); };
+$('#again').onclick=function(){
+  $('#fb').classList.add('hide'); $('#answerBox').classList.remove('hide');
+  pistaUsada=true;
+  pintarPalabra();
+  startClock();
+};
+$('#next').onclick=function(){ newWord(); };
+$('#bPista').onclick=function(){
+  if(pistaUsada){ toast('💡 YA TIENES LA PISTA','Cada palabra da una sola.'); return; }
+  pistaUsada=true; DB[user].pistas++; SFX.clic();
+  toast('💡 PISTA', pista(IT));
+  save();
+};
+$('#bSkip').onclick=function(){
+  DB[user].saltos++; DB[user].streak=0; SFX.clic(); save(); hud(); newWord();
+};
+function wire(sel,fn){ Array.prototype.forEach.call(document.querySelectorAll(sel),function(b){ b.onclick=fn; }); }
+function pintarSonido(){ wire('.bSound',toggleSonido);
+  Array.prototype.forEach.call(document.querySelectorAll('.bSound'),function(b){ b.textContent=mute?'🔇':'🔊'; }); }
+function toggleSonido(){
+  mute=!mute; try{ localStorage.setItem('tl_mute',mute?'1':'0'); }catch(e){}
+  pintarSonido(); if(!mute) SFX.ok();
+}
+pintarSonido();
+
+/* atajos: 1-9 eligen vocal, 0 es "no lleva tilde" */
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    if($('#modal').classList.contains('go')){ cerrarModal(); return; }
+    if(paused){ reanudar(); return; }
+    if(enJuego()) pausar();
+    return;
+  }
+  if(!user) return;
+  if(paused){ if(e.key==='Enter') reanudar(); return; }
+  if($('#modal').classList.contains('go')) return;
+  if(e.key==='Enter' && !$('#fb').classList.contains('hide')){ $('#next').click(); return; }
+  if(!enJuego()){
+    if(e.key==='Enter') $('#lbPlay').click();
+    return;
+  }
+  if(document.activeElement && document.activeElement.tagName==='SELECT') return;
+  if($('#answerBox').classList.contains('hide')) return;
+  if(e.key>='1' && e.key<='9'){
+    var n=parseInt(e.key,10)-1;
+    if(VOCALES[n]!==undefined){ e.preventDefault(); responder(VOCALES[n]); }
+    return;
+  }
+  if(e.key==='0'){ e.preventDefault(); responder(-1); return; }
+  var k=e.key.toLowerCase();
+  if(k==='p') $('#bPista').click();
+  if(k==='s') $('#bSkip').click();
+});
+
+/* ---------- ventanas: estadisticas / medallas / ranking / reglas / ayuda ---------- */
+/* ============================================================
+   RECORDS DE PARTIDA
+   Cada vez que se termina una partida (contrarreloj, o salir al lobby /
+   cambiar de usuario despues de jugar) se muestra el puntaje y se avisa
+   si es record propio y/o record de la tabla de clasificacion completa
+   (todos los jugadores guardados en este computador).
+   ============================================================ */
+var partida=null;
+function nuevaPartida(){ partida={ok:0,fail:0,pts:0}; }
+function anotarPartida(ok,pts){ if(!partida) nuevaPartida(); if(ok){ partida.ok++; partida.pts+=pts||0; } else partida.fail++; }
+function mejorGlobal(campo,salvo){
+  var top=0,quien='';
+  Object.keys(DB).forEach(function(n){
+    if(n===salvo) return;
+    var v=Number(DB[n]&&DB[n][campo])||0;
+    if(v>top){ top=v; quien=n; }
+  });
+  return {v:top,n:quien};
+}
+function mejorGlobalArcade(dur,salvo){
+  var top=0,quien='';
+  Object.keys(DB).forEach(function(n){
+    if(n===salvo) return;
+    var r=(DB[n]&&DB[n].arcadeRecs)?Number(DB[n].arcadeRecs[String(dur)])||0:0;
+    if(r>top){ top=r; quien=n; }
+  });
+  return {v:top,n:quien};
+}
+function lineasRecord(valor, antesTuyo, glob, unidad){
+  var t = valor>antesTuyo
+      ? '🏆 <b>¡NUEVO RÉCORD TUYO!</b> Tu marca anterior era '+fmtN(antesTuyo)+' '+unidad+'.'
+      : (valor===antesTuyo && valor>0
+          ? '🤝 Empataste tu propio récord de '+fmtN(antesTuyo)+' '+unidad+'.'
+          : 'Tu récord sigue siendo <b>'+fmtN(antesTuyo)+'</b> '+unidad+'.');
+  var g = valor>glob.v
+      ? (glob.n ? '👑 <b>¡RÉCORD DE LA TABLA DE CLASIFICACIÓN!</b> Le quitaste el primer lugar a '+esc(glob.n)+', que tenía '+fmtN(glob.v)+'.'
+                : '👑 <b>¡RÉCORD DE LA TABLA!</b> Eres el primero en dejar marca en este computador.')
+      : (glob.n ? 'El mejor de la tabla sigue siendo <b>'+esc(glob.n)+'</b> con '+fmtN(glob.v)+' '+unidad+'.'
+                : '');
+  return t+'<br>'+g;
+}
+/* tarjeta de fin de partida (carrera y entrenamiento) */
+function cierrePartida(){
+  if(!user || !partida || (partida.ok+partida.fail)===0) return '';
+  var d=DB[user], p=partida.pts, antes=d.mejorPartida||0, g=mejorGlobal('mejorPartida',user);
+  var esRecord=p>antes, esGlobal=p>g.v, tot=partida.ok+partida.fail;
+  var html='<div class="mision'+(esRecord?' ok':'')+'" style="margin-top:14px"><b>🏁 PUNTAJE DE ESTA PARTIDA</b>'+
+    '<div style="font-family:Impact,\'Arial Black\',sans-serif;font-size:34px;color:var(--sun);line-height:1.25">'+fmtN(p)+' pts</div>'+
+    '<div style="font-size:12px;color:#a89ac2;margin-bottom:6px">'+partida.ok+' de '+tot+' correctas</div>'+
+    '<div style="font-size:13px;color:#d6cbe8;line-height:1.75">'+lineasRecord(p,antes,g,'pts')+'</div></div>';
+  if(esRecord){
+    d.mejorPartida=p; save(); SFX.medalla(); confetti(esGlobal?90:40);
+    toast(esGlobal?'👑 RÉCORD DE LA TABLA':'🏆 RÉCORD TUYO','Partida de '+fmtN(p)+' puntos.');
+  }
+  partida=null;
+  return html;
+}
+function salirAlLobby(){
+  var h=cierrePartida();
+  irAlLobby();
+  if(h) modal('<h2>🏁 FIN DE LA PARTIDA</h2>'+h);
+}
+
+function barrita(pct,color){
+  return '<div class="opbar"><i style="width:'+pct+'%'+(color?';background:'+color:'')+'"></i></div>';
+}
+function verStats(){
+  var d=DB[user], tot=d.ok+d.fail;
+  var filas='', peor=null, peorP=101;
+  for(var c=1;c<=6;c++){
+    var o=d.byCat[String(c)], t=o.ok+o.fail;
+    var p=t?Math.round(o.ok/t*100):0;
+    var med=o.ok?(o.t/(o.ok+o.fail)):0;
+    if(t>=8 && p<peorP){ peorP=p; peor=CATNOM[c]; }
+    filas+='<tr><td style="width:34%">'+CATNOM[c]+'</td><td style="width:34%">'+barrita(p)+'</td>'+
+           '<td>'+(t?p+'% de '+t:'-')+'</td><td>'+(med?med.toFixed(1)+'s':'-')+'</td></tr>';
+  }
+  var ligaIdx=LIGAS.indexOf(liga(d.level));
+  var lineas=LIGAS.map(function(L,i){ return '<div class="'+(i<=ligaIdx?'on':'')+'" title="'+L[1]+'"></div>'; }).join('');
+  var hist=d.hist.length? d.hist.map(function(h){
+      return '<tr><td>'+(h.ok?'✔':'✘')+'</td><td>'+esc(h.t)+'</td><td>'+fmt(h.s)+' s</td></tr>'; }).join('') : '';
+  modal('<h2>📊 TUS NÚMEROS</h2>'+
+    '<div class="ligaline">'+lineas+'</div>'+
+    '<p style="font-size:14px;line-height:1.9;margin:0 0 12px">'+
+      '<b>Nivel '+d.level+'</b> · liga '+liga(d.level)[1]+'<br>'+
+      'Palabras: <b>'+tot+'</b> · precisión <b>'+(tot?Math.round(d.ok/tot*100):0)+'%</b> · mejor racha <b>'+d.best+'</b><br>'+
+      'Respuestas relámpago: <b>'+d.rayos+'</b> · pistas usadas: <b>'+d.pistas+'</b> · saltadas: <b>'+d.saltos+'</b><br>'+
+      'Récord 60 segundos: <b>'+d.arcadeBest+'</b> · días seguidos jugando: <b>'+d.dias.seguidos+'</b><br>'+
+      'Tiempo total jugando: <b>'+Math.round(d.time/60)+' min</b>'+
+    '</p>'+
+    (peor?'<div class="warn">🎯 Tu punto débil ahora es <b>'+peor.toLowerCase()+'</b> ('+peorP+'%). Entra a ENTRENAR y dale solo a ese bloque un rato.</div>':'')+
+    '<table><thead><tr><th>BLOQUE</th><th>PRECISIÓN</th><th>ACIERTOS</th><th>TIEMPO</th></tr></thead><tbody>'+filas+'</tbody></table>'+
+    (hist?'<h2 style="font-size:17px;margin:16px 0 6px">ÚLTIMAS PALABRAS</h2><table><tbody>'+hist+'</tbody></table>':'')+
+    '<div class="row" style="margin-top:14px"><button id="bExport" class="sm ghost">📤 COPIAR MI PROGRESO</button>'+
+    '<button id="bImport" class="sm ghost">📥 PEGAR PROGRESO</button>'+
+    '<button id="bReset" class="sm hot">🗑 BORRAR MI CUENTA</button></div>'+
+    '<div id="ioBox"></div>');
+  $('#bExport').onclick=function(){
+    var payload=JSON.stringify({n:user,d:DB[user]});
+    $('#ioBox').innerHTML='<label style="margin-top:12px">COPIA ESTE TEXTO Y GUÁRDALO (sirve para llevar tu progreso a otro computador)</label><textarea id="ioT"></textarea>';
+    $('#ioT').value=payload; $('#ioT').select();
+  };
+  $('#bImport').onclick=function(){
+    $('#ioBox').innerHTML='<label style="margin-top:12px">PEGA AQUÍ EL TEXTO DE TU PROGRESO Y APRIETA CARGAR</label><textarea id="ioT"></textarea>'+
+      '<div class="row" style="margin-top:8px"><button id="ioGo" class="sm">CARGAR</button></div>';
+    $('#ioGo').onclick=function(){
+      try{
+        var o=JSON.parse($('#ioT').value);
+        if(!o.n||!o.d) throw new Error('formato');
+        DB[o.n]=migrar(o.d); save(); renderUsers();
+        toast('📥 LISTO','Se cargó el progreso de '+o.n+' (nivel '+DB[o.n].level+').');
+        cerrarModal();
+      }catch(err){ alert('Ese texto no sirve. Tiene que ser el que sale en COPIAR MI PROGRESO.'); }
+    };
+  };
+  $('#bReset').onclick=function(){ borrarCuenta(user, salirDeVerdad); };
+}
+function verMedallas(){
+  var d=DB[user], n=0;
+  var html=MEDALLAS.map(function(m){
+    var on=!!d.medals[m.id]; if(on) n++;
+    return '<div class="medal'+(on?' on':'')+'"><div class="e">'+m.e+'</div><b>'+m.n+'</b><i>'+m.d+'</i></div>';
+  }).join('');
+  modal('<h2>🏅 MEDALLAS '+n+' / '+MEDALLAS.length+'</h2><div class="medals">'+html+'</div>');
+}
+function verRanking(){
+  var rows=Object.keys(DB).map(function(n){ return [n,migrar(DB[n])]; })
+    .sort(function(x,y){ return y[1].level-x[1].level || y[1].pts-x[1].pts; });
+  var body=rows.map(function(r,i){
+    var d=r[1], L=liga(d.level), tot=d.ok+d.fail;
+    var corona=['🥇','🥈','🥉'][i]||(i+1);
+    return '<tr class="'+(r[0]===user?'yo':'')+'"><td>'+corona+'</td><td>'+(d.avatar||'✏️')+' '+esc(r[0])+'</td>'+
+      '<td style="color:'+L[2]+';font-weight:800">'+L[1]+'</td><td>'+d.level+'</td><td>'+fmtN(d.pts)+'</td>'+
+      '<td>'+(tot?Math.round(d.ok/tot*100)+'%':'-')+'</td><td>'+d.best+'</td><td>'+fmtN(d.mejorPartida||0)+'</td><td>'+d.arcadeBest+'</td></tr>';
+  }).join('') || '<tr><td colspan="9">Todavía no juega nadie.</td></tr>';
+  modal('<h2>🏆 TABLA DE LA CALLE</h2><table><thead><tr><th>#</th><th>JUGADOR</th><th>LIGA</th><th>NV</th>'+
+    '<th>PUNTOS</th><th>PRECIS.</th><th>RACHA</th><th>PARTIDA</th><th>60s</th></tr></thead><tbody>'+body+'</tbody></table>'+
+    '<div class="kbd" style="margin-top:10px">Son los jugadores guardados en este computador.</div>');
+}
+function verReglas(){
+  modal('<h2>📘 TODAS LAS REGLAS DE LA TILDE</h2><div class="reglas">'+
+  '<h3>1 · DÓNDE VA LA FUERZA</h3>'+
+  'Primero separa en sílabas y busca dónde suena más fuerte.<br>'+
+  '<em>AGUDA</em> (fuerza en la última): lleva tilde solo si termina en <b>n, s o vocal</b>. ca-mi-<b>ÓN</b>, ja-<b>MÁS</b>, so-<b>FÁ</b>. Pero pa-<b>PEL</b>, re-<b>LOJ</b> y ciu-<b>DAD</b> no llevan.<br>'+
+  '<em>GRAVE o LLANA</em> (fuerza en la penúltima): lleva tilde solo si <b>NO</b> termina en n, s o vocal. <b>ÁR</b>-bol, <b>LÁ</b>-piz, <b>DÍ</b>-fi-cil. Pero <b>CA</b>-sa, <b>JO</b>-ven y <b>MAR</b>-tes no llevan.<br>'+
+  '<em>ESDRÚJULA</em> (antepenúltima): tilde <b>siempre</b>. <b>MÚ</b>-si-ca, <b>PÁ</b>-ja-ro, ma-te-<b>MÁ</b>-ti-cas.<br>'+
+  '<em>SOBRESDRÚJULA</em> (más atrás todavía): tilde <b>siempre</b>. <b>DÍ</b>-ga-me-lo, en-<b>TRÉ</b>-ga-se-lo.'+
+  '<h3>2 · HIATOS Y DIPTONGOS</h3>'+
+  'Dos vocales juntas suenan de un tirón (<b>diptongo</b>: ai-re, cau-sa, puer-ta) o se separan (<b>hiato</b>).<br>'+
+  'Cuando la fuerza cae en una <b>i</b> o una <b>u</b> pegada a una a/e/o, se rompe el diptongo y la tilde va <b>SIEMPRE</b>, pase lo que pase con la regla anterior: pa-<b>Í</b>S, ba-<b>Ú</b>L, Ma-r<b>Í</b>-a, o-<b>Í</b>-do, re-<b>Í</b>R, ra-<b>Í</b>Z.<br>'+
+  'La h del medio no separa nada: b<b>Ú</b>-ho, pro-h<b>Í</b>-be.<br>'+
+  'Dos vocales fuertes (a, e, o) siempre van en sílabas distintas: le-<b>ÓN</b>, po-<b>E</b>-ta, ca-<b>O</b>S.'+
+  '<h3>3 · TILDE DIACRÍTICA</h3>'+
+  'Misma palabra, distinto trabajo. La tilde es la que las diferencia:<br>'+
+  '<b>él</b> (persona) / <b>el</b> (artículo) · <b>tú</b> (persona) / <b>tu</b> (posesivo) · <b>mí</b> / <b>mi</b> · <b>sí</b> (afirmar) / <b>si</b> (condición) · '+
+  '<b>té</b> (bebida) / <b>te</b> (pronombre) · <b>dé</b> (dar) / <b>de</b> (preposición) · <b>sé</b> (saber) / <b>se</b> (pronombre) · <b>más</b> (cantidad) / <b>mas</b> (pero).<br>'+
+  'Las que preguntan o exclaman llevan tilde aunque la pregunta sea indirecta: <b>qué, quién, cómo, cuándo, dónde, cuál, cuánto</b>. '+
+  '¿<b>Qué</b> hora es? · No sé <b>dónde</b> vive. Pero: el libro <b>que</b> compré · la casa <b>donde</b> nací.<br>'+
+  '<b>aún</b> = todavía (con tilde) · <b>aun</b> = incluso, y "aun así" (sin tilde).'+
+  '<h3>4 · LOS CUATRO PORQUÉS</h3>'+
+  '<b>por qué</b> (separado, con tilde) pregunta: ¿Por qué llegaste tarde?<br>'+
+  '<b>porque</b> (junto, sin tilde) responde: Porque perdí el bus.<br>'+
+  '<b>porqué</b> (junto, con tilde) es un sustantivo, va con el/un: No entiendo el porqué de tu enojo.<br>'+
+  '<b>por que</b> (separado, sin tilde) equivale a "por el que": Esa es la razón por que luchamos.'+
+  '<h3>5 · COMPUESTAS Y ADVERBIOS EN -MENTE</h3>'+
+  'Pegadas sin guion, manda la palabra final y la primera <b>pierde</b> su tilde: décimo + séptimo = decimo<b>SÉP</b>timo · así + mismo = asimismo · tío + vivo = tiovivo.<br>'+
+  'Con guion, cada parte <b>conserva</b> la suya: anglo-fran<b>CÉS</b>, teórico-práctico.<br>'+
+  'Los adverbios en <b>-mente</b> guardan la tilde del adjetivo: rápido → <b>rá</b>pidamente, fácil → <b>fá</b>cilmente. Pero claro → claramente (el adjetivo no llevaba).'+
+  '<h3>6 · PLURALES</h3>'+
+  'Al agregar sílabas la palabra puede ganar o perder la tilde:<br>'+
+  'origen → or<b>Í</b>genes · examen → ex<b>Á</b>menes · joven → j<b>Ó</b>venes (se vuelven esdrújulas: ganan tilde).<br>'+
+  'canción → canciones · jardín → jardines · francés → franceses (pasan a graves en s: pierden tilde).<br>'+
+  'Irregulares: régimen → reg<b>Í</b>menes · espécimen → espec<b>Í</b>menes · carácter → <b>caracteres</b> (sin tilde, la fuerza se corre).'+
+  '<h3>7 · LAS EXCEPCIONES QUE MÁS PENCAN</h3>'+
+  '<b>Monosílabos:</b> una sola sílaba, sin tilde: fue, fui, vio, dio, ti, bien, pan. Solo llevan si son diacríticas (él, tú, sí, más).<br>'+
+  '<b>guion, ion, truhan, fie:</b> la RAE las cuenta como monosílabos, así que van sin tilde.<br>'+
+  '<b>La y final cuenta como consonante:</b> convoy, virrey, jersey son agudas y no llevan tilde.<br>'+
+  '<b>Grave terminada en s precedida de consonante:</b> sí lleva tilde: bíceps, fórceps, cómics.<br>'+
+  '<b>solo</b> y los demostrativos (este, ese, aquel) ya <b>no llevan tilde nunca</b> (RAE 2010).<br>'+
+  '<b>Las mayúsculas se tildan igual:</b> África, Ángela, ÓSCAR.<br>'+
+  '<b>Latinismos y extranjerismos adaptados</b> siguen la regla española: currículum, ítem, álbum, récord, máster, clímax, hábitat.'+
+  '</div>');
+}
+function verAyuda(){
+  modal('<h2>❓ CÓMO SE JUEGA</h2>'+
+   '<p style="line-height:1.85;font-size:14.5px">'+
+   'Sale una palabra <b>sin tilde</b>. Tú tocas la vocal que debería llevarla, o el botón <b>NO LLEVA TILDE</b> si no lleva ninguna. '+
+   'Con el teclado es más rápido: cada vocal tiene un numerito, y el <b>0</b> es "no lleva tilde".<br><br>'+
+   '<b>🏁 CARRERA</b> — el modo principal. Cada nivel te pide juntar palabras rápidas: 5 para el nivel 2, 10 para el 3, 30 cuando vas en el 160.<br><br>'+
+   '<b>Cada acierto vale según tu tiempo:</b><br>'+
+   '⚡ RELÁMPAGO (menos de media meta) = 1,5 palabras<br>'+
+   '✔ RÁPIDO (bajo la meta) = 1<br>'+
+   '🐢 LENTO (hasta el doble) = 0,6<br>'+
+   '😴 MUY LENTO = 0,3<br>'+
+   'La meta baja de casi 11 s en el nivel 1 a 4 s del nivel 50 en adelante. Mientras más subes, más apurado.<br><br>'+
+   '<b>La curva:</b> del nivel 1 al 10 tienes el cartel con las reglas siempre a la vista y solo salen agudas, graves y esdrújulas '+
+   '(y en los 5 primeros te digo hasta qué tipo de palabra es). Del 11 al 30 se va el cartel y entran hiatos, plurales, compuestas y -mente. '+
+   'Del 31 en adelante entran las diacríticas, los cuatro porqués y las excepciones, con frases de contexto y a toda velocidad.<br><br>'+
+   '<b>🎯 ENTRENAR</b> — eliges el bloque y la dificultad. No sube de nivel, pero sirve para machacar lo que te cuesta.<br>'+
+   '<b>⏱ CONTRARRELOJ</b> — todas las que puedas contra el reloj: 60 segundos, 2, 3, 5 o 10 minutos, '+
+   'y <b>cada acierto te regala medio segundo más</b>. Se guarda un récord por cada duración.<br><br>'+
+   '<b>🔁 Repaso:</b> lo que fallas vuelve a aparecerte más adelante hasta que te salga.<br>'+
+   '<b>💡 Pista:</b> te dice dónde va la fuerza y en qué termina, pero no la vocal, y vale la mitad.<br>'+
+   '<b>📘 REGLAS:</b> el resumen completo, con hiatos, diacríticas, porqués, plurales y todas las excepciones.<br>'+
+   '<b>Atajos:</b> 1-9 vocal · 0 sin tilde · Enter seguir · P pista · S saltar · Esc pausa.</p>');
+}
+wire('.bStats',verStats); wire('.bMedals',verMedallas); wire('.bRank',verRanking);
+wire('.bReglas',verReglas); wire('.bHelp',verAyuda);
+
+/* ============================================================
+   AUTOCOMPROBACION: abre index.html?test
+   Revisa el banco palabra por palabra (que la tilde este donde
+   dice la regla, que la vocal sea clickeable, que las excepciones
+   tengan su explicacion) y ademas juega una partida completa.
+   ============================================================ */
+if(location.search.indexOf('test')>=0){
+  var bad=[], respaldo=null;
+  try{ respaldo=localStorage.getItem('tildes'); }catch(e){}
+
+  /* --- el banco --- */
+  var vistas={};
+  BANCO.forEach(function(it){
+    var p=it.p, vis=it.vis, k=it.ans;
+    if(vistas[p]) bad.push(['repetida',p]); vistas[p]=1;
+    if(vis.length!==p.length) bad.push(['largo',p]);
+    if(tieneTilde(vis)) bad.push(['pelada-con-tilde',p]);
+    var tildes=0; for(var q=0;q<p.length;q++){ if(CON_TILDE.indexOf(p[q])>=0||MAY_CON.indexOf(p[q])>=0) tildes++; }
+    if(tildes>1) bad.push(['dos-tildes',p]);
+    if(k>=0){
+      if(ponerTilde(vis,k)!==p) bad.push(['no-vuelve',p,ponerTilde(vis,k)]);
+      if(!esNucleo(vis.toLowerCase(),k)) bad.push(['vocal-no-clickeable',p]);
+    }
+    if([1,2,3,4,5,6].indexOf(it.c)<0) bad.push(['bloque',p,it.c]);
+    if([1,2,3].indexOf(it.d)<0) bad.push(['dificultad',p,it.d]);
+    if(it.c===3 && (!it.f || it.f.indexOf('___')<0)) bad.push(['diacritica-sin-frase',p]);
+    if(it.x && !it.n) bad.push(['excepcion-sin-explicacion',p]);
+    if(!it.x && exigeTilde(p)!==(k>=0)) bad.push(['regla-no-calza',p,exigeTilde(p),k]);
+    if(p.indexOf(' ')<0 && p.indexOf('-')<0 && silabas(p).join('')!==p) bad.push(['silabeo-rompe',p,silabas(p).join('-')]);
+    var ex=explica(it);
+    if(typeof ex!=='string'||ex.length<10||ex.indexOf('undefined')>=0) bad.push(['explica',p]);
+    var pi=pista(it);
+    if(typeof pi!=='string'||pi.length<10||pi.indexOf('undefined')>=0) bad.push(['pista',p]);
+  });
+  if(BANCO.length<120) bad.push(['banco-chico',BANCO.length]);
+  [1,2,3,4,5,6].forEach(function(c){
+    var n=BANCO.filter(function(it){ return it.c===c; }).length;
+    if(n<15) bad.push(['bloque-flaco',c,n]);
+  });
+  /* la mitad de las palabras del bloque 1 tiene que ser "sin tilde", si no se aprende a apretar siempre */
+  (function(){
+    var b1=BANCO.filter(function(it){ return it.c===1; });
+    var sin=b1.filter(function(it){ return it.ans<0; }).length;
+    if(sin<b1.length*0.25) bad.push(['pocas-sin-tilde',sin,b1.length]);
+  })();
+
+  /* --- el silabeo y la clasificacion, caso por caso --- */
+  function sil(p){ return silabas(p).join('-'); }
+  [['canción','can-ción'],['árbol','ár-bol'],['esdrújula','es-drú-ju-la'],['música','mú-si-ca'],
+   ['país','pa-ís'],['búho','bú-ho'],['examen','e-xa-men'],['exámenes','e-xá-me-nes'],
+   ['ciudad','ciu-dad'],['guion','guion'],['transporte','trans-por-te'],['abstracto','abs-trac-to'],
+   ['química','quí-mi-ca'],['prohíbe','pro-hí-be'],['aire','ai-re'],['maíz','ma-íz']
+  ].forEach(function(par){ if(sil(par[0])!==par[1]) bad.push(['silabeo',par[0],sil(par[0]),par[1]]); });
+
+  [['canción','aguda'],['reloj','aguda'],['árbol','grave'],['casa','grave'],['música','esdrújula'],
+   ['dígamelo','sobresdrújula'],['exámenes','esdrújula'],['fue','monosílaba'],['guion','monosílaba']
+  ].forEach(function(par){
+    var t=clasifica(par[0]).tipo;
+    if(t!==par[1]) bad.push(['tipo',par[0],t,par[1]]);
+  });
+  if(!clasifica('país').hiato) bad.push(['hiato-pais']);
+  if(!clasifica('baúl').hiato) bad.push(['hiato-baul']);
+  if(!clasifica('búho').hiato) bad.push(['hiato-buho']);
+  if(clasifica('canción').hiato) bad.push(['hiato-falso-cancion']);
+  if(clasifica('después').hiato) bad.push(['hiato-falso-despues']);
+  /* la regla pura, sin mirar el banco */
+  [['canción',true],['camion',false],['reloj',false],['árbol',true],['casa',false],
+   ['música',true],['país',true],['examen',false],['jóvenes',true],['jardines',false],
+   ['convoy',false],['ciudad',false]
+  ].forEach(function(par){
+    if(exigeTilde(par[0])!==par[1]) bad.push(['exige',par[0],exigeTilde(par[0]),par[1]]);
+  });
+  /* la u muda no se puede tildar */
+  if(esNucleo('queso',1)) bad.push(['u-de-que-clickeable']);
+  if(esNucleo('guerra',1)) bad.push(['u-de-gue-clickeable']);
+  if(!esNucleo('pingüino',4)) bad.push(['dieresis-no-clickeable']);
+  if(!esNucleo('cuidado',1)) bad.push(['u-normal-no-clickeable']);
+  if(quitarTildes('ÁFRICA')!=='AFRICA') bad.push(['quitar-mayusculas']);
+  if(ponerTilde('Africa',0)!=='África') bad.push(['poner-mayuscula']);
+
+  /* --- la curva de niveles --- */
+  if(reqEjer(1)!==5) bad.push(['req1',reqEjer(1)]);
+  if(reqEjer(3)!==10) bad.push(['req3',reqEjer(3)]);
+  if(reqEjer(160)!==30) bad.push(['req160',reqEjer(160)]);
+  if(Math.abs(metaSeg(1)-10.86)>0.01) bad.push(['meta1',metaSeg(1)]);
+  if(metaSeg(50)!==4) bad.push(['meta50',metaSeg(50)]);
+  if(metaSeg(200)!==4) bad.push(['meta200',metaSeg(200)]);
+  for(var L=2;L<=200;L++){ if(reqEjer(L)<reqEjer(L-1)) bad.push(['curva-baja',L]); if(metaSeg(L)>metaSeg(L-1)) bad.push(['meta-sube',L]); }
+  if(credito(1,3).c!==1.5||credito(1,9).c!==1||credito(1,20).c!==0.6||credito(1,40).c!==0.3) bad.push(['bandas']);
+  function simular(nivel,segs){ var c=0,n=0; while(c<reqEjer(nivel)&&n<500){ c+=credito(nivel,segs).c; n++; } return n; }
+  if(simular(1,4)!==4) bad.push(['sim-nv1-rapido',simular(1,4)]);
+  if(simular(1,9)!==5) bad.push(['sim-nv1-normal',simular(1,9)]);
+  if(simular(3,9)!==10) bad.push(['sim-nv3',simular(3,9)]);
+  if(simular(160,1.5)!==20) bad.push(['sim-160-relampago',simular(160,1.5)]);
+  if(simular(160,6)!==50) bad.push(['sim-160-lento',simular(160,6)]);
+
+  /* --- que palabras salen en cada nivel --- */
+  (function(){
+    CATS={1:true,2:true,3:true,4:true,5:true,6:true};
+    var b=bolsa(1);
+    b.forEach(function(it){ if(it.c!==1) bad.push(['nv1-bloque',it.p,it.c]); if(it.d!==1) bad.push(['nv1-dificil',it.p]); });
+    if(b.length<40) bad.push(['nv1-pocas',b.length]);
+    var b20=bolsa(20);
+    b20.forEach(function(it){ if(it.c===3||it.c===6) bad.push(['nv20-avanzada',it.p]); if(it.d>2) bad.push(['nv20-dificil',it.p]); });
+    if(!b20.filter(function(it){ return it.c===2; }).length) bad.push(['nv20-sin-hiatos']);
+    if(!b20.filter(function(it){ return it.c===5; }).length) bad.push(['nv20-sin-plurales']);
+    var b40=bolsa(40);
+    if(!b40.filter(function(it){ return it.c===3; }).length) bad.push(['nv40-sin-diacriticas']);
+    if(!b40.filter(function(it){ return it.c===6; }).length) bad.push(['nv40-sin-excepciones']);
+    /* si tica un bloque que su nivel no toca, igual tiene que salir algo */
+    CATS={1:false,2:false,3:true,4:false,5:false,6:false};
+    if(!bolsa(1).length) bad.push(['bolsa-vacia']);
+    CATS={1:false,2:false,3:false,4:false,5:false,6:false};
+    if(!bolsa(50).length) bad.push(['bolsa-sin-nada']);
+    CATS={1:true,2:true,3:true,4:true,5:true,6:true};
+    /* entrenar forzando un bloque */
+    for(var i=0;i<40;i++){ if(sacarPalabra(50,3).c!==3) bad.push(['forzar-bloque']); }
+    /* no repite la misma palabra dos veces seguidas */
+    var ant=null, rep=0;
+    for(var j=0;j<120;j++){ var it=sacarPalabra(50); if(ant&&it.p===ant) rep++; ant=it.p; }
+    if(rep>0) bad.push(['repite-seguido',rep]);
+  })();
+
+  /* --- reloj y dias --- */
+  if(mmss(600)!=='10:00') bad.push(['mmss-600',mmss(600)]);
+  if(mmss(59)!=='59 s') bad.push(['mmss-59',mmss(59)]);
+  if(mmss(65)!=='1:05') bad.push(['mmss-65',mmss(65)]);
+  if(mmss(-3)!=='0 s') bad.push(['mmss-negativo',mmss(-3)]);
+  if(nomDur(600)!=='10 minutos'||nomDur(60)!=='60 segundos') bad.push(['nomdur']);
+  (function(){
+    var d=blank(); d.dias={last:ayerDe(hoy()),seguidos:4};
+    if(marcarDia(d)!==5) bad.push(['dia-seguido']);
+    if(marcarDia(d)!==0) bad.push(['dia-repetido']);
+    var d2=blank(); d2.dias={last:'2000-01-01',seguidos:9};
+    if(marcarDia(d2)!==1) bad.push(['dia-cortado']);
+  })();
+  (function(){
+    var d=blank();
+    MEDALLAS.forEach(function(m){ try{ if(m.t(d)) bad.push(['medalla-gratis',m.id]); }catch(e){ bad.push(['medalla-rota',m.id,e.message]); } });
+    d.ok=1; if(!MEDALLAS[0].t(d)) bad.push(['medalla-primer']);
+  })();
+
+  /* --- cuentas: guardar, migrar y borrar --- */
+  (function(){
+    var real=DB; DB={};
+    DB['Ana']=blank(); DB['Ana'].level=15; DB['Ana'].cred=3; DB['Ana'].pin='1234';
+    DB['Beto']=blank();
+    var vuelta=JSON.parse(JSON.stringify(DB));
+    if(vuelta['Ana'].level!==15||vuelta['Ana'].cred!==3) bad.push(['no-guarda-progreso']);
+    if(vuelta['Beto'].level!==1) bad.push(['cuenta-nueva-no-parte-en-1']);
+    var viejo=migrar({pin:'',level:22,pts:900,ok:60,fail:10,best:7,streak:0,time:400});
+    if(viejo.level!==22||viejo.pts!==900||viejo.cred!==0||!viejo.byCat['3']) bad.push(['migracion']);
+    if(!viejo.cats||viejo.cats[1]!==true||viejo.arcDur!==60) bad.push(['migracion-cats']);
+    var conCats=migrar({level:5,cats:{1:true,2:false,3:false,4:false,5:false,6:false},arcDur:300});
+    if(conCats.cats[2]!==false||conCats.arcDur!==300) bad.push(['migracion-pisa-lo-elegido']);
+    if(quitarCuenta('NoExiste')) bad.push(['borra-fantasma']);
+    if(!quitarCuenta('Beto')) bad.push(['no-borra']);
+    if(DB['Beto']) bad.push(['sigue-ahi']);
+    if(!DB['Ana'] || DB['Ana'].level!==15) bad.push(['borro-de-mas']);
+    DB={}; save();
+    if(Object.keys(DB).length!==0) bad.push(['borrar-todas']);
+    DB=real;
+  })();
+
+  /* --- prueba de humo: jugar de verdad por la interfaz --- */
+  try{
+    DB={}; user=null;
+    $('#name').value='TestBot'; $('#pin').value=''; $('#enter').click();
+    if(!user) bad.push(['ui-no-entra']);
+    if($('#lobby').classList.contains('hide')) bad.push(['ui-no-lobby']);
+    if(!$('#game').classList.contains('hide')) bad.push(['ui-juego-sin-pedir']);
+    if($('#lbName').textContent!=='TestBot') bad.push(['ui-lobby-nombre']);
+
+    $('#lbPlay').click();
+    if(!$('#modal').classList.contains('go')) bad.push(['ui-setup-no-abre']);
+    if(document.querySelectorAll('#modalBody .chk input').length!==6) bad.push(['ui-setup-sin-checks']);
+    $('#setBack').click();
+    if($('#modal').classList.contains('go')) bad.push(['ui-setup-atras']);
+    if(!$('#game').classList.contains('hide')) bad.push(['ui-setup-atras-entra']);
+
+    $('#lbPlay').click();
+    Array.prototype.forEach.call(document.querySelectorAll('#modalBody .chk input'),function(c){ c.checked=false; });
+    var alertaReal=window.alert, avisos=0; window.alert=function(){ avisos++; };
+    $('#setGo').click();
+    window.alert=alertaReal;
+    if(!avisos) bad.push(['ui-setup-sin-bloques']);
+    if(!$('#game').classList.contains('hide')) bad.push(['ui-setup-jugo-sin-bloques']);
+
+    document.querySelector('#modalBody .chk input[data-cat="1"]').checked=true;
+    $('#setGo').click();
+    if($('#game').classList.contains('hide')) bad.push(['ui-play-no-entra']);
+    if(DB['TestBot'].cats[2]!==false||DB['TestBot'].cats[1]!==true) bad.push(['ui-setup-no-guarda-bloques']);
+
+    /* la palabra esta pintada y las vocales son botones */
+    if(!$('#word').querySelectorAll('.lt').length) bad.push(['ui-sin-letras']);
+    if($('#word').querySelectorAll('.lt.v').length!==VOCALES.length) bad.push(['ui-vocales-descuadradas']);
+    if($('#ayudaFija').classList.contains('hide')) bad.push(['ui-sin-ruedas-nivel1']);
+    if($('#tipo').classList.contains('hide')) bad.push(['ui-sin-tipo-nivel1']);
+
+    var antes=DB['TestBot'].level;
+    for(var j=0;j<7;j++){ responder(IT.ans); $('#next').click(); }
+    if(DB['TestBot'].level<=antes) bad.push(['ui-no-sube-nivel',DB['TestBot'].level]);
+    if(DB['TestBot'].dias.hechos!==7) bad.push(['ui-mision-no-cuenta',DB['TestBot'].dias.hechos]);
+    if(DB['TestBot'].ok!==7) bad.push(['ui-no-cuenta-aciertos',DB['TestBot'].ok]);
+    if(DB['TestBot'].byCat['1'].ok!==7) bad.push(['ui-no-cuenta-bloque']);
+
+    /* --- records de partida: el tuyo y el de toda la tabla --- */
+    if(!partida || partida.pts<=0) bad.push(['ui-partida-no-suma']);
+    DB['Rival']=blank(); DB['Rival'].mejorPartida=1;
+    var hCierre=cierrePartida();
+    if(!hCierre) bad.push(['ui-sin-tarjeta-record']);
+    if(hCierre.indexOf('NUEVO RÉCORD TUYO')<0) bad.push(['ui-sin-record-propio']);
+    if(hCierre.indexOf('RÉCORD DE LA TABLA')<0) bad.push(['ui-sin-record-global']);
+    if(!DB['TestBot'].mejorPartida) bad.push(['ui-no-guarda-mejor-partida']);
+    if(partida) bad.push(['ui-partida-no-se-cierra']);
+    nuevaPartida(); anotarPartida(true,1);
+    DB['Rival'].mejorPartida=999999;
+    var hCierre2=cierrePartida();
+    if(hCierre2.indexOf('sigue siendo')<0) bad.push(['ui-record-falso']);
+    if(hCierre2.indexOf('Rival')<0) bad.push(['ui-no-nombra-al-lider']);
+    delete DB['Rival'];
+    nuevaPartida();
+
+    /* tocar la letra con el mouse tambien responde */
+    var botonV=$('#word').querySelector('.lt.v');
+    if(!botonV) bad.push(['ui-sin-boton-vocal']);
+    else { botonV.click(); if($('#fb').classList.contains('hide')) bad.push(['ui-clic-no-responde']); $('#next').click(); }
+
+    /* PAUSA: congela el reloj */
+    var tAntes=t0;
+    pausar();
+    if(!paused || !$('#pause').classList.contains('go')) bad.push(['ui-no-pausa']);
+    pausaT=pausaT-3000;
+    reanudar();
+    if(paused) bad.push(['ui-no-reanuda']);
+    if(t0-tAntes < 2900) bad.push(['ui-pausa-mal-descontada',t0-tAntes]);
+
+    /* fallar a proposito: se guarda para repaso y se corta la racha */
+    var fallos=DB['TestBot'].fail;
+    responder(IT.ans>=0 ? -1 : 0);
+    if(DB['TestBot'].fail!==fallos+1) bad.push(['ui-no-cuenta-fallo']);
+    if(DB['TestBot'].streak!==0) bad.push(['ui-no-corta-racha']);
+    if(!DB['TestBot'].repaso.length) bad.push(['ui-no-guarda-repaso']);
+    if(!$('#word').querySelectorAll('.lt.real,.lt.err').length) bad.push(['ui-no-marca-error']);
+    $('#again').click();
+    if($('#fb').classList.contains('hide')===false) bad.push(['ui-reintentar']);
+    $('#bPista').click(); $('#bSkip').click();
+    verStats(); cerrarModal();
+    verMedallas(); cerrarModal();
+    verRanking(); cerrarModal();
+    verReglas();
+    if($('#modalBody').textContent.indexOf('porqué')<0) bad.push(['ui-reglas-sin-porques']);
+    if($('#modalBody').textContent.indexOf('bíceps')<0) bad.push(['ui-reglas-sin-excepciones']);
+    cerrarModal();
+    verAyuda(); cerrarModal();
+
+    /* entrenar: el bloque elegido manda, y con nivel alto se van las ruedas */
+    setMode('entrenar'); $('#trainCat').value='5'; $('#trainLvl').value='40'; $('#trainCat').onchange();
+    if(IT.c!==5) bad.push(['ui-entrenar-bloque',IT.c]);
+    if(!$('#ayudaFija').classList.contains('hide')) bad.push(['ui-ruedas-en-nivel-alto']);
+    if(!$('#tipo').classList.contains('hide')) bad.push(['ui-tipo-en-nivel-alto']);
+    $('#trainCat').value='3'; $('#trainCat').onchange();
+    if(IT.c!==3) bad.push(['ui-entrenar-bloque3']);
+    if($('#frase').classList.contains('hide')) bad.push(['ui-diacritica-sin-frase']);
+
+    /* contrarreloj */
+    $('#mArcade').click();
+    if(!$('#setDur')) bad.push(['ui-setup-sin-duracion']);
+    $('#setDur').value='600';
+    $('#setGo').click();
+    if(DB['TestBot'].arcDur!==600) bad.push(['ui-dur-no-guarda',DB['TestBot'].arcDur]);
+    if(arcadeLeft!==600||arcadeDur!==600) bad.push(['ui-dur-no-aplica',arcadeLeft]);
+    var reloj=arcadeLeft;
+    responder(IT.ans);
+    if(arcadeOk!==1) bad.push(['ui-arcade']);
+    if(Math.abs(arcadeLeft-(reloj+0.5))>1e-9) bad.push(['ui-arcade-bono',arcadeLeft]);
+    responder(IT.ans>=0 ? -1 : 0);
+    if(Math.abs(arcadeLeft-(reloj+0.5))>1e-9) bad.push(['ui-arcade-bono-fallo',arcadeLeft]);
+    if($('#fb').classList.contains('hide')===false) bad.push(['ui-arcade-se-detiene']);
+    pausar();
+    var quedaban=arcadeLeft; arcadeStep();
+    if(arcadeLeft!==quedaban-1) bad.push(['ui-arcade-pausa']);
+    reanudar();
+    terminarArcade(); cerrarModal();
+    if(DB['TestBot'].arcadeRecs['600']!==1) bad.push(['ui-record-largo',DB['TestBot'].arcadeRecs['600']]);
+    if(DB['TestBot'].arcadeBest!==0) bad.push(['ui-record-60-contaminado',DB['TestBot'].arcadeBest]);
+
+    setMode('carrera');
+    $('#bLobby').click();
+    if($('#lobby').classList.contains('hide')) bad.push(['ui-no-vuelve-al-lobby']);
+    $('#lbSalir').click(); salirDeVerdad();
+    if(user) bad.push(['ui-no-sale']);
+    DB['Otro']=blank();
+    verCuentas();
+    if(document.querySelectorAll('.bDel').length!==Object.keys(DB).length) bad.push(['ui-cuentas-lista']);
+    cerrarModal();
+    DB={}; renderUsers();
+    if($('#login').classList.contains('hide')) bad.push(['ui-no-login']);
+  }catch(e){ bad.push(['ui-excepcion',e.message,String(e.stack||'').split('\n').slice(0,3).join(' | ')]); }
+  clearInterval(tick); clearInterval(arcadeTick);
+  try{ if(respaldo===null) localStorage.removeItem('tildes'); else localStorage.setItem('tildes',respaldo); }catch(e){}
+
+  document.title = bad.length ? ('TEST FAIL '+bad.length) : 'TEST OK';
+  document.body.insertAdjacentHTML('afterbegin',
+    '<pre id="testout" style="position:fixed;z-index:99;background:#000;color:#0f0;padding:8px;max-width:96vw;white-space:pre-wrap">RESULT='+
+    (bad.length ? ('FAIL '+bad.length+'\n'+JSON.stringify(bad.slice(0,12))) : 'OK')+'</pre>');
+}
+
+/* ---------- app de celular: se instala en la pantalla de inicio ----------
+   Solo cuando la pagina viene de un servidor (https). Abierta con doble clic
+   (file://) no hay service worker y el juego funciona igual. */
+if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+#!/bin/sh
+# Abre el juego en una ventana limpia del navegador. Sin instalar nada.
+DIR=$(cd "$(dirname "$0")/../Resources" && pwd)
+URL="file://$DIR/index.html"
+if [ -d "/Applications/Google Chrome.app" ]; then
+  open -na "Google Chrome" --args --app="$URL" --window-size=980,940
+elif [ -d "/Applications/Microsoft Edge.app" ]; then
+  open -na "Microsoft Edge" --args --app="$URL" --window-size=980,940
+else
+  open "$URL"
+fi

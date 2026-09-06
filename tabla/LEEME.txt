@@ -1,0 +1,82 @@
+TABLA MAKE ME CRAZY
+Juego de la tabla periodica por niveles - tercer hermano de "Maths Make Me Crazy"
+y "Tildes Make Me Crazy"
+====================================================================
+
+QUE ES
+------
+Sale un dato de un elemento (numero atomico, nombre o simbolo) y hay que elegir
+entre 4 alternativas la que corresponde. Las otras 3 son siempre elementos de
+verdad de la tabla, nunca inventados.
+
+Todo esta en UN SOLO ARCHIVO: index.html. No necesita internet ni instalar nada.
+El progreso se guarda en el propio computador (llave "tabla" del navegador; los
+otros dos juegos usan "crazymath" y "tildes": no se pisan entre ellos).
+
+
+COMO SE ABRE
+------------
+Acceso directo "Tabla Make Me Crazy" en el Escritorio (se abre como aplicacion).
+Si se pierde: doble clic en Escritorio\TablaMakeMeCrazy\index.html
+
+
+LAS 6 COMBINACIONES DE PREGUNTA
+-------------------------------
+1. Numero atomico -> simbolo     (8  -> O)
+2. Numero atomico -> nombre      (8  -> Oxigeno)
+3. Nombre -> simbolo             (Oxigeno -> O)
+4. Nombre -> numero atomico      (Oxigeno -> 8)
+5. Simbolo -> nombre             (Au -> Oro)
+6. Simbolo -> numero atomico     (Au -> 79)
+
+Antes de cada partida se tica cuales se quieren jugar.
+
+
+LA CURVA
+--------
+NIVELES 1 a 10   Solo los elementos de siempre (H, O, C, N, Na, K, Fe, Cu, Ag,
+                 Au, Hg, Pb, U...) y solo nombre <-> simbolo, con la chuleta de
+                 esos elementos siempre a la vista. Meta: 8,9 segundos.
+NIVELES 11 a 30  Se va la chuleta. Entran los metales de transicion y todo hasta
+                 el bario, mas las preguntas por numero atomico.
+NIVELES 31 y +   La tabla completa, los 118: lantanidos, actinidos y sinteticos.
+                 Meta de 3,5 segundos y el error corta el multiplicador.
+
+Para subir de nivel se juntan preguntas rapidas: 5 para el nivel 2, 10 para el 3,
+30 en el 160. Cada acierto vale 1,5 / 1 / 0,6 / 0,3 segun el tiempo.
+
+
+MODOS
+-----
+CARRERA       El principal, el que sube de nivel.
+ENTRENAR      Se elige UN tipo de pregunta y la dificultad. No sube de nivel.
+CONTRARRELOJ  60 s, 2, 3, 5 o 10 minutos. Cada acierto regala medio segundo.
+
+Al terminar cualquier partida sale el puntaje y dice si es RECORD TUYO y/o
+RECORD DE LA TABLA DE CLASIFICACION (de todos los jugadores del computador).
+
+
+BOTON "VER LA TABLA COMPLETA"
+-----------------------------
+Los 118 elementos con numero, simbolo y nombre, pintados por dificultad:
+verde = salen desde el nivel 1, amarillo = desde el 11, rosado = desde el 31.
+Sirve de material de apoyo en clase.
+
+
+AUTOCOMPROBACION
+----------------
+Abrir index.html?test -> tiene que decir RESULT=OK.
+Revisa los 118 elementos (numeros correlativos, simbolos y nombres sin repetir),
+el generador de preguntas y sus senuelos (400 preguntas por nivel: siempre 4
+opciones distintas, una sola correcta y ninguna inventada), la curva de niveles,
+las medallas, el multiusuario y una partida completa jugada por la interfaz.
+
+
+PARA CORREGIR O AGREGAR UN ELEMENTO
+-----------------------------------
+Abrir index.html con el Bloc de notas y buscar "var ELEMENTOS=[".
+Cada linea es asi:   {z:8,s:'O',n:'Oxigeno'}
+   z = numero atomico   s = simbolo   n = nombre
+La dificultad no se escribe: la calcula sola la funcion tier() (los de la lista
+COMUNES son los faciles; hasta el z=56 son los medios; el resto, dificiles).
+Despues abrir index.html?test para confirmar que no se rompio nada.

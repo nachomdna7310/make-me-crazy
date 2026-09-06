@@ -1401,7 +1401,10 @@ function submitVal(v){
   } else {
     d.fail++; sesion.fail++; d.streak=0; anotarPartida(false);
     SFX.mal(); flash('var(--hot)'); $('#prob').classList.add('shake');
-    if(!desdeRepaso && d.repaso.length<12) d.repaso.push({a:P0.a,b:P0.b,op:P0.op,ans:P0.ans,text:P0.text,kind:P0.kind,t:P0.t});
+    /* si lo vuelve a fallar, vuelve a la cola de repaso (por eso no miro desdeRepaso) */
+    var yaEnRepaso=false;
+    for(var rr=0;rr<d.repaso.length;rr++){ if(d.repaso[rr].text===P0.text) yaEnRepaso=true; }
+    if(!yaEnRepaso && d.repaso.length<12) d.repaso.push({a:P0.a,b:P0.b,op:P0.op,ans:P0.ans,text:P0.text,kind:P0.kind,t:P0.t});
     $('#fb').classList.add('bad');
     var cerca = Math.abs(v-P0.ans) <= Math.max(1, Math.abs(P0.ans)*0.05);
     $('#fbTitle').textContent = cerca ? ('¡UF! POR POQUITO. Era '+fmtN(P0.ans)) : ('CASI. Era '+fmtN(P0.ans));

@@ -289,6 +289,48 @@ tr.yo{background:rgba(255,210,30,.12)}
 .mini{font-size:11.5px;color:#8e81a8;text-align:center;margin-top:16px;line-height:1.7}
 .kbd{font-size:11px;color:#7d7194;text-align:center;margin-top:8px}
 textarea{width:100%;height:110px;background:#100d18;color:#9ef;border:3px solid #000;border-radius:12px;padding:10px;font-family:monospace;font-size:11px}
+
+/* ---- celular: que quepa todo el juego en una pantalla, sin scroll ---- */
+@media (max-width:560px){
+  .wrap{padding:8px 9px 22px}
+  h1{font-size:clamp(24px,7.2vw,40px);text-shadow:4px 4px 0 var(--hot),7px 7px 0 rgba(0,0,0,.6)}
+  .sub{margin:9px 0 9px;font-size:10px;letter-spacing:2px}
+  .card{padding:11px;border-radius:15px;box-shadow:6px 6px 0 rgba(0,0,0,.65),inset 0 0 0 2px rgba(255,255,255,.06)}
+  .top{margin-bottom:7px}
+  .me{padding:3px 10px 3px 5px}
+  .me .av{font-size:19px}
+  .modes{margin-bottom:8px;gap:5px}
+  .modes button{font-size:12px;padding:7px 3px;border-radius:10px}
+  .hud{gap:6px;margin-bottom:7px}
+  .lvlbox{min-width:80px;padding:3px 10px 5px;border-width:3px}
+  .lvlbox span{letter-spacing:2px}
+  .lvlbox b{font-size:34px}
+  .badge{font-size:13px;padding:4px 9px}
+  .stat b{font-size:17px}
+  .bar{height:16px;margin-top:6px}
+  .tbar{margin:7px 0 2px}
+  .pad{gap:5px;margin-top:7px}
+  .pad button{font-size:19px;padding:9px 0;border-radius:10px}
+  button{padding:11px 13px;font-size:16px}
+  button.sm{padding:7px 9px;font-size:12px}
+  .row{gap:7px}
+  .ayuda{padding:9px 11px;font-size:12.5px;line-height:1.6}
+  .fb{padding:10px 12px}
+  .fb h3{font-size:17px}
+  .fb p{font-size:14px}
+  #answerBox .kbd{display:none}
+  .wrap>.kbd{display:none}   /* los atajos de teclado no sirven en el celular */
+  #ayudaFija{max-height:150px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .lt{font-size:clamp(26px,7.4vw,50px);padding:5px 7px 3px;min-width:32px}
+  #bNoTilde{font-size:19px;margin-top:9px;padding:13px}
+  .frase{font-size:clamp(14px,3.6vw,19px)}
+  .timer{font-size:12.5px}
+  /* mientras se juega, el titulo grande estorba en el celular */
+  body.jugando h1{font-size:22px;margin:0 0 2px;text-shadow:3px 3px 0 var(--hot)}
+  #bPause span{display:none}   /* el (Esc) no sirve en el celular */
+  body.jugando .sub{display:none}
+  #legend{display:none}
+}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:520px){.stat b{font-size:18px}.lt{min-width:30px;padding:5px 6px 3px}}
 </style>
@@ -1105,7 +1147,10 @@ var arcadeLeft=0, arcadeDur=60, arcadeTick=null, arcadeOk=0, arcadeFail=0, sesio
 var BONO=0.5;
 var paused=false, pausaT=0;
 
-function show(id){ ['login','lobby','game'].forEach(function(s){ $('#'+s).classList.toggle('hide', s!==id); }); }
+function show(id){
+  ['login','lobby','game'].forEach(function(s){ $('#'+s).classList.toggle('hide', s!==id); });
+  document.body.classList.toggle('jugando', id==='game');   /* en el celular achica el titulo */
+}
 function enJuego(){ return user && !$('#game').classList.contains('hide'); }
 function modal(html,sinCerrar){ $('#modalBody').innerHTML=html;
   $('#modalClose').classList.toggle('hide',!!sinCerrar); $('#modal').classList.add('go'); }

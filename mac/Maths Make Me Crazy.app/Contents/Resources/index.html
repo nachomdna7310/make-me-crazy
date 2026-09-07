@@ -275,6 +275,10 @@ tr.yo{background:rgba(255,210,30,.12)}
 .mini{font-size:11.5px;color:#8e81a8;text-align:center;margin-top:16px;line-height:1.7}
 .kbd{font-size:11px;color:#7d7194;text-align:center;margin-top:8px}
 textarea{width:100%;height:110px;background:#100d18;color:#9ef;border:3px solid #000;border-radius:12px;padding:10px;font-family:monospace;font-size:11px}
+/* ---- en pantallas tactiles el campo es solo un visor: escribe el teclado del juego ---- */
+body.tactil #ans{text-align:center;font-size:26px;letter-spacing:2px;caret-color:transparent;
+  background:#0d0b12;border-color:var(--cy);cursor:default;padding:10px}
+body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
 /* ---- alternativas ---- */
 .opts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px}
 .op{position:relative;font-family:Impact,"Arial Black",sans-serif;font-size:clamp(24px,6vw,38px);padding:18px 10px 16px;
@@ -284,6 +288,44 @@ textarea{width:100%;height:110px;background:#100d18;color:#9ef;border:3px solid 
 .op.ok{background:var(--neon);color:#0d0b12;animation:bump .55s cubic-bezier(.2,1.7,.4,1)}
 .op.err{background:var(--hot);color:#fff}
 .op.real{outline:4px dashed var(--neon);outline-offset:3px}
+
+/* ---- celular: que quepa todo el juego en una pantalla, sin scroll ---- */
+@media (max-width:560px){
+  .wrap{padding:8px 9px 22px}
+  h1{font-size:clamp(24px,7.2vw,40px);text-shadow:4px 4px 0 var(--hot),7px 7px 0 rgba(0,0,0,.6)}
+  .sub{margin:9px 0 9px;font-size:10px;letter-spacing:2px}
+  .card{padding:11px;border-radius:15px;box-shadow:6px 6px 0 rgba(0,0,0,.65),inset 0 0 0 2px rgba(255,255,255,.06)}
+  .top{margin-bottom:7px}
+  .me{padding:3px 10px 3px 5px}
+  .me .av{font-size:19px}
+  .modes{margin-bottom:8px;gap:5px}
+  .modes button{font-size:12px;padding:7px 3px;border-radius:10px}
+  .hud{gap:6px;margin-bottom:7px}
+  .lvlbox{min-width:80px;padding:3px 10px 5px;border-width:3px}
+  .lvlbox span{letter-spacing:2px}
+  .lvlbox b{font-size:34px}
+  .badge{font-size:13px;padding:4px 9px}
+  .stat b{font-size:17px}
+  .bar{height:16px;margin-top:6px}
+  .tbar{margin:7px 0 2px}
+  .pad{gap:5px;margin-top:7px}
+  .pad button{font-size:19px;padding:9px 0;border-radius:10px}
+  button{padding:11px 13px;font-size:16px}
+  button.sm{padding:7px 9px;font-size:12px}
+  .row{gap:7px}
+  .ayuda{padding:9px 11px;font-size:12.5px;line-height:1.6}
+  .fb{padding:10px 12px}
+  .fb h3{font-size:17px}
+  .fb p{font-size:14px}
+  #answerBox .kbd{display:none}
+  .wrap>.kbd{display:none}   /* los atajos de teclado no sirven en el celular */
+  #ayudaFija{max-height:150px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  /* mientras se juega, el titulo grande estorba en el celular */
+  body.jugando h1{font-size:22px;margin:0 0 2px;text-shadow:3px 3px 0 var(--hot)}
+  #bPause span{display:none}   /* el (Esc) no sirve en el celular */
+  body.jugando .sub{display:none}
+  #legend{display:none}
+}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:520px){.stat b{font-size:18px}.pad button{font-size:21px;padding:12px 0}}
 </style>
@@ -882,7 +924,10 @@ var arcadeLeft=0, arcadeDur=60, arcadeTick=null, arcadeOk=0, arcadeFail=0, sesio
 var BONO=0.5;                       /* cada acierto del contrarreloj te regala medio segundo */
 var paused=false, pausaT=0;
 
-function show(id){ ['login','lobby','game'].forEach(function(s){ $('#'+s).classList.toggle('hide', s!==id); }); }
+function show(id){
+  ['login','lobby','game'].forEach(function(s){ $('#'+s).classList.toggle('hide', s!==id); });
+  document.body.classList.toggle('jugando', id==='game');   /* en el celular achica el titulo */
+}
 function enJuego(){ return user && !$('#game').classList.contains('hide'); }
 function modal(html,sinCerrar){ $('#modalBody').innerHTML=html;
   $('#modalClose').classList.toggle('hide',!!sinCerrar); $('#modal').classList.add('go'); }
@@ -1468,6 +1513,29 @@ function toggleSonido(){
 }
 pintarSonido();
 
+/* ---------- un solo teclado en el celular ----------
+   En una pantalla tactil el teclado del sistema se come media pantalla y el
+   juego ya trae el suyo, asi que dejo el campo en solo lectura: no salta el
+   teclado del sistema pero el del juego sigue escribiendo igual.
+   En el computador no cambia nada: se escribe con el teclado de verdad. */
+var TACTIL = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+             ('ontouchstart' in window) || navigator.maxTouchPoints>0;
+function ajustarTeclado(tactil){
+  var i=$('#ans'); if(!i) return;
+  if(tactil){
+    i.readOnly=true;
+    i.setAttribute('inputmode','none');       /* Android */
+    i.setAttribute('placeholder','Toca los números de abajo');
+    document.body.classList.add('tactil');
+  } else {
+    i.readOnly=false;
+    i.setAttribute('inputmode','decimal');
+    i.setAttribute('placeholder','Tu respuesta y Enter');
+    document.body.classList.remove('tactil');
+  }
+}
+ajustarTeclado(TACTIL);
+
 /* teclado en pantalla */
 document.querySelectorAll('.pad button').forEach(function(b){
   b.onclick=function(){
@@ -1476,7 +1544,7 @@ document.querySelectorAll('.pad button').forEach(function(b){
     if(k==='del') i.value=i.value.slice(0,-1);
     else if(k===','){ if(i.value.indexOf(',')<0 && i.value!=='') i.value+=','; }
     else i.value+=k;
-    i.focus();
+    if(!TACTIL) i.focus();          /* en el celular no le doy foco: abriria el teclado */
   };
 });
 
@@ -1669,7 +1737,9 @@ function verAyuda(){
    '<b>🔁 Repaso:</b> lo que fallas vuelve a aparecerte más adelante hasta que te salga.<br>'+
    '<b>💡 Pista:</b> te dice la estrategia sin darte el resultado, pero vale la mitad.<br>'+
    '<b>🏠 LOBBY:</b> desde ahí eliges modo y ves tus números. <b>Esc</b> pausa el juego y detiene el cronómetro.<br>'+
-   '<b>Atajos:</b> Enter responde y sigue · 1-4 alternativa · P pista · S saltar · Esc pausa/cierra.</p>');
+   '<b>📱 En el celular:</b> el juego usa <b>su propio teclado</b>, el del sistema no aparece (si no, no cabría el ejercicio). '+
+   'Si prefieres no escribir nada, elige el modo <b>alternativas</b> antes de jugar.<br>'+
+   '<b>Atajos (computador):</b> Enter responde y sigue · 1-4 alternativa · P pista · S saltar · Esc pausa/cierra.</p>');
 }
 wire('.bStats',verStats); wire('.bMedals',verMedallas); wire('.bRank',verRanking); wire('.bHelp',verAyuda);
 
@@ -1870,6 +1940,28 @@ if(location.search.indexOf('test')>=0){
         if(correctas!==1) bad.push(['alt-correctas',L,p.text,correctas]);
       }
     }
+  })();
+
+  /* --- un solo teclado: en tactil el campo queda de solo lectura --- */
+  (function(){
+    ajustarTeclado(true);
+    if(!$('#ans').readOnly) bad.push(['tactil-no-bloquea-teclado']);
+    if($('#ans').getAttribute('inputmode')!=='none') bad.push(['tactil-inputmode']);
+    if(!document.body.classList.contains('tactil')) bad.push(['tactil-sin-clase']);
+    /* el teclado del juego tiene que seguir escribiendo aunque este en readonly */
+    $('#ans').value='';
+    document.querySelector('.pad button[data-k="7"]').click();
+    document.querySelector('.pad button[data-k="5"]').click();
+    document.querySelector('.pad button[data-k=","]').click();
+    document.querySelector('.pad button[data-k="2"]').click();
+    if($('#ans').value!=='75,2') bad.push(['tactil-no-escribe',$('#ans').value]);
+    document.querySelector('.pad button[data-k="del"]').click();
+    if($('#ans').value!=='75,') bad.push(['tactil-no-borra',$('#ans').value]);
+    ajustarTeclado(false);
+    if($('#ans').readOnly) bad.push(['escritorio-bloqueado']);
+    if($('#ans').getAttribute('inputmode')!=='decimal') bad.push(['escritorio-inputmode']);
+    if(document.body.classList.contains('tactil')) bad.push(['escritorio-con-clase-tactil']);
+    $('#ans').value='';
   })();
 
   /* --- prueba de humo de la interfaz: jugar de verdad sin explotar --- */

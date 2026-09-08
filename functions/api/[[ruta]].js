@@ -6,7 +6,7 @@
    Todo lo que llega del navegador se revisa aca: nombres, largos y numeros.
    Las marcas solo suben (MAX), asi un aparato atrasado nunca borra un record.
    ============================================================ */
-const JUEGOS = ['maths', 'tildes', 'tabla'];
+const JUEGOS = ['maths', 'tildes', 'tabla', 'spermiox'];
 const SAL = 'make-me-crazy-2026';
 const MAX_DATOS = 60000;            // el progreso de un jugador pesa ~3 KB
 
@@ -26,7 +26,9 @@ async function sha256(txt) {
 }
 const limpiarNombre = n => String(n == null ? '' : n).replace(/\s+/g, ' ').trim().slice(0, 18);
 const claveDe = n => limpiarNombre(n).toLowerCase();
-const entero = (v, max = 99999999) => {
+// spermiox cuenta espermatozoides: los totales llegan a miles de millones,
+// asi que el tope es el entero seguro de JavaScript, no 99 millones.
+const entero = (v, max = 9000000000000000) => {
   const n = Math.floor(Number(v));
   return Number.isFinite(n) && n > 0 ? Math.min(n, max) : 0;
 };

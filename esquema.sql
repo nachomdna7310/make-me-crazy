@@ -2,7 +2,7 @@
 -- Los records solo suben: al guardar se toma el maximo entre lo que llega y lo
 -- que ya estaba, asi ningun aparato atrasado puede borrar una marca vieja.
 CREATE TABLE IF NOT EXISTS jugadores (
-  juego     TEXT NOT NULL,          -- maths | tildes | tabla
+  juego     TEXT NOT NULL,          -- maths | tildes | tabla | spermiox
   clave     TEXT NOT NULL,          -- nombre normalizado (minusculas, sin espacios de mas)
   nombre    TEXT NOT NULL,          -- como se ve en la tabla
   hash      TEXT NOT NULL,          -- SHA-256 de la contrasena (nunca se guarda la contrasena)

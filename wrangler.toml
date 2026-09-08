@@ -1,0 +1,8 @@
+name = "make-me-crazy"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "make-me-crazy"
+database_id = "PENDIENTE"

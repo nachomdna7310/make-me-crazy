@@ -239,6 +239,15 @@ tr.yo{background:rgba(255,210,30,.12)}
 .ligaline{display:flex;gap:3px;margin:10px 0}
 .ligaline>div{flex:1;height:10px;border:2px solid #000;border-radius:4px;background:#221a30}
 .ligaline>div.on{background:var(--sun)}
+/* ---- ranking global ---- */
+.reyes{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:8px;margin-bottom:12px}
+.rey{background:#2a2138;border:3px solid #000;border-radius:12px;padding:8px 10px;box-shadow:3px 3px 0 rgba(0,0,0,.6)}
+.rey b{display:block;font-size:10.5px;letter-spacing:1px;color:var(--sun)}
+.rey span{display:block;font-family:Impact,"Arial Black",sans-serif;font-size:17px;letter-spacing:1px;margin-top:2px;overflow-wrap:anywhere}
+.rey i{font-style:normal;font-size:12px;color:#a89ac2}
+#chkOnline{margin-top:12px}
+#chkOnline.on{background:var(--cy);color:#0d0b12}
+#avisoOnline{font-size:11.5px;color:#8e81a8;line-height:1.6;margin-top:6px}
 /* ---- lobby ---- */
 .hero{display:flex;gap:14px;align-items:center;background:linear-gradient(120deg,rgba(255,46,136,.22),rgba(34,211,238,.16));
   border:3px solid #000;border-radius:16px;padding:14px;box-shadow:5px 5px 0 rgba(0,0,0,.55)}
@@ -352,6 +361,8 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
     <button class="sm ghost bStats">📊 NÚMEROS</button>
     <button class="sm ghost bMedals">🏅 MEDALLAS</button>
     <button class="sm ghost bRank">🏆 RANKING</button>
+      <button class="sm cy bGlobal">🌎 RANKING GLOBAL</button>
+    <button class="sm cy bGlobal">🌎 GLOBAL</button>
     <button class="sm ghost bHelp">❓ AYUDA</button>
     <button class="sm ghost bSound">🔊</button>
   </div>
@@ -371,13 +382,16 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
   <section id="login" class="card">
     <label>TU NOMBRE (crea tu cuenta o entra a la tuya)</label>
     <input id="name" maxlength="18" placeholder="Ej: Rafa 7B" autocomplete="off">
-    <label style="margin-top:12px">PIN DE 4 DIGITOS (opcional, para que nadie te toque el progreso)</label>
-    <input id="pin" maxlength="4" inputmode="numeric" placeholder="----" autocomplete="off">
+    <label style="margin-top:12px" id="lblPin">PIN DE 4 DIGITOS (opcional, para que nadie te toque el progreso)</label>
+    <input id="pin" maxlength="20" inputmode="numeric" placeholder="----" autocomplete="off">
+    <label class="chk" id="chkOnline"><input type="checkbox" id="onlineSw"><span>🌎 JUGAR ONLINE · ranking global y tu cuenta en cualquier aparato</span></label>
+    <div id="avisoOnline"></div>
     <label style="margin-top:12px">ELIGE TU CARA</label>
     <div id="avatars" class="pills"></div>
     <div class="row" style="margin-top:14px">
       <button id="enter">ENTRAR ▶</button>
       <button id="toRank" class="ghost">🏆 RANKING</button>
+      <button class="ghost bGlobal">🌎 GLOBAL</button>
       <button id="toCuentas" class="ghost">🗑 CUENTAS</button>
     </div>
     <label id="usersLbl" style="margin-top:16px" class="hide">CUENTAS EN ESTE COMPUTADOR (toca la tuya y sigues donde ibas)</label>
@@ -881,7 +895,7 @@ var AVATARS=['🧠','😎','🐯','🦊','👽','🤖','🐲','🦁','🐼','�
 var avatarSel='🧠';
 function blank(){
   return {v:4,pin:'',avatar:'🧠',level:1,cred:0,pts:0,ok:0,fail:0,best:0,streak:0,time:0,rayos:0,
-          pistas:0,sinPista:0,saltos:0,arcadeBest:0,arcadeRecs:{},arcDur:60,misiones:0,medals:{},mejorPartida:0,resp:'escribir',mejorPartida:0,
+          pistas:0,sinPista:0,saltos:0,arcadeBest:0,arcadeRecs:{},arcDur:60,misiones:0,medals:{},mejorPartida:0,online:false,resp:'escribir',mejorPartida:0,
           ops:{'+':true,'-':true,'*':true,'/':true,'mix':true},
           byOp:{'+':{ok:0,fail:0,t:0},'−':{ok:0,fail:0,t:0},'×':{ok:0,fail:0,t:0},'÷':{ok:0,fail:0,t:0},'mix':{ok:0,fail:0,t:0}},
           dias:{last:'',seguidos:0,hechos:0,meta:15,cumplida:false}, repaso:[], hist:[]};
@@ -921,7 +935,8 @@ function marcarDia(d){
 /* ---------- estado ---------- */
 var user=null, P0=null, t0=0, tick=null, genLevel=1, MODE='carrera', pistaUsada=false, desdeRepaso=false;
 var arcadeLeft=0, arcadeDur=60, arcadeTick=null, arcadeOk=0, arcadeFail=0, sesion=null;
-var BONO=0.5;                       /* cada acierto del contrarreloj te regala medio segundo */
+var BONO=0.5;
+var arcadePts=0;        /* puntos del contrarreloj: NO se suman hasta que el reloj llega a cero */                       /* cada acierto del contrarreloj te regala medio segundo */
 var paused=false, pausaT=0;
 
 function show(id){
@@ -1028,13 +1043,12 @@ function verCuentas(){
 $('#toCuentas').onclick=verCuentas;
 renderAvatars(); renderUsers();
 
-$('#enter').onclick=function(){
-  var n=$('#name').value.trim(), pin=$('#pin').value.trim();
-  if(n.length<2){ alert('Escribe tu nombre (mínimo 2 letras).'); return; }
-  var nueva=!DB[n];
-  if(nueva){ DB[n]=blank(); DB[n].pin=pin; DB[n].avatar=avatarSel; }
-  else if(DB[n].pin && DB[n].pin!==pin){ alert('PIN incorrecto para '+n+'.'); $('#pin').value=''; return; }
+/* la parte de siempre: crear/abrir la cuenta de ESTE aparato */
+function entrarDeVerdad(n,pin,nueva,online){
+  if(!DB[n]){ DB[n]=blank(); DB[n].pin=pin; DB[n].avatar=avatarSel; }
   DB[n]=migrar(DB[n]);
+  DB[n].online=!!online;
+  if(online){ nubeClave=pin; DB[n].pin=pin; }
   user=n; OPS=DB[n].ops;
   var racha=marcarDia(DB[n]);
   sesion={ok:0,fail:0,t:0,nivel0:DB[n].level,pts0:DB[n].pts};
@@ -1044,7 +1058,65 @@ $('#enter').onclick=function(){
   if(nueva) toast('¡BIENVENIDO!','Empiezas en el nivel 1. Junta 5 ejercicios rápidos y subes al 2.');
   else if(racha>1) toast('🔥 RACHA DE '+racha+' DÍAS','Volviste. Sigue así y desbloqueas medallas.');
   chequearMedallas();
+  if(online) nubeSubir();
+}
+$('#enter').onclick=function(){
+  var n=$('#name').value.trim(), pin=$('#pin').value.trim();
+  if(n.length<2){ alert('Escribe tu nombre (mínimo 2 letras).'); return; }
+  var nueva=!DB[n];
+  if(!nueva && DB[n].pin && DB[n].pin!==pin){ alert('PIN incorrecto para '+n+'.'); $('#pin').value=''; return; }
+  if(!nubeOn){ entrarDeVerdad(n,pin,nueva,false); return; }
+  if(pin.length<3){
+    alert('Para jugar online necesitas una contraseña de al menos 3 caracteres.\n\nEs la misma que vas a escribir en tu otro celular para seguir donde ibas.');
+    $('#pin').focus(); return;
+  }
+  var b=$('#enter'), txt=b.textContent;
+  b.disabled=true; b.textContent='CONECTANDO…';
+  nubeEntrar(n,pin,function(r){
+    b.disabled=false; b.textContent=txt;
+    if(!r||!r.ok){
+      if(r&&r.error==='clave'){
+        alert('Ese nombre ya está en el ranking global con OTRA contraseña.\n\nSi la cuenta es tuya, escribe la contraseña correcta. Si no, elige otro nombre.');
+        $('#pin').value=''; $('#pin').focus(); return;
+      }
+      toast('SIN CONEXIÓN','Entras igual: tu progreso queda guardado en este aparato.');
+      entrarDeVerdad(n,pin,nueva,false); return;
+    }
+    /* si la nube va más adelante que este aparato, traigo esa copia
+       (la de acá se guarda de respaldo: nunca se borra nada) */
+    if(r.datos){
+      var local=DB[n], pesoLocal=local?((local.ok||0)+(local.fail||0)):-1;
+      if((r.peso||0)>pesoLocal){
+        try{
+          if(local) localStorage.setItem('respaldo:'+JUEGO+':'+n, JSON.stringify(local));
+          var deLaNube=JSON.parse(r.datos);
+          deLaNube.pin=pin;
+          DB[n]=migrar(deLaNube); nueva=false;
+          toast('🌎 TU CUENTA','Traje tu progreso de la nube: nivel '+DB[n].level+'.');
+        }catch(e){}
+      }
+    }
+    entrarDeVerdad(n,pin,nueva,true);
+  });
 };
+/* el ticket de online se recuerda en este aparato */
+function pintarOnline(){
+  $('#onlineSw').checked=nubeOn;
+  $('#chkOnline').classList.toggle('on',nubeOn);
+  $('#lblPin').textContent = nubeOn ? 'CONTRASEÑA (mínimo 3 · la misma en todos tus aparatos)'
+                                    : 'PIN DE 4 DIGITOS (opcional, para que nadie te toque el progreso)';
+  $('#pin').setAttribute('inputmode', nubeOn?'text':'numeric');
+  $('#pin').setAttribute('placeholder', nubeOn?'tu contraseña':'----');
+  $('#avisoOnline').innerHTML = nubeOn
+    ? 'Con esto tus récords entran al <b>ranking global</b> y puedes entrar con tu nombre y contraseña desde cualquier celular. Solo viajan tu nombre, tu carita y tus números.'
+    : 'Apagado: todo queda solo en este aparato, como siempre.';
+}
+$('#onlineSw').onchange=function(){
+  nubeOn=$('#onlineSw').checked;
+  try{ localStorage.setItem('mmc_online', nubeOn?'1':'0'); }catch(e){}
+  SFX.clic(); pintarOnline();
+};
+pintarOnline();
 $('#name').onkeydown=function(e){ if(e.key==='Enter') $('#pin').focus(); };
 $('#pin').onkeydown =function(e){ if(e.key==='Enter') $('#enter').click(); };
 $('#toRank').onclick=function(){ verRanking(); };
@@ -1071,7 +1143,7 @@ function renderLobby(){
   $('#lbPlaySub').textContent = tot
     ? 'Carrera · nivel '+d.level+' · te faltan '+fmt(Math.max(0,need-d.cred))+' ejercicios'
     : 'Empiezas en el nivel 1. Junta 5 ejercicios rápidos y subes.';
-  $('#lbRec').textContent = d.arcadeBest? 'Tu récord en 60 s: '+d.arcadeBest+'.' : '';
+  $('#lbRec').textContent = mejorArcade(d).v? 'Tu récord: '+textoArcade(d)+'.' : '';
   /* mision del dia */
   var m=d.dias, pct=Math.min(100, m.hechos/m.meta*100);
   $('#lbMision').className = 'mision'+(m.cumplida?' ok':'');
@@ -1133,6 +1205,7 @@ function salirDeVerdad(){
   show('login'); renderUsers(); cerrarModal(); $('#name').focus();
 }
 function resumenSesion(){
+  abandonarArcade();
   var d=DB[user], tot=sesion.ok+sesion.fail;
   var prec = tot? Math.round(sesion.ok/tot*100):0;
   var med = sesion.ok? (sesion.t/sesion.ok):0;
@@ -1157,6 +1230,7 @@ function llenarNiveles(){
   s.value = Math.min(200, Math.max(1, DB[user].level));
 }
 function setMode(m){
+  abandonarArcade();
   MODE=m; clearInterval(tick); clearInterval(arcadeTick); nuevaPartida();
   $('#mCarrera').classList.toggle('on',m==='carrera');
   $('#mEntrenar').classList.toggle('on',m==='entrenar');
@@ -1180,7 +1254,7 @@ function mmss(sg){
 }
 function nomDur(sg){ return sg<60 ? sg+' segundos' : (sg===60?'60 segundos':(sg/60)+' minutos'); }
 function arrancarArcade(){
-  arcadeOk=0; arcadeFail=0;
+  arcadeOk=0; arcadeFail=0; arcadePts=0;
   arcadeDur=DB[user].arcDur||60; arcadeLeft=arcadeDur;
   toast('⏱ CONTRARRELOJ '+mmss(arcadeDur),'Cada acierto te regala medio segundo más. Fallar no descuenta, pero pierdes tiempo.');
   newProblem(true);
@@ -1202,16 +1276,23 @@ function arcadeStep(){
 function terminarArcade(){
   clearInterval(arcadeTick); clearInterval(tick);
   var d=DB[user], k=String(arcadeDur), antes=d.arcadeRecs[k]||0, record=arcadeOk>antes;
+  /* el reloj llego a cero: recien AHORA los puntos son tuyos */
+  var ganados=arcadePts; arcadePts=0;
+  d.pts+=ganados; bump('#pts');
   if(record){ d.arcadeRecs[k]=arcadeOk; confetti(70); }
   /* el record de 60 s es el que sale en el ranking y en las medallas: no lo mezclo con los largos */
   if(arcadeDur===60 && arcadeOk>d.arcadeBest) d.arcadeBest=arcadeOk;
   var globArc=mejorGlobalArcade(arcadeDur,user);
   if(record && arcadeOk>globArc.v){ confetti(90); toast('👑 RÉCORD DE LA TABLA','Nadie había hecho '+arcadeOk+' en '+nomDur(arcadeDur)+'.'); }
   SFX.fin(); save(); chequearMedallas();
+  var tarjeta=cierrePartida();          /* misma tarjeta de records que los otros modos */
+  nubeSubir();
   modal('<h2>⏱ SE ACABÓ EL TIEMPO</h2>'+
     '<p style="font-size:17px;line-height:1.8">Acertaste <b style="font-size:30px;color:var(--neon)">'+arcadeOk+'</b> ejercicios en '+nomDur(arcadeDur)+
     (arcadeFail?' (y fallaste '+arcadeFail+')':'')+'.<br>'+
-    lineasRecord(arcadeOk,antes,globArc,'aciertos')+'</p>'+
+    lineasRecord(arcadeOk,antes,globArc,'aciertos')+'<br>'+
+    'Ganaste <b style="color:var(--sun)">'+fmtN(ganados)+' puntos</b> en esta partida.</p>'+
+    tarjeta+
     '<div class="row" style="margin-top:14px"><button id="arcOtra">OTRA VEZ ⏱</button>'+
     '<button id="arcCambiar" class="sun">⚙ CAMBIAR</button>'+
     '<button id="arcVolver" class="ghost">VOLVER A CARRERA</button></div>');
@@ -1405,7 +1486,12 @@ function submitVal(v){
   if(good) misionDelDia(d);
 
   if(MODE==='arcade'){
-    if(good){ arcadeOk++; d.ok++; sesion.ok++; anotarPartida(true,0); arcadeLeft+=BONO; pintarReloj();
+    if(good){
+      arcadeOk++; d.ok++; sesion.ok++;
+      d.streak++; d.best=Math.max(d.best,d.streak);
+      var ptsArc=scorePts(nivelActivo(),secs,d.streak);
+      arcadePts+=ptsArc; anotarPartida(true,ptsArc);      /* se guardan al terminar el reloj */
+      arcadeLeft+=BONO; pintarReloj();
               SFX.ok(); flash('var(--neon)'); flota('+1 ⏱ +0,5 s'); }
     else { arcadeFail++; d.fail++; sesion.fail++; anotarPartida(false); SFX.mal(); flash('var(--hot)'); $('#prob').classList.add('shake'); }
     save(); newProblem(true); return;          /* arcade no se detiene: sigue de largo */
@@ -1584,6 +1670,17 @@ document.addEventListener('keydown',function(e){
    (todos los jugadores guardados en este computador).
    ============================================================ */
 var partida=null;
+/* el mejor contrarreloj del jugador, sea de la duracion que sea */
+function mejorArcade(d){
+  var recs=(d&&d.arcadeRecs)||{}, mejor={v:0,dur:0};
+  for(var k in recs){ if(Number(recs[k])>mejor.v){ mejor={v:Number(recs[k]),dur:Number(k)}; } }
+  if((d&&d.arcadeBest||0)>mejor.v) mejor={v:d.arcadeBest,dur:60};
+  return mejor;
+}
+function textoArcade(d){
+  var m=mejorArcade(d);
+  return m.v ? (m.v+' en '+nomDur(m.dur).replace(' segundos','s').replace(' minutos','min')) : '-';
+}
 function nuevaPartida(){ partida={ok:0,fail:0,pts:0}; }
 function anotarPartida(ok,pts){ if(!partida) nuevaPartida(); if(ok){ partida.ok++; partida.pts+=pts||0; } else partida.fail++; }
 function mejorGlobal(campo,salvo){
@@ -1631,12 +1728,173 @@ function cierrePartida(){
     toast(esGlobal?'👑 RÉCORD DE LA TABLA':'🏆 RÉCORD TUYO','Partida de '+fmtN(p)+' puntos.');
   }
   partida=null;
+  nubeSubir();                     /* si juega online, publica sus marcas */
   return html;
 }
+/* si te sales del contrarreloj antes de que suene la campana, esos puntos no cuentan */
+function abandonarArcade(){
+  if(MODE==='arcade' && arcadeLeft>0 && arcadePts>0){
+    toast('⏱ CONTRARRELOJ SIN TERMINAR','Te saliste antes de que se acabara el reloj: esos '+fmtN(arcadePts)+' puntos no se guardan.');
+    SFX.mal();
+  }
+  if(MODE==='arcade' && arcadeLeft>0){ arcadePts=0; partida=null; }
+}
 function salirAlLobby(){
+  abandonarArcade();
   var h=cierrePartida();
   irAlLobby();
   if(h) modal('<h2>🏁 FIN DE LA PARTIDA</h2>'+h);
+}
+
+/* ============================================================
+   MODO ONLINE (opcional)
+   Dos cosas y nada mas:
+     1. Ranking global: quien lleva el record de cada modo entre todos.
+     2. Tu cuenta en la nube: entras con nombre y contrasena en cualquier
+        aparato y sigues donde ibas.
+   Es OPCIONAL: si el ticket "jugar online" esta apagado, el juego se
+   comporta exactamente como siempre y no sale ni un dato del aparato.
+   Si internet falla, el juego sigue igual: todo esto va en try/catch y
+   nunca bloquea una partida.
+   ============================================================ */
+var API = 'https://make-me-crazy.pages.dev/api';
+if (location.hostname === '127.0.0.1' || location.hostname === 'localhost') API = '/api';   /* pruebas */
+var JUEGO = 'maths';
+var nubeClave = '';          /* la contrasena de esta sesion, solo en memoria */
+var nubeOn = false;          /* lo que eligio este aparato */
+try { nubeOn = localStorage.getItem('mmc_online') === '1'; } catch (e) { }
+
+function pedir(ruta, opciones, cb) {
+  var listo = false;
+  function terminar(r) { if (!listo) { listo = true; try { cb(r); } catch (e) { } } }
+  try {
+    var ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var t = setTimeout(function () { try { ctl && ctl.abort(); } catch (e) { } terminar(null); }, 9000);
+    var op = opciones || {};
+    if (ctl) op.signal = ctl.signal;
+    fetch(API + ruta, op).then(function (r) { return r.json(); })
+      .then(function (j) { clearTimeout(t); terminar(j); })
+      .catch(function () { clearTimeout(t); terminar(null); });
+  } catch (e) { terminar(null); }
+}
+function postear(ruta, cuerpo, cb) {
+  pedir(ruta, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) }, cb);
+}
+/* las marcas que se publican en el ranking (numeros, nada mas) */
+function marcasDe(d) {
+  var med = 0; MEDALLAS.forEach(function (m) { if (d.medals[m.id]) med++; });
+  var recs = d.arcadeRecs || {};
+  return {
+    peso: (d.ok || 0) + (d.fail || 0),
+    nivel: d.level || 1, pts: d.pts || 0, partida: d.mejorPartida || 0,
+    arcade60: Math.max(d.arcadeBest || 0, Number(recs['60']) || 0),
+    arcade120: Number(recs['120']) || 0,
+    arcade180: Number(recs['180']) || 0,
+    arcade300: Number(recs['300']) || 0,
+    arcade600: Number(recs['600']) || 0,
+    racha: d.best || 0, aciertos: d.ok || 0, fallos: d.fail || 0, medallas: med
+  };
+}
+/* el progreso que viaja: nunca la contrasena ni el PIN */
+function paraLaNube(d) {
+  var copia = JSON.parse(JSON.stringify(d));
+  delete copia.pin; delete copia.clave; delete copia.online;
+  return JSON.stringify(copia);
+}
+function nubeActiva() { return !!(nubeOn && user && DB[user] && DB[user].online && nubeClave); }
+
+/* ---------- entrar / crear la cuenta en la nube ---------- */
+function nubeEntrar(nombre, clave, cb) {
+  postear('/cuenta', { juego: JUEGO, nombre: nombre, clave: clave }, function (r) {
+    if (!r) { cb({ ok: false, error: 'sin-internet' }); return; }
+    cb(r);
+  });
+}
+/* ---------- subir progreso y marcas ---------- */
+var subiendo = false;
+function nubeSubir(cb) {
+  if (!nubeActiva() || subiendo) { if (cb) cb(null); return; }
+  var d = DB[user];
+  subiendo = true;
+  postear('/guardar', {
+    juego: JUEGO, nombre: user, clave: nubeClave, avatar: d.avatar || '',
+    datos: paraLaNube(d), marcas: marcasDe(d)
+  }, function (r) {
+    subiendo = false;
+    if (r && r.ok && r.records) {
+      var partes = [];
+      if (r.records.partida) partes.push('mejor partida');
+      if (r.records.arcade60) partes.push('contrarreloj de 60 s');
+      if (r.records.nivel) partes.push('nivel más alto');
+      if (r.records.racha) partes.push('racha más larga');
+      if (partes.length) {
+        toast('🌎 RÉCORD DEL GRUPO', 'Lideras: ' + partes.join(' · ') + '.');
+        try { confetti(60); SFX.medalla(); } catch (e) { }
+      }
+    }
+    if (cb) cb(r);
+  });
+}
+
+/* ---------- el ranking global ---------- */
+var MODOS = [
+  { k: 'nivel', t: '👑 NIVEL', d: 'el que va más arriba' },
+  { k: 'partida', t: '🏁 MEJOR PARTIDA', d: 'más puntos en una sola partida' },
+  { k: 'arcade60', t: '⏱ 60 SEGUNDOS', d: 'más aciertos en el contrarreloj de 60 s' },
+  { k: 'arcade120', t: '⏱ 2 MINUTOS', d: 'más aciertos en 2 minutos' },
+  { k: 'arcade180', t: '⏱ 3 MINUTOS', d: 'más aciertos en 3 minutos' },
+  { k: 'arcade300', t: '⏱ 5 MINUTOS', d: 'más aciertos en 5 minutos' },
+  { k: 'arcade600', t: '⏱ 10 MINUTOS', d: 'más aciertos en 10 minutos' },
+  { k: 'racha', t: '🔥 RACHA', d: 'más aciertos seguidos sin fallar' },
+  { k: 'pts', t: '⭐ PUNTOS', d: 'puntos juntados en total' }
+];
+function verRankingGlobal() {
+  modal('<h2>🌎 RANKING GLOBAL</h2><p style="color:#a89ac2;font-size:14px">Buscando a los demás jugadores…</p>');
+  pedir('/tabla?juego=' + JUEGO, null, function (r) {
+    if (!r || !r.ok) {
+      modal('<h2>🌎 RANKING GLOBAL</h2><div class="warn">No pude conectarme. Revisa el internet y vuelve a intentar.</div>' +
+        '<p style="font-size:14px;line-height:1.8">El ranking global vive en internet; el de este computador lo ves igual en 🏆 RANKING.</p>');
+      return;
+    }
+    pintarTablaGlobal(r.filas || []);
+  });
+}
+/* dibuja la tabla (aparte, para poder probarla sin internet) */
+function pintarTablaGlobal(filas) {
+  {
+    if (!filas.length) {
+      modal('<h2>🌎 RANKING GLOBAL</h2><p style="font-size:15px;line-height:1.8">Todavía no hay nadie. ' +
+        'Tica <b>🌎 JUGAR ONLINE</b> al entrar con tu nombre y serás el primero de la tabla.</p>');
+      return;
+    }
+    /* quien lleva el record de cada modo */
+    var reyes = MODOS.map(function (m) {
+      var mejor = null;
+      filas.forEach(function (f) { if (!mejor || (Number(f[m.k]) || 0) > (Number(mejor[m.k]) || 0)) mejor = f; });
+      var v = mejor ? (Number(mejor[m.k]) || 0) : 0;
+      if (!v) return '';
+      return '<div class="rey"><b>' + m.t + '</b><span>' + esc(mejor.nombre) + '</span><i>' + fmtN(v) + '</i></div>';
+    }).join('');
+    var cuerpo = filas.map(function (f, i) {
+      var tot = (f.aciertos || 0) + (f.fallos || 0);
+      var corona = ['🥇', '🥈', '🥉'][i] || (i + 1);
+      var arc = 0, arcDur = 0;
+      [[60, 'arcade60'], [120, 'arcade120'], [180, 'arcade180'], [300, 'arcade300'], [600, 'arcade600']]
+        .forEach(function (p) { if ((Number(f[p[1]]) || 0) > arc) { arc = Number(f[p[1]]); arcDur = p[0]; } });
+      return '<tr class="' + (user && f.nombre.toLowerCase() === String(user).toLowerCase() ? 'yo' : '') + '">' +
+        '<td>' + corona + '</td><td>' + (f.avatar || '') + ' ' + esc(f.nombre) + '</td>' +
+        '<td>' + f.nivel + '</td><td>' + fmtN(f.pts) + '</td><td>' + fmtN(f.partida) + '</td>' +
+        '<td>' + (arc ? arc + ' en ' + nomDur(arcDur).replace(' segundos', 's').replace(' minutos', 'min') : '-') + '</td>' +
+        '<td>' + (f.racha || 0) + '</td>' +
+        '<td>' + (tot ? Math.round(f.aciertos / tot * 100) + '%' : '-') + '</td></tr>';
+    }).join('');
+    modal('<h2>🌎 RANKING GLOBAL</h2>' +
+      '<div class="reyes">' + reyes + '</div>' +
+      '<table><thead><tr><th>#</th><th>JUGADOR</th><th>NV</th><th>PUNTOS</th><th>PARTIDA</th>' +
+      '<th>CONTRARRELOJ</th><th>RACHA</th><th>PRECIS.</th></tr></thead><tbody>' + cuerpo + '</tbody></table>' +
+      '<div class="kbd" style="margin-top:10px;line-height:1.7">Están todos los que juegan con <b>🌎 JUGAR ONLINE</b> ticado, ' +
+      'en cualquier celular o computador. Las marcas solo suben: nadie puede borrarle un récord a otro.</div>');
+  }
 }
 
 function barrita(pct,color){
@@ -1664,7 +1922,7 @@ function verStats(){
       '<b>Nivel '+d.level+'</b> · liga '+liga(d.level)[1]+'<br>'+
       'Ejercicios: <b>'+tot+'</b> · precisión <b>'+(tot?Math.round(d.ok/tot*100):0)+'%</b> · mejor racha <b>'+d.best+'</b><br>'+
       'Respuestas relámpago: <b>'+d.rayos+'</b> · pistas usadas: <b>'+d.pistas+'</b> · saltadas: <b>'+d.saltos+'</b><br>'+
-      'Récord 60 segundos: <b>'+d.arcadeBest+'</b> · días seguidos jugando: <b>'+d.dias.seguidos+'</b><br>'+
+      'Mejor contrarreloj: <b>'+textoArcade(d)+'</b> · días seguidos jugando: <b>'+d.dias.seguidos+'</b><br>'+
       'Tiempo total jugando: <b>'+Math.round(d.time/60)+' min</b>'+
     '</p>'+
     (peor?'<div class="warn">🎯 Tu punto débil ahora son las <b>'+peor.toLowerCase()+'</b> ('+peorP+'%). Entra a ENTRENAR y dale solo a eso un rato.</div>':'')+
@@ -1702,18 +1960,26 @@ function verMedallas(){
   }).join('');
   modal('<h2>🏅 MEDALLAS '+n+' / '+MEDALLAS.length+'</h2><div class="medals">'+html+'</div>');
 }
+/* el que tiene mejores numeros va mas arriba: puntos, nivel, mejor partida y contrarreloj */
+function ordenar(a,b){
+  return (b.pts||0)-(a.pts||0)
+      || (b.level||0)-(a.level||0)
+      || (b.mejorPartida||0)-(a.mejorPartida||0)
+      || (mejorArcade(b).v)-(mejorArcade(a).v)
+      || (b.best||0)-(a.best||0);
+}
 function verRanking(){
   var rows=Object.keys(DB).map(function(n){ return [n,migrar(DB[n])]; })
-    .sort(function(x,y){ return y[1].level-x[1].level || y[1].pts-x[1].pts; });
+    .sort(function(x,y){ return ordenar(x[1],y[1]); });
   var body=rows.map(function(r,i){
     var d=r[1], L=liga(d.level), tot=d.ok+d.fail;
     var corona=['🥇','🥈','🥉'][i]||(i+1);
     return '<tr class="'+(r[0]===user?'yo':'')+'"><td>'+corona+'</td><td>'+(d.avatar||'🧠')+' '+r[0]+'</td>'+
       '<td style="color:'+L[2]+';font-weight:800">'+L[1]+'</td><td>'+d.level+'</td><td>'+fmtN(d.pts)+'</td>'+
-      '<td>'+(tot?Math.round(d.ok/tot*100)+'%':'-')+'</td><td>'+d.best+'</td><td>'+fmtN(d.mejorPartida||0)+'</td><td>'+d.arcadeBest+'</td></tr>';
+      '<td>'+(tot?Math.round(d.ok/tot*100)+'%':'-')+'</td><td>'+d.best+'</td><td>'+fmtN(d.mejorPartida||0)+'</td><td>'+textoArcade(d)+'</td></tr>';
   }).join('') || '<tr><td colspan="9">Todavía no juega nadie.</td></tr>';
   modal('<h2>🏆 TABLA DE LA CALLE</h2><table><thead><tr><th>#</th><th>JUGADOR</th><th>LIGA</th><th>NV</th>'+
-    '<th>PUNTOS</th><th>PRECIS.</th><th>RACHA</th><th>PARTIDA</th><th>60s</th></tr></thead><tbody>'+body+'</tbody></table>'+
+    '<th>PUNTOS</th><th>PRECIS.</th><th>RACHA</th><th>PARTIDA</th><th>CONTRARRELOJ</th></tr></thead><tbody>'+body+'</tbody></table>'+
     '<div class="kbd" style="margin-top:10px">Son los jugadores guardados en este computador.</div>');
 }
 function verAyuda(){
@@ -1741,7 +2007,7 @@ function verAyuda(){
    'Si prefieres no escribir nada, elige el modo <b>alternativas</b> antes de jugar.<br>'+
    '<b>Atajos (computador):</b> Enter responde y sigue · 1-4 alternativa · P pista · S saltar · Esc pausa/cierra.</p>');
 }
-wire('.bStats',verStats); wire('.bMedals',verMedallas); wire('.bRank',verRanking); wire('.bHelp',verAyuda);
+wire('.bStats',verStats); wire('.bMedals',verMedallas); wire('.bRank',verRanking); wire('.bGlobal',verRankingGlobal); wire('.bHelp',verAyuda);
 
 /* ============================================================
    AUTOCOMPROBACION: abre index.html?test
@@ -1964,6 +2230,79 @@ if(location.search.indexOf('test')>=0){
     $('#ans').value='';
   })();
 
+  /* --- modo online: con un servidor de mentira, sin tocar internet --- */
+  (function(){
+    var fetchReal=window.fetch, llamadas=[];
+    window.fetch=function(url,op){
+      llamadas.push({url:String(url),cuerpo:(op&&op.body)?JSON.parse(op.body):null});
+      var resp={ok:true,filas:[]};
+      if(String(url).indexOf('/cuenta')>=0) resp={ok:true,nueva:false,datos:'{"level":7}',peso:45};
+      else if(String(url).indexOf('/guardar')>=0) resp={ok:true,guardado:true,records:{partida:false,arcade60:false,nivel:false,racha:false}};
+      return Promise.resolve({json:function(){ return Promise.resolve(resp); }});
+    };
+    /* los numeros que se publican */
+    var d=blank(); d.level=9; d.pts=1234; d.mejorPartida=321; d.arcadeBest=17;
+    d.arcadeRecs={'60':17,'600':40}; d.best=11; d.ok=100; d.fail=25; d.medals[MEDALLAS[0].id]=true;
+    var mm=marcasDe(d);
+    if(mm.peso!==125||mm.nivel!==9||mm.pts!==1234||mm.partida!==321) bad.push(['marcas',JSON.stringify(mm)]);
+    if(mm.arcade60!==17||mm.arcade600!==40||mm.racha!==11||mm.medallas!==1) bad.push(['marcas-records',JSON.stringify(mm)]);
+    /* la contrasena NUNCA viaja */
+    d.pin='ClaveSecreta777'; d.clave='OtroSecreto999'; d.online=true;
+    var viaje=paraLaNube(d), obj=JSON.parse(viaje);
+    if(viaje.indexOf('ClaveSecreta777')>=0||viaje.indexOf('OtroSecreto999')>=0) bad.push(['viaja-la-clave']);
+    if(('pin' in obj)||('clave' in obj)||('online' in obj)) bad.push(['viajan-campos-privados',Object.keys(obj).join()]);
+    if(obj.level!==9||obj.pts!==1234) bad.push(['viaje-roto']);
+    /* con el online apagado no sale ni un byte */
+    var antes=llamadas.length;
+    nubeSubir();
+    if(llamadas.length!==antes) bad.push(['sube-sin-permiso']);
+    /* la peticion de entrar lleva juego, nombre y clave */
+    nubeEntrar('Ana','1234',function(){});
+    var ult=llamadas[llamadas.length-1];
+    if(!ult||ult.url.indexOf('/cuenta')<0) bad.push(['no-pide-cuenta']);
+    if(!ult.cuerpo||ult.cuerpo.nombre!=='Ana'||ult.cuerpo.clave!=='1234'||ult.cuerpo.juego!==JUEGO) bad.push(['cuerpo-cuenta']);
+    /* la tabla se dibuja y saca los reyes de cada modo */
+    pintarTablaGlobal([
+      {nombre:'Ana',avatar:'A',nivel:20,pts:2000,partida:400,arcade60:25,arcade600:0,racha:14,aciertos:70,fallos:10,medallas:5},
+      {nombre:'Beto',avatar:'B',nivel:12,pts:900,partida:900,arcade60:9,arcade600:44,racha:6,aciertos:30,fallos:10,medallas:2}
+    ]);
+    var txt=$('#modalBody').textContent;
+    if(txt.indexOf('Ana')<0||txt.indexOf('Beto')<0) bad.push(['tabla-global-sin-jugadores']);
+    if($('#modalBody').querySelectorAll('.rey').length<5) bad.push(['tabla-global-sin-reyes',$('#modalBody').querySelectorAll('.rey').length]);
+    if(txt.indexOf('900')<0) bad.push(['tabla-global-sin-record-partida']);
+    pintarTablaGlobal([]);
+    if($('#modalBody').textContent.indexOf('Todavía no hay nadie')<0) bad.push(['tabla-global-vacia']);
+    cerrarModal();
+    window.fetch=fetchReal;
+  })();
+
+  /* --- el orden de las tablas: mejores numeros, mas arriba --- */
+  (function(){
+    var a=blank(), b=blank();
+    a.pts=500; b.pts=100; b.level=50;
+    if(ordenar(a,b)>=0) bad.push(['orden-manda-puntos']);
+    var c=blank(), d2=blank();
+    c.pts=100; d2.pts=100; d2.level=9;
+    if(ordenar(c,d2)<=0) bad.push(['orden-desempata-nivel']);
+    var e=blank(), f=blank();
+    e.pts=0; f.pts=0; e.arcadeRecs={'300':30}; f.arcadeRecs={'300':10};
+    if(ordenar(e,f)>=0) bad.push(['orden-desempata-contrarreloj']);
+    var g=blank(), h=blank();
+    g.pts=100; h.pts=100; g.mejorPartida=50; h.mejorPartida=200;
+    if(ordenar(g,h)<=0) bad.push(['orden-desempata-partida']);
+    /* el mejor contrarreloj es el de cualquier duracion, no solo el de 60 s */
+    if(mejorArcade({arcadeRecs:{'60':5,'300':22}}).v!==22) bad.push(['mejor-arcade']);
+    if(mejorArcade({arcadeRecs:{'60':5,'300':22}}).dur!==300) bad.push(['mejor-arcade-duracion']);
+    if(textoArcade({arcadeRecs:{'300':22}}).indexOf('5min')<0) bad.push(['texto-arcade',textoArcade({arcadeRecs:{'300':22}})]);
+    if(textoArcade(blank())!=='-') bad.push(['texto-arcade-vacio']);
+    /* dos cuentas nuevas que solo jugaron contrarreloj tienen que quedar ordenadas
+       por lo que hicieron (esto es justo lo que estaba fallando) */
+    var uno=blank(), dos=blank();
+    uno.pts=340; uno.arcadeRecs={'300':31};
+    dos.pts=180; dos.arcadeRecs={'300':17};
+    if(ordenar(uno,dos)>=0) bad.push(['orden-dos-contrarreloj']);
+  })();
+
   /* --- prueba de humo de la interfaz: jugar de verdad sin explotar --- */
   try{
     DB={}; user=null;
@@ -2101,9 +2440,28 @@ if(location.search.indexOf('test')>=0){
     var quedaban=arcadeLeft; arcadeStep();      /* si el tick siguiera vivo, bajaria solo */
     if(arcadeLeft!==quedaban-1) bad.push(['ui-arcade-pausa']);
     reanudar();
+    /* --- los puntos del contrarreloj se suman SOLO al terminar --- */
+    var ptsAntesArc=DB['TestBot'].pts;
+    if(arcadePts<=0) bad.push(['arcade-no-acumula',arcadePts]);
+    if(DB['TestBot'].pts!==ptsAntesArc) bad.push(['arcade-suma-antes-de-tiempo']);
+    var enJuegoArc=arcadePts;
     terminarArcade(); cerrarModal();
+    if(DB['TestBot'].pts!==ptsAntesArc+enJuegoArc) bad.push(['arcade-no-suma-al-final',DB['TestBot'].pts-ptsAntesArc,enJuegoArc]);
+    if(arcadePts!==0) bad.push(['arcade-no-limpia']);
+
     if(DB['TestBot'].arcadeRecs['600']!==1) bad.push(['ui-record-largo',DB['TestBot'].arcadeRecs['600']]);
     if(DB['TestBot'].arcadeBest!==0) bad.push(['ui-record-60-contaminado',DB['TestBot'].arcadeBest]);
+
+
+    /* --- salirse antes de que suene la campana: esos puntos NO se guardan --- */
+    setMode('arcade');
+    $('#ans').value=String(P0.ans).replace('.',','); submit();
+    if(arcadePts<=0) bad.push(['abandono-sin-puntos-en-juego']);
+    var ptsAntesAbandono=DB['TestBot'].pts, ptsEnJuego=arcadePts;
+    salirAlLobby();
+    if(DB['TestBot'].pts!==ptsAntesAbandono) bad.push(['abandono-suma-igual',DB['TestBot'].pts-ptsAntesAbandono]);
+    if(arcadePts!==0) bad.push(['abandono-no-limpia']);
+    if(ptsEnJuego<=0) bad.push(['abandono-test-malo']);
 
     setMode('carrera');
     $('#bLobby').click();                       /* volver al lobby desde el juego */

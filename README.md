@@ -63,3 +63,29 @@ En el `localStorage` del navegador, con una llave distinta por juego (`crazymath
 `tildes`, `tabla`), así que los tres conviven sin pisarse. Es **por aparato**: cada
 computador o celular tiene su propia tabla de clasificación. Dentro de cada juego,
 *MIS NÚMEROS → COPIAR MI PROGRESO* permite llevarse la cuenta a otro aparato.
+
+---
+
+## 🌎 Ranking global y cuenta en cualquier aparato
+
+Al entrar a cualquiera de los tres juegos hay un ticket **🌎 JUGAR ONLINE** (viene apagado).
+
+- **Apagado:** el juego funciona como siempre, todo se guarda solo en ese aparato y no sale ni un dato.
+- **Ticado:** escribes tu nombre y una contraseña (mínimo 3 caracteres) y entonces:
+  - tus récords entran al **ranking global** del juego (botón 🌎), con tarjetas de quién lleva el
+    récord de **cada modo**: nivel, mejor partida, contrarreloj de 60 s / 2 / 3 / 5 / 10 minutos,
+    racha y puntos;
+  - puedes entrar con ese mismo nombre y contraseña **desde otro celular** y sigues donde ibas.
+
+Detalles que importan: la contraseña nunca viaja (se manda revuelta con SHA-256); solo viajan tu
+nombre, tu carita y tus números; las marcas **solo suben**, así que ningún aparato atrasado puede
+bajarle un récord a nadie; y si la copia de internet va más adelante que la del aparato, la de acá
+queda guardada de respaldo antes de reemplazarla. Nunca se borra nada.
+
+El servidor es una función de Cloudflare Pages (`functions/api/`) con una base D1 (`esquema.sql`).
+
+## ⏱ Cómo cuentan los puntos del contrarreloj
+
+Cada acierto del contrarreloj vale puntos, **pero solo se suman si el reloj llega a cero**.
+Si te sales antes (al lobby, a otro modo o cambiando de usuario) esos puntos no se guardan y el
+juego te avisa. Hay que terminar la partida.

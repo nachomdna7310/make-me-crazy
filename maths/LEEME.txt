@@ -144,3 +144,42 @@ nivel, sus puntos y sus medallas (los campos nuevos se rellenan solos en 0).
   errores tipicos: uno mas, uno menos, el acarreo olvidado (mas o menos 9,
   10 u 11), la operacion cambiada (sumar en vez de multiplicar) o la mitad.
   Se puede cambiar cuando se quiera; queda guardado por jugador.
+
+===================================================================
+NOVEDADES (2026-09-08) - JUEGO ONLINE Y CONTRARRELOJ ARREGLADO
+===================================================================
+
+* EL CONTRARRELOJ AHORA DA PUNTOS
+  Antes una partida de contrarreloj no sumaba ni un punto, y por eso dos
+  cuentas nuevas que solo jugaban contrarreloj quedaban las dos en cero y la
+  tabla las ordenaba al azar. Ahora cada acierto del contrarreloj vale puntos.
+  REGLA: los puntos se suman SOLO si el reloj llega a cero. Si te sales antes
+  (al lobby, a otro modo o cambiando de usuario), esos puntos NO se guardan y
+  el juego te avisa. Hay que terminar la partida si o si.
+
+* SE GUARDA EL RECORD DE TODAS LAS DURACIONES
+  Antes solo se mostraba el de 60 segundos. Ahora el de 2, 3, 5 y 10 minutos
+  tambien: en el lobby, en MIS NUMEROS y en las dos tablas sale "31 en 5min".
+
+* LAS TABLAS ORDENAN BIEN
+  Orden: puntos, despues nivel, despues mejor partida, despues contrarreloj y
+  despues racha. El que tiene mejores numeros va mas arriba.
+
+* RANKING GLOBAL (nuevo boton 🌎)
+  Muestra a todos los que juegan online, en cualquier celular o computador,
+  con tarjetas de quien lleva el record de CADA modo: nivel, mejor partida,
+  contrarreloj de cada duracion, racha y puntos.
+
+* TU CUENTA EN CUALQUIER APARATO
+  Al entrar hay un ticket "🌎 JUGAR ONLINE". Si lo ticas, escribes tu nombre y
+  una contrasena (minimo 3 caracteres) y tu progreso queda guardado tambien en
+  internet: entras con lo mismo en otro celular y sigues donde ibas.
+  - Si el ticket esta apagado, el juego funciona exactamente como siempre y no
+    sale ni un dato del aparato.
+  - Si no hay internet, entras igual y todo se guarda local.
+  - Lo unico que viaja es tu nombre, tu carita y tus numeros. La contrasena
+    NUNCA viaja: se manda revuelta (SHA-256) y asi se guarda.
+  - Si la copia de internet trae mas ejercicios que la de este aparato, se usa
+    esa; la de aca queda igual guardada de respaldo. Nunca se borra nada.
+  - Las marcas del ranking SOLO SUBEN: ningun aparato atrasado puede bajarle
+    un record a nadie.

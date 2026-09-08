@@ -5,4 +5,4 @@ pages_build_output_dir = "."
 [[d1_databases]]
 binding = "DB"
 database_name = "make-me-crazy"
-database_id = "PENDIENTE"
+database_id = "96dfd4ca-cbc9-4260-a463-e55e9687afc7"

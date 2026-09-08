@@ -1384,7 +1384,10 @@ function renderLobby(){
     '<span class="chip">PRECISIÓN <b>'+(tot?Math.round(d.ok/tot*100)+'%':'-')+'</b></span>'+
     '<span class="chip">MEJOR RACHA <b>'+d.best+'</b></span>'+
     '<span class="chip">MEDALLAS <b>'+nMed+'/'+MEDALLAS.length+'</b></span>'+
-    '<span class="chip">DÍAS SEGUIDOS <b>'+d.dias.seguidos+'</b></span>';
+    '<span class="chip">DÍAS SEGUIDOS <b>'+d.dias.seguidos+'</b></span>'+
+    (d.online ? (d.nubePendiente
+        ? '<span class="chip" style="border-color:var(--sun)">🌎 <b>SIN CONECTAR</b> · se sube solo</span>'
+        : '<span class="chip">🌎 <b>ONLINE</b></span>') : '');
 }
 function jugar(m){ show('game'); setMode(m); }
 $('#lbPlay').onclick =function(){ SFX.clic(); abrirSetup('carrera'); };
@@ -1989,6 +1992,12 @@ function nubeSubir(cb) {
     datos: paraLaNube(d), marcas: marcasDe(d)
   }, function (r) {
     subiendo = false;
+    /* si no hubo internet queda anotado y se reintenta solo al reconectarse */
+    try {
+      DB[user].nubePendiente = !(r && r.ok);
+      save();
+      if (typeof renderLobby === 'function' && !$('#lobby').classList.contains('hide')) renderLobby();
+    } catch (e) { }
     if (r && r.ok && r.records) {
       var partes = [];
       if (r.records.partida) partes.push('mejor partida');
@@ -2004,6 +2013,13 @@ function nubeSubir(cb) {
   });
 }
 
+/* si el aparato estaba sin internet, apenas vuelve se suben las marcas guardadas */
+function reintentarNube(){
+  try{ if(nubeActiva() && DB[user].nubePendiente) nubeSubir(); }catch(e){}
+}
+window.addEventListener('online', reintentarNube);
+setInterval(reintentarNube, 60000);          /* y por si el aviso del navegador no llega */
+
 /* ---------- el ranking global ---------- */
 var MODOS = [
   { k: 'nivel', t: '👑 NIVEL', d: 'el que va más arriba' },
@@ -2017,6 +2033,7 @@ var MODOS = [
   { k: 'pts', t: '⭐ PUNTOS', d: 'puntos juntados en total' }
 ];
 function verRankingGlobal() {
+  reintentarNube();                          /* primero subo lo mio, despues miro la tabla */
   modal('<h2>🌎 RANKING GLOBAL</h2><p style="color:#a89ac2;font-size:14px">Buscando a los demás jugadores…</p>');
   pedir('/tabla?juego=' + JUEGO, null, function (r) {
     if (!r || !r.ok) {
@@ -2497,6 +2514,22 @@ if(location.search.indexOf('test')>=0){
     if(DB['TestBot'].dias.hechos!==7) bad.push(['ui-mision-no-cuenta',DB['TestBot'].dias.hechos]);
     if(DB['TestBot'].ok!==7) bad.push(['ui-no-cuenta-aciertos',DB['TestBot'].ok]);
     if(DB['TestBot'].byCat['1'].ok!==7) bad.push(['ui-no-cuenta-bloque']);
+
+    /* --- si no hay internet, queda pendiente y se reintenta al reconectar --- */
+    (function(){
+      var fetchReal=window.fetch, intentos=0, caido=true;
+      window.fetch=function(){ intentos++;
+        return caido ? Promise.reject(new Error('sin internet'))
+                     : Promise.resolve({json:function(){ return Promise.resolve({ok:true,records:{}}); }});
+      };
+      DB['TestBot'].online=true; nubeClave='clave123'; nubeOn=true;
+      DB['TestBot'].nubePendiente=false;
+      nubeSubir();
+      if(intentos!==1) bad.push(['no-intenta-subir',intentos]);
+      reintentarNube();
+      if(intentos<1) bad.push(['no-reintenta']);
+      window.fetch=fetchReal; nubeOn=false; DB['TestBot'].online=false; nubeClave='';
+    })();
 
     /* --- records de partida: el tuyo y el de toda la tabla --- */
     if(!partida || partida.pts<=0) bad.push(['ui-partida-no-suma']);

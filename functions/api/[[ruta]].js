@@ -63,7 +63,7 @@ async function tabla(request, env) {
   const juego = String(url.searchParams.get('juego') || '');
   if (!JUEGOS.includes(juego)) return json({ ok: false, error: 'juego' }, 400);
   const r = await env.DB.prepare(
-    `SELECT j.nombre AS nombre, j.avatar AS avatar, j.nivel AS nivel, j.pts AS pts, j.partida AS partida,
+    `SELECT j.clave AS clave, j.nombre AS nombre, j.avatar AS avatar, j.nivel AS nivel, j.pts AS pts, j.partida AS partida,
             j.arcade60 AS arcade60, j.arcade120 AS arcade120, j.arcade180 AS arcade180,
             j.arcade300 AS arcade300, j.arcade600 AS arcade600,
             j.racha AS racha, j.aciertos AS aciertos, j.fallos AS fallos, j.medallas AS medallas,

@@ -2609,16 +2609,20 @@ function pintarTablaGlobal(filas) {
         '<td>' + (arc ? arc + ' en ' + nomDur(arcDur).replace(' segundos', 's').replace(' minutos', 'min') : '-') + '</td>' +
         '<td>' + (f.racha || 0) + '</td>' +
         '<td>' + ((f.vsGan || 0) + '-' + (f.vsPer || 0)) + '</td>' +
-        '<td>' + (tot ? Math.round(f.aciertos / tot * 100) + '%' : '-') + '</td></tr>';
+        '<td>' + (tot ? Math.round(f.aciertos / tot * 100) + '%' : '-') + '</td>' +
+        '<td>' + vsBotonAmigo(f) + '</td></tr>';
     }).join('');
     modal('<h2>🌎 RANKING ONLINE</h2>' +
       '<div class="reyes">' + reyes + '</div>' +
       '<table><thead><tr><th>#</th><th>JUGADOR</th><th>NV</th><th>PUNTOS</th><th>PARTIDA</th>' +
-      '<th>CONTRARRELOJ</th><th>RACHA</th><th>DUELOS</th><th>PRECIS.</th></tr></thead><tbody>' + cuerpo + '</tbody></table>' +
+      '<th>CONTRARRELOJ</th><th>RACHA</th><th>DUELOS</th><th>PRECIS.</th><th>AMIGO</th></tr></thead><tbody>' + cuerpo + '</tbody></table>' +
       '<div class="kbd" style="margin-top:10px;line-height:1.7">Están todos los que juegan, ' +
       'en cualquier celular o computador. Las marcas solo suben: nadie puede borrarle un récord a otro.</div>' +
       invitacionOnline());
     engancharSubirme();
+    /* los ＋ y ACEPTAR de la tabla usan los mismos enganches que la ventana de amigos; la marca dice a donde volver despues */
+    VS.desdeTabla = true;
+    vsEngancharAmigos();
   }
 }
 
@@ -3084,8 +3088,14 @@ function vsEngancharAmigos() {
       b.onclick = function () { fn(b.getAttribute('data-' + attr), b); };
     });
   }
-  cada('si', function (c, b) { b.disabled = true; vsPedir('aceptar', { a: c }, function () { verAmigos(); }); });
-  cada('no', function (c, b) { b.disabled = true; vsPedir('quitar', { a: c }, function () { verAmigos(); }); });
+  /* si el boton venia de la tabla del ranking, vuelvo a la tabla; si venia de
+     la ventana de amigos, a la ventana de amigos */
+  function volver() {
+    if (VS.desdeTabla) { VS.desdeTabla = false; verRankingGlobal(); }
+    else verAmigos();
+  }
+  cada('si', function (c, b) { b.disabled = true; vsPedir('aceptar', { a: c }, volver); });
+  cada('no', function (c, b) { b.disabled = true; vsPedir('quitar', { a: c }, volver); });
   cada('pide', function (c, b) {
     b.disabled = true; b.textContent = '…';
     vsPedir('pedir', { a: c }, function (r) {
@@ -3095,7 +3105,7 @@ function vsEngancharAmigos() {
   });
   cada('quita', function (c) {
     if (!confirm('¿Quitar a ' + c + ' de tus amigos?')) return;
-    vsPedir('quitar', { a: c }, function () { verAmigos(); });
+    vsPedir('quitar', { a: c }, volver);
   });
   cada('chat', function (c) { verChat(c); });
   cada('reta', function (c) {
@@ -3174,6 +3184,21 @@ function vsDecir() {
   vsPedir('decir', { con: VS.chatCon, texto: t }, function (r) {
     if (r && r.ok) vsPintarChat(r.mensajes || []); else i.value = t;
   });
+}
+
+/* ---------- el boton "＋ amigo" que va en cada fila del ranking online ----------
+   La tabla la dibuja cada juego (pintarTablaGlobal), pero quien sabe de amistades
+   es este modulo, asi que la celda se arma aca y el juego solo la pega. */
+function vsBotonAmigo(f) {
+  var mi = vsMiClave();
+  var clave = f.clave || String(f.nombre || '').replace(/\s+/g, ' ').trim().toLowerCase();
+  if (!clave || clave === mi) return '<span style="opacity:.35">tú</span>';
+  var estado = null;
+  (VS.amigos || []).forEach(function (a) { if (a.clave === clave) estado = 'ok'; });
+  (VS.piden || []).forEach(function (a) { if (a.clave === clave) estado = 'pide'; });
+  if (estado === 'pide') return '<button class="sm cy" data-si="' + esc(clave) + '">ACEPTAR</button>';
+  if (estado === 'ok') return '<button class="sm hot" data-reta="' + esc(clave) + '">⚔️</button>';
+  return '<button class="sm ghost" data-pide="' + esc(clave) + '">＋</button>';
 }
 
 /* ---------- esperar a que el amigo acepte el reto ---------- */
@@ -3521,8 +3546,85 @@ function vsSonarLobby() {
       return;
     }
     vsPintarChip();
+    vsPanelLobby();
   });
 }
+/* ---------- el apartado del lobby: solicitudes y retos a la mano ----------
+   Se arma desde aca y se cuelga del lobby de cualquiera de los juegos, para no
+   tener que tocar el HTML de los cuatro. Si no hay nada que mostrar, no ocupa
+   ni un pixel: en el lobby lo que importa es el boton de JUGAR. */
+function vsPanelLobby() {
+  var lobby = $('#lobby');
+  if (!lobby || lobby.classList.contains('hide')) return;
+  var caja = $('#vsPanel');
+  if (!caja) {
+    caja = document.createElement('div');
+    caja.id = 'vsPanel';
+    caja.style.marginTop = '12px';
+    lobby.appendChild(caja);
+  }
+  var piden = VS.piden || [], amigos = VS.amigos || [];
+  if (!piden.length && !amigos.length) { caja.innerHTML = ''; return; }
+
+  var html = '';
+  if (piden.length) {
+    html += '<label>👋 SOLICITUDES DE AMISTAD (' + piden.length + ')</label>';
+    html += piden.map(function (p) {
+      return '<div class="amg"><span class="av">' + esc(p.avatar || '🙂') + '</span>' +
+        '<span class="nom">' + esc(p.nombre) + '<div class="sub">nivel ' + p.nivel +
+        ' · quiere ser tu amigo</div></span>' +
+        '<button class="cy" data-si="' + esc(p.clave) + '">ACEPTAR</button>' +
+        '<button class="ghost" data-no="' + esc(p.clave) + '">NO</button></div>';
+    }).join('');
+  }
+  if (amigos.length) {
+    var conectados = amigos.filter(function (a) { return a.conectado; });
+    var lista = conectados.concat(amigos.filter(function (a) { return !a.conectado; })).slice(0, 6);
+    html += '<label style="margin-top:10px">⚔️ RETAR A UN AMIGO' +
+      (conectados.length ? ' · ' + conectados.length + ' conectado' + (conectados.length > 1 ? 's' : '') : '') +
+      '</label>';
+    html += lista.map(function (a) {
+      return '<div class="amg"><span class="luz ' + (a.conectado ? 'on' : '') + '"></span>' +
+        '<span class="av">' + esc(a.avatar || '🙂') + '</span>' +
+        '<span class="nom">' + esc(a.nombre) +
+        (vsNoLeidos(a.clave) ? '<span class="pin">•</span>' : '') +
+        '<div class="sub">nivel ' + a.nivel + ' · ' + (a.conectado ? 'conectado' : 'desconectado') + '</div></span>' +
+        '<button class="hot" data-reta="' + esc(a.clave) + '">⚔️ RETAR</button>' +
+        '<button class="cy" data-chat="' + esc(a.clave) + '">💬</button></div>';
+    }).join('');
+    if (amigos.length > lista.length) {
+      html += '<div class="kbd">Y ' + (amigos.length - lista.length) + ' más en 👥 AMIGOS.</div>';
+    }
+  }
+  caja.innerHTML = html;
+  vsEngancharPanel(caja);
+}
+
+/* los botones del panel del lobby hacen lo mismo que los de la ventana */
+function vsEngancharPanel(caja) {
+  function cada(attr, fn) {
+    Array.prototype.forEach.call(caja.querySelectorAll('[data-' + attr + ']'), function (b) {
+      b.onclick = function () { fn(b.getAttribute('data-' + attr), b); };
+    });
+  }
+  cada('si', function (c, b) {
+    b.disabled = true;
+    vsPedir('aceptar', { a: c }, function () { vsSonarLobby(); });
+  });
+  cada('no', function (c, b) {
+    b.disabled = true;
+    vsPedir('quitar', { a: c }, function () { vsSonarLobby(); });
+  });
+  cada('chat', function (c) { verChat(c); });
+  cada('reta', function (c) {
+    vsLeerReglas();
+    vsPedir('retar', { a: c, reglas: JSON.stringify(VS.reglas), modo: VS.reglas.modo }, function (r) {
+      if (!r || !r.ok) { alert('No pude mandar el reto. ¿Sigue siendo tu amigo?'); return; }
+      vsEsperarReto(r.duelo, c);
+    });
+  });
+}
+
 function vsPintarChip() {
   var b = $('#lbVsChip');
   if (!b) return;
@@ -4043,6 +4145,38 @@ if(location.search.indexOf('test')>=0){
   if (!ptsPerdiendo) bad.push(['vs-perder-no-paga-nada']);
   if (ptsPerdiendo >= ptsGanando) bad.push(['vs-perder-paga-mas', ptsPerdiendo, ptsGanando]);
   DB = dbAntes; user = uAntes; VS.duelo = duAntes; VS.terminado = tAntes;
+
+  /* el boton que va en cada fila del ranking online sabe a quien ofrecerle que */
+  var amAntes = VS.amigos, piAntes = VS.piden, uA2 = user;
+  user = 'Yo';
+  VS.amigos = [{ clave: 'pedro', nombre: 'Pedro', nivel: 3 }];
+  VS.piden = [{ clave: 'ana', nombre: 'Ana', nivel: 4 }];
+  if (vsBotonAmigo({ clave: 'yo', nombre: 'Yo' }).indexOf('data-') >= 0) bad.push(['vs-boton-a-mi-mismo']);
+  if (vsBotonAmigo({ clave: 'pedro', nombre: 'Pedro' }).indexOf('data-reta') < 0) bad.push(['vs-amigo-sin-retar']);
+  if (vsBotonAmigo({ clave: 'ana', nombre: 'Ana' }).indexOf('data-si') < 0) bad.push(['vs-solicitud-sin-aceptar']);
+  if (vsBotonAmigo({ clave: 'juan', nombre: 'Juan' }).indexOf('data-pide') < 0) bad.push(['vs-desconocido-sin-agregar']);
+  /* y si la tabla no trae clave, se deduce del nombre igual que en el servidor */
+  if (vsBotonAmigo({ nombre: 'Pedro' }).indexOf('data-reta') < 0) bad.push(['vs-boton-sin-clave']);
+
+  /* el apartado del lobby: solicitudes arriba y amigos para retar abajo */
+  var lobbyVisible = !$('#lobby').classList.contains('hide');
+  $('#lobby').classList.remove('hide');
+  vsPanelLobby();
+  var panel = $('#vsPanel');
+  if (!panel) bad.push(['vs-sin-panel-de-lobby']);
+  else {
+    var txt = panel.textContent;
+    if (txt.indexOf('Ana') < 0) bad.push(['vs-panel-sin-solicitudes']);
+    if (txt.indexOf('Pedro') < 0) bad.push(['vs-panel-sin-amigos']);
+    if (!panel.querySelector('[data-si]')) bad.push(['vs-panel-sin-aceptar']);
+    if (!panel.querySelector('[data-reta]')) bad.push(['vs-panel-sin-retar']);
+    /* sin nada que mostrar no ocupa espacio: el lobby es para jugar */
+    VS.amigos = []; VS.piden = [];
+    vsPanelLobby();
+    if ($('#vsPanel').innerHTML !== '') bad.push(['vs-panel-no-se-esconde']);
+  }
+  if (!lobbyVisible) $('#lobby').classList.add('hide');
+  VS.amigos = amAntes; VS.piden = piAntes; user = uA2;
 })();
 
   document.title = bad.length ? ('TEST FAIL '+bad.length) : 'TEST OK';

@@ -1,5 +1,5 @@
 /* Guarda el juego completo en el celular la primera vez: despues abre sin internet. */
-var CACHE='sc-v1';
+var CACHE='sc-v2';
 var ARCHIVOS=['./','./index.html','./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',function(e){
   self.skipWaiting();

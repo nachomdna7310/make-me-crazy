@@ -3087,11 +3087,25 @@ function vsFin() {
   $('#vsMkYo').textContent = mios;
   $('#vsMkEl').textContent = suyos;
   var dd = DB[user];
+  var premio = 0;
   if (dd) {
     dd.vsJug = (dd.vsJug || 0) + 1;
     if (empate) dd.vsEmp = (dd.vsEmp || 0) + 1;
     else if (gane) dd.vsGan = (dd.vsGan || 0) + 1;
     else dd.vsPer = (dd.vsPer || 0) + 1;
+    /* Los duelos ahora SUMAN puntos, si no jugarlos no servia de nada para
+       la carrera. El premio va con el nivel del duelo (que es el promedio de
+       los dos), asi que ganarle a alguien mas arriba paga mas. Al que pierde
+       igual le queda algo: la idea es que se atreva a jugar de nuevo. */
+    if (!meRendi) {
+      /* nivel con red: si por lo que sea llega sin numero, el premio no puede
+         volverse NaN y comerse los puntos de la carrera */
+      var nvDuelo = Number(d.nivel) || 1;
+      premio = empate ? (20 + nvDuelo)
+             : (gane ? (60 + nvDuelo * 3) : (15 + Math.round(nvDuelo / 2)));
+      premio += Math.min(60, (Number(mios) || 0) * 2);   /* y lo que respondio bien */
+      dd.pts = (Number(dd.pts) || 0) + premio;
+    }
     save();
   }
   try { gane ? SFX.nivel() : SFX.fin(); if (gane) confetti(90); } catch (e) { }
@@ -3106,6 +3120,7 @@ function vsFin() {
     'Tú: ' + mios + ' buenas y ' + d.yo.fail + ' malas · ' +
     esc(d.el.nombre) + ': ' + suyos + ' buenas y ' + d.el.fail + ' malas.' +
     (d.alarga ? '<br>Se jugaron los 30 s extra porque estaban a menos de 10 de diferencia.' : '') +
+    (premio ? '<br><b style="color:var(--sun)">+' + fmtN(premio) + ' puntos</b> para tu carrera.' : '') +
     (dd ? '<br>Llevas ' + (dd.vsGan || 0) + ' ganados, ' + (dd.vsPer || 0) + ' perdidos y ' + (dd.vsEmp || 0) + ' empatados.' : '') +
     '</div>' +
     '<div class="row"><button id="vsRev" class="cy">🔁 REVANCHA</button>' +
@@ -3693,12 +3708,26 @@ if(location.search.indexOf('test')>=0){
   DB = { 'Ficticio': blank() }; user = 'Ficticio';
   VS.terminado = false; VS.ok = 3; VS.fail = 1;
   VS.duelo = { id: 'x', estado: 'fin', modo: 'distintas', ronda: 0, alarga: 0, rendido: '',
+               nivel: 10, resultado: 'gane',
                yo: { nombre: 'Ficticio', ok: 3, fail: 1, i: 4 },
                el: { nombre: 'Otro', ok: 1, fail: 0, i: 1, conectado: true } };
   vsFin(); vsFin(); vsFin();
   vsLimpiar();
   if ((DB['Ficticio'].vsJug || 0) !== 1) bad.push(['vs-cuenta-repetida', DB['Ficticio'].vsJug]);
   if ((DB['Ficticio'].vsGan || 0) !== 1) bad.push(['vs-no-anota-la-victoria']);
+  var ptsGanando = DB['Ficticio'].pts || 0;
+  if (!ptsGanando) bad.push(['vs-ganar-no-paga']);
+  /* perder tiene que pagar menos que ganar, pero algo */
+  DB = { 'Ficticio2': blank() }; user = 'Ficticio2';
+  VS.terminado = false; VS.ok = 1; VS.fail = 3;
+  VS.duelo = { id: 'y', estado: 'fin', modo: 'distintas', ronda: 0, alarga: 0, rendido: '',
+               nivel: 10, resultado: 'perdi',
+               yo: { nombre: 'Ficticio2', ok: 1, fail: 3, i: 4 },
+               el: { nombre: 'Otro', ok: 9, fail: 0, i: 9, conectado: true } };
+  vsFin(); vsLimpiar();
+  var ptsPerdiendo = DB['Ficticio2'].pts || 0;
+  if (!ptsPerdiendo) bad.push(['vs-perder-no-paga-nada']);
+  if (ptsPerdiendo >= ptsGanando) bad.push(['vs-perder-paga-mas', ptsPerdiendo, ptsGanando]);
   DB = dbAntes; user = uAntes; VS.duelo = duAntes; VS.terminado = tAntes;
 })();
 

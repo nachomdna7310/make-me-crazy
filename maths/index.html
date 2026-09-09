@@ -239,7 +239,7 @@ tr.yo{background:rgba(255,210,30,.12)}
 .ligaline{display:flex;gap:3px;margin:10px 0}
 .ligaline>div{flex:1;height:10px;border:2px solid #000;border-radius:4px;background:#221a30}
 .ligaline>div.on{background:var(--sun)}
-/* ---- ranking global ---- */
+/* ---- ranking online ---- */
 .reyes{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:8px;margin-bottom:12px}
 .rey{background:#2a2138;border:3px solid #000;border-radius:12px;padding:8px 10px;box-shadow:3px 3px 0 rgba(0,0,0,.6)}
 .rey b{display:block;font-size:10.5px;letter-spacing:1px;color:var(--sun)}
@@ -360,9 +360,8 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
   <div class="rowt" style="margin-top:10px">
     <button class="sm ghost bStats">📊 NÚMEROS</button>
     <button class="sm ghost bMedals">🏅 MEDALLAS</button>
-    <button class="sm ghost bRank">🏆 RANKING</button>
-      <button class="sm cy bGlobal">🌎 RANKING GLOBAL</button>
-    <button class="sm cy bGlobal">🌎 GLOBAL</button>
+    <button class="sm ghost bRank">🏆 RANKING DE LA CALLE</button>
+    <button class="sm cy bGlobal">🌎 RANKING ONLINE</button>
     <button class="sm ghost bHelp">❓ AYUDA</button>
     <button class="sm ghost bSound">🔊</button>
   </div>
@@ -384,14 +383,14 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
     <input id="name" maxlength="18" placeholder="Ej: Rafa 7B" autocomplete="off">
     <label style="margin-top:12px" id="lblPin">PIN DE 4 DIGITOS (opcional, para que nadie te toque el progreso)</label>
     <input id="pin" maxlength="20" inputmode="numeric" placeholder="----" autocomplete="off">
-    <label class="chk" id="chkOnline"><input type="checkbox" id="onlineSw"><span>🌎 JUGAR ONLINE · ranking global y tu cuenta en cualquier aparato</span></label>
+    <label class="chk" id="chkOnline"><input type="checkbox" id="onlineSw"><span>🌎 JUGAR ONLINE · ranking online y tu cuenta en cualquier aparato</span></label>
     <div id="avisoOnline"></div>
     <label style="margin-top:12px">ELIGE TU CARA</label>
     <div id="avatars" class="pills"></div>
     <div class="row" style="margin-top:14px">
       <button id="enter">ENTRAR ▶</button>
-      <button id="toRank" class="ghost">🏆 RANKING</button>
-      <button class="ghost bGlobal">🌎 GLOBAL</button>
+      <button id="toRank" class="ghost">🏆 LA CALLE</button>
+      <button class="ghost bGlobal">🌎 ONLINE</button>
       <button id="toCuentas" class="ghost">🗑 CUENTAS</button>
     </div>
     <label id="usersLbl" style="margin-top:16px" class="hide">CUENTAS EN ESTE COMPUTADOR (toca la tuya y sigues donde ibas)</label>
@@ -426,7 +425,8 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
     <div class="rowt" style="margin-top:14px">
       <button class="sm ghost bStats">📊 MIS NÚMEROS</button>
       <button class="sm ghost bMedals">🏅 MEDALLAS</button>
-      <button class="sm ghost bRank">🏆 RANKING</button>
+      <button class="sm ghost bRank">🏆 RANKING DE LA CALLE</button>
+      <button class="sm cy bGlobal">🌎 RANKING ONLINE</button>
       <button class="sm ghost bHelp">❓ CÓMO SE JUEGA</button>
       <button class="sm ghost bSound">🔊</button>
       <button class="sm hot" id="lbSalir">CAMBIAR USUARIO</button>
@@ -1047,7 +1047,7 @@ renderAvatars(); renderUsers();
 function entrarDeVerdad(n,pin,nueva,online){
   if(!DB[n]){ DB[n]=blank(); DB[n].pin=pin; DB[n].avatar=avatarSel; }
   DB[n]=migrar(DB[n]);
-  DB[n].online=!!online;
+  DB[n].online = !!online || !!DB[n].online || !!DB[n].autoClave;
   if(online){ nubeClave=pin; DB[n].pin=pin; }
   user=n; OPS=DB[n].ops;
   var racha=marcarDia(DB[n]);
@@ -1059,6 +1059,8 @@ function entrarDeVerdad(n,pin,nueva,online){
   else if(racha>1) toast('🔥 RACHA DE '+racha+' DÍAS','Volviste. Sigue así y desbloqueas medallas.');
   chequearMedallas();
   if(online) nubeSubir();
+  else if(DB[n].autoClave) nubeClave = DB[n].autoClave;
+  subirTodas();
 }
 $('#enter').onclick=function(){
   var n=$('#name').value.trim(), pin=$('#pin').value.trim();
@@ -1076,7 +1078,7 @@ $('#enter').onclick=function(){
     b.disabled=false; b.textContent=txt;
     if(!r||!r.ok){
       if(r&&r.error==='clave'){
-        alert('Ese nombre ya está en el ranking global con OTRA contraseña.\n\nSi la cuenta es tuya, escribe la contraseña correcta. Si no, elige otro nombre.');
+        alert('Ese nombre ya está en el ranking online con OTRA contraseña.\n\nSi la cuenta es tuya, escribe la contraseña correcta. Si no, elige otro nombre.');
         $('#pin').value=''; $('#pin').focus(); return;
       }
       toast('SIN CONEXIÓN','Entras igual: tu progreso queda guardado en este aparato.');
@@ -1108,7 +1110,7 @@ function pintarOnline(){
   $('#pin').setAttribute('inputmode', nubeOn?'text':'numeric');
   $('#pin').setAttribute('placeholder', nubeOn?'tu contraseña':'----');
   $('#avisoOnline').innerHTML = nubeOn
-    ? 'Con esto tus récords entran al <b>ranking global</b> y puedes entrar con tu nombre y contraseña desde cualquier celular. Solo viajan tu nombre, tu carita y tus números.'
+    ? 'Con esto tus récords entran al <b>ranking online</b> y puedes entrar con tu nombre y contraseña desde cualquier celular. Solo viajan tu nombre, tu carita y tus números.'
     : 'Apagado: todo queda solo en este aparato, como siempre.';
 }
 $('#onlineSw').onchange=function(){
@@ -1801,14 +1803,50 @@ function marcasDe(d) {
 /* el progreso que viaja: nunca la contrasena ni el PIN */
 function paraLaNube(d) {
   var copia = JSON.parse(JSON.stringify(d));
-  delete copia.pin; delete copia.clave; delete copia.online;
+  delete copia.pin; delete copia.clave; delete copia.online; delete copia.autoClave;
   return JSON.stringify(copia);
 }
-function nubeActiva() { return !!(nubeOn && user && DB[user] && DB[user].online && nubeClave); }
+function nubeActiva() { return !!(user && DB[user] && DB[user].online && nubeClave); }
+/* ---------- que nadie quede fuera de la tabla online ----------
+   Antes habia que ticar "JUGAR ONLINE" y elegir contrasena para aparecer.
+   Ahora cada cuenta de este aparato se publica sola, con una llave que se
+   guarda solo aca (autoClave). Quien quiera entrar desde OTRO celular igual
+   puede ponerse contrasena con el boton de abajo de la tabla. */
+function subirCuenta(n, cb){
+  cb = cb || function(){};
+  var d = DB[n];
+  if(!d){ cb(null); return; }
+  var clave = d.autoClave;
+  if(!clave){
+    if(d.online){ cb(null); return; }   /* cuenta con contrasena propia: la sube su dueno */
+    clave = 'auto' + Math.random().toString(36).slice(2,12);
+  }
+  nubeEntrar(n, clave, function(r){
+    if(!r || !r.ok){ cb(r); return; }   /* sin internet, o el nombre ya es de otra persona */
+    try{ DB[n] = migrar(DB[n]); d = DB[n]; d.autoClave = clave; d.online = true; save(); }catch(e){}
+    if(n === user) nubeClave = clave;
+    postear('/guardar', { juego:JUEGO, nombre:n, clave:clave, avatar:d.avatar||'',
+                          datos:paraLaNube(d), marcas:marcasDe(d) }, function(r2){
+      try{ if(n === user){ d.nubePendiente = !(r2 && r2.ok); save(); } }catch(e){}
+      cb(r2);
+    });
+  });
+}
+/* sube las cuentas de este aparato una detras de otra */
+function subirTodas(cb){
+  cb = cb || function(){};
+  if(location.search.indexOf('test') >= 0){ cb(); return; }
+  var ns = Object.keys(DB), i = 0;
+  (function paso(){ if(i >= ns.length){ cb(); return; } subirCuenta(ns[i++], paso); })();
+}
+
 
 /* ---------- entrar / crear la cuenta en la nube ---------- */
 function nubeEntrar(nombre, clave, cb) {
-  postear('/cuenta', { juego: JUEGO, nombre: nombre, clave: clave }, function (r) {
+  /* claveVieja: si la cuenta se habia publicado sola, el servidor deja
+     cambiar esa llave por la contrasena que el jugador elija ahora */
+  var vieja = ''; try { vieja = (DB[nombre] && DB[nombre].autoClave) || ''; } catch (e) { }
+  postear('/cuenta', { juego: JUEGO, nombre: nombre, clave: clave, claveVieja: vieja }, function (r) {
     if (!r) { cb({ ok: false, error: 'sin-internet' }); return; }
     cb(r);
   });
@@ -1852,7 +1890,7 @@ function reintentarNube(){
 window.addEventListener('online', reintentarNube);
 setInterval(reintentarNube, 60000);          /* y por si el aviso del navegador no llega */
 
-/* ---------- el ranking global ---------- */
+/* ---------- el ranking online ---------- */
 var MODOS = [
   { k: 'nivel', t: '👑 NIVEL', d: 'el que va más arriba' },
   { k: 'partida', t: '🏁 MEJOR PARTIDA', d: 'más puntos en una sola partida' },
@@ -1864,13 +1902,73 @@ var MODOS = [
   { k: 'racha', t: '🔥 RACHA', d: 'más aciertos seguidos sin fallar' },
   { k: 'pts', t: '⭐ PUNTOS', d: 'puntos juntados en total' }
 ];
+/* ---------- subirse al ranking online sin salir de la partida ----------
+   El progreso de cada persona vive en SU aparato: nadie puede subirlo por
+   ella. Esto lo hace en un toque, sin cambiar de usuario. */
+function invitacionOnline(){
+  if(user && DB[user] && DB[user].autoClave)
+    return '<div class="kbd" style="margin-top:12px;line-height:1.7">Ya estás en esta tabla con lo que llevas en este aparato. ' +
+      'Si quieres entrar con tu nombre desde <b>otro celular</b> y seguir donde ibas, ponte una contraseña:</div>' +
+      '<div class="row" style="margin-top:8px"><button id="bSubirme" class="cy">🔑 PONERME CONTRASEÑA</button></div>';
+  if(nubeActiva()) return '';
+  if(!user) return '<div class="warn" style="margin-top:12px">Entra con tu nombre para poder aparecer en esta tabla.</div>';
+  return '<div class="warn" style="margin-top:12px;line-height:1.6">' +
+    '<b>No estás en esta tabla.</b> Tu progreso está guardado solo en este aparato. ' +
+    'Tócale abajo y lo subo tal cual está ahora: tu nivel, tus puntos y tus récords.</div>' +
+    '<div class="row" style="margin-top:8px"><button id="bSubirme" class="cy">🌎 SUBIRME AL RANKING ONLINE</button></div>';
+}
+function engancharSubirme(){
+  var b = $('#bSubirme');
+  if(b) b.onclick = subirmeAhora;
+}
+function subirmeAhora(){
+  if(!user || !DB[user]){ alert('Primero entra con tu nombre.'); return; }
+  var clave = prompt('Elige una contraseña para tu cuenta online (mínimo 3 letras o números).\n\n' +
+    'Con esa misma contraseña entras desde cualquier otro celular y sigues donde ibas.\n' +
+    'Si ya jugaste online con este nombre, escribe la que usaste esa vez.\n\n' +
+    'OJO: pasa a ser también tu PIN en este aparato.');
+  if(clave === null) return;
+  clave = String(clave).trim();
+  if(clave.length < 3){ alert('Tiene que ser de al menos 3 caracteres. No se subió nada.'); return; }
+  var b = $('#bSubirme');
+  if(b){ b.disabled = true; b.textContent = 'SUBIENDO…'; }
+  nubeEntrar(user, clave, function(r){
+    if(b){ b.disabled = false; b.textContent = '🌎 SUBIRME AL RANKING ONLINE'; }
+    if(!r || !r.ok){
+      if(r && r.error === 'clave'){
+        alert('Ese nombre ya está en el ranking online con OTRA contraseña.\n\n' +
+              'Si la cuenta es tuya, vuelve a intentar con la correcta. Si no, cambia de nombre.');
+        return;
+      }
+      alert('No pude conectarme. Revisa el internet y vuelve a intentar.\nTu progreso no se perdió: sigue en este aparato.');
+      return;
+    }
+    nubeOn = true;
+    try{ localStorage.setItem('mmc_online','1'); }catch(e){}
+    nubeClave = clave;
+    DB[user].online = true;
+    DB[user].pin = clave;
+    delete DB[user].autoClave;
+    save();
+    if(typeof pintarOnline === 'function') try{ pintarOnline(); }catch(e){}
+    nubeSubir(function(){
+      toast('🌎 YA ESTÁS ARRIBA','Tu progreso quedó en el ranking online.');
+      try{ confetti(40); }catch(e){}
+      verRankingGlobal();
+    });
+  });
+}
 function verRankingGlobal() {
+  modal('<h2>🌎 RANKING ONLINE</h2><p style="font-size:14px">Subiendo el progreso de este aparato…</p>');
+  subirTodas(function(){ verRankingGlobal2(); });
+}
+function verRankingGlobal2() {
   reintentarNube();                          /* primero subo lo mio, despues miro la tabla */
-  modal('<h2>🌎 RANKING GLOBAL</h2><p style="color:#a89ac2;font-size:14px">Buscando a los demás jugadores…</p>');
+  modal('<h2>🌎 RANKING ONLINE</h2><p style="color:#a89ac2;font-size:14px">Buscando a los demás jugadores…</p>');
   pedir('/tabla?juego=' + JUEGO, null, function (r) {
     if (!r || !r.ok) {
-      modal('<h2>🌎 RANKING GLOBAL</h2><div class="warn">No pude conectarme. Revisa el internet y vuelve a intentar.</div>' +
-        '<p style="font-size:14px;line-height:1.8">El ranking global vive en internet; el de este computador lo ves igual en 🏆 RANKING.</p>');
+      modal('<h2>🌎 RANKING ONLINE</h2><div class="warn">No pude conectarme. Revisa el internet y vuelve a intentar.</div>' +
+        '<p style="font-size:14px;line-height:1.8">El ranking online vive en internet; el de este computador lo ves igual en 🏆 RANKING.</p>');
       return;
     }
     pintarTablaGlobal(r.filas || []);
@@ -1880,8 +1978,10 @@ function verRankingGlobal() {
 function pintarTablaGlobal(filas) {
   {
     if (!filas.length) {
-      modal('<h2>🌎 RANKING GLOBAL</h2><p style="font-size:15px;line-height:1.8">Todavía no hay nadie. ' +
-        'Tica <b>🌎 JUGAR ONLINE</b> al entrar con tu nombre y serás el primero de la tabla.</p>');
+      modal('<h2>🌎 RANKING ONLINE</h2><p style="font-size:15px;line-height:1.8">Todavía no hay nadie. ' +
+        'Entra con tu nombre y juega una partida: subes solo a esta tabla.</p>' +
+        invitacionOnline());
+      engancharSubirme();
       return;
     }
     /* quien lleva el record de cada modo */
@@ -1905,12 +2005,14 @@ function pintarTablaGlobal(filas) {
         '<td>' + (f.racha || 0) + '</td>' +
         '<td>' + (tot ? Math.round(f.aciertos / tot * 100) + '%' : '-') + '</td></tr>';
     }).join('');
-    modal('<h2>🌎 RANKING GLOBAL</h2>' +
+    modal('<h2>🌎 RANKING ONLINE</h2>' +
       '<div class="reyes">' + reyes + '</div>' +
       '<table><thead><tr><th>#</th><th>JUGADOR</th><th>NV</th><th>PUNTOS</th><th>PARTIDA</th>' +
       '<th>CONTRARRELOJ</th><th>RACHA</th><th>PRECIS.</th></tr></thead><tbody>' + cuerpo + '</tbody></table>' +
-      '<div class="kbd" style="margin-top:10px;line-height:1.7">Están todos los que juegan con <b>🌎 JUGAR ONLINE</b> ticado, ' +
-      'en cualquier celular o computador. Las marcas solo suben: nadie puede borrarle un récord a otro.</div>');
+      '<div class="kbd" style="margin-top:10px;line-height:1.7">Están todos los que juegan, ' +
+      'en cualquier celular o computador. Las marcas solo suben: nadie puede borrarle un récord a otro.</div>' +
+      invitacionOnline());
+    engancharSubirme();
   }
 }
 
@@ -2253,6 +2355,8 @@ if(location.search.indexOf('test')>=0){
     window.fetch=function(url,op){
       llamadas.push({url:String(url),cuerpo:(op&&op.body)?JSON.parse(op.body):null});
       var resp={ok:true,filas:[]};
+      if(op&&op.body&&String(op.body).indexOf('Pepito')>=0)
+        return Promise.resolve({json:function(){ return Promise.resolve({ok:false,error:'sin-internet'}); }});
       if(String(url).indexOf('/cuenta')>=0) resp={ok:true,nueva:false,datos:'{"level":7}',peso:45};
       else if(String(url).indexOf('/guardar')>=0) resp={ok:true,guardado:true,records:{partida:false,arcade60:false,nivel:false,racha:false}};
       return Promise.resolve({json:function(){ return Promise.resolve(resp); }});
@@ -2260,6 +2364,18 @@ if(location.search.indexOf('test')>=0){
     /* los numeros que se publican */
     var d=blank(); d.level=9; d.pts=1234; d.mejorPartida=321; d.arcadeBest=17;
     d.arcadeRecs={'60':17,'600':40}; d.best=11; d.ok=100; d.fail=25; d.medals[MEDALLAS[0].id]=true;
+    /* una cuenta de este aparato que nunca tico "online" se publica igual */
+    var dbAntes=DB, uAntes=user;
+    DB={'Pepito':blank(),'Ema':blank()}; DB['Ema'].online=true; user=null;
+    llamadas.length=0; subirCuenta('Pepito');
+    var pide=llamadas[0];
+    if(!pide||pide.url.indexOf('/cuenta')<0) bad.push(['auto-no-crea-cuenta']);
+    else if(!pide.cuerpo.clave||pide.cuerpo.clave.length<3||pide.cuerpo.nombre!=='Pepito') bad.push(['auto-clave-mala',JSON.stringify(pide.cuerpo)]);
+    llamadas.length=0; subirCuenta('Ema');            /* cuenta con contrasena propia: no se toca */
+    if(llamadas.length) bad.push(['auto-pisa-cuenta-con-clave']);
+    DB['Pepito'].autoClave='autoSecreta555';
+    if(paraLaNube(DB['Pepito']).indexOf('autoSecreta555')>=0) bad.push(['viaja-la-autoclave']);
+    DB=dbAntes; user=uAntes;
     var mm=marcasDe(d);
     if(mm.peso!==125||mm.nivel!==9||mm.pts!==1234||mm.partida!==321) bad.push(['marcas',JSON.stringify(mm)]);
     if(mm.arcade60!==17||mm.arcade600!==40||mm.racha!==11||mm.medallas!==1) bad.push(['marcas-records',JSON.stringify(mm)]);
@@ -2528,6 +2644,43 @@ if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
   window.addEventListener('load',function(){
     navigator.serviceWorker.register('sw.js').catch(function(){});
   });
+}
+
+/* ---------- que el boton global este donde tiene que estar ---------- */
+if(location.search.indexOf('test')>=0){
+  (function(){
+    var malo=[];
+    var lobby=document.querySelector('#lobby');
+    if(!lobby) malo.push('sin-lobby');
+    else if(!lobby.querySelector('.bGlobal')) malo.push('lobby-sin-boton-global');
+    var pausa=document.querySelector('#pause');
+    if(pausa && pausa.querySelectorAll('.bGlobal').length!==1) malo.push('pausa-con-'+pausa.querySelectorAll('.bGlobal').length+'-botones-global');
+    if(document.querySelectorAll('.bGlobal').length<3) malo.push('faltan-botones-global');
+    /* todos los .bGlobal tienen que abrir el ranking online */
+    var sinEnganche=0;
+    Array.prototype.forEach.call(document.querySelectorAll('.bGlobal'),function(b){ if(!b.onclick) sinEnganche++; });
+    if(sinEnganche) malo.push(sinEnganche+'-botones-global-sin-enganchar');
+    /* la invitacion aparece cuando no estas online, y no cuando si */
+    var uAnt=user, dbAnt=DB;
+    user=null; if(invitacionOnline().indexOf('Entra con tu nombre')<0) malo.push('invitacion-sin-usuario');
+    DB={'X':{online:false}}; user='X';
+    if(invitacionOnline().indexOf('bSubirme')<0) malo.push('invitacion-no-ofrece-subir');
+    var onAnt=nubeOn, clAnt=nubeClave;
+    DB={'X':{online:true}}; nubeOn=true; nubeClave='x';
+    if(invitacionOnline()!=='') malo.push('invitacion-aparece-estando-online');
+    nubeOn=onAnt; nubeClave=clAnt; user=uAnt; DB=dbAnt;
+    /* la tabla se dibuja con la invitacion abajo */
+    pintarTablaGlobal([{nombre:'Zzz',avatar:'😎',nivel:9,pts:900,partida:100,arcade60:5,racha:4,aciertos:80,fallos:20}]);
+    if(document.querySelector('#modalBody').innerHTML.indexOf('Zzz')<0) malo.push('tabla-no-pinta');
+    cerrarModal();
+    pintarTablaGlobal([]);
+    if(document.querySelector('#modalBody').innerHTML.indexOf('Todavía no hay nadie')<0) malo.push('tabla-vacia-sin-texto');
+    cerrarModal();
+    var previo=document.title;
+    document.title = malo.length ? ('GLOBAL FAIL: '+malo.join(', ')) : previo;
+    if(malo.length) document.body.insertAdjacentHTML('afterbegin',
+      '<pre style="position:fixed;z-index:99;background:#000;color:#f44;padding:8px;white-space:pre-wrap">GLOBAL='+malo.join('\n')+'</pre>');
+  })();
 }
 </script>
 </body>

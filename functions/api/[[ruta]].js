@@ -91,7 +91,16 @@ async function cuenta(request, env) {
       .bind(juego, clave, nombre, h, new Date().toISOString().slice(0, 10)).run();
     return json({ ok: true, nueva: true, datos: null, peso: 0 });
   }
-  if (fila.hash !== h) return json({ ok: false, error: 'clave' }, 403);
+  if (fila.hash !== h) {
+    /* la cuenta se habia publicado sola con una llave automatica del aparato:
+       si el jugador la trae, puede cambiarla por la contrasena que eligio */
+    const vieja = String(b.claveVieja == null ? '' : b.claveVieja).slice(0, 40);
+    if (vieja.length >= 3 && fila.hash === await sha256(clave + ':' + vieja + ':' + SAL)) {
+      await env.DB.prepare('UPDATE jugadores SET hash = ? WHERE juego = ? AND clave = ?').bind(h, juego, clave).run();
+    } else {
+      return json({ ok: false, error: 'clave' }, 403);
+    }
+  }
   return json({ ok: true, nueva: false, datos: fila.datos || null, peso: fila.peso || 0, avatar: fila.avatar || '' });
 }
 

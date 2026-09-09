@@ -342,6 +342,78 @@ textarea{width:100%;height:110px;background:#100d18;color:#9ef;border:3px solid 
 }
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:520px){.stat b{font-size:18px}.lt{min-width:30px;padding:5px 6px 3px}}
+
+/* ================= VERSUS: duelos 1 contra 1 ================= */
+#vs{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;
+    background:radial-gradient(120% 90% at 50% 0%,#231a35 0%,var(--ink) 70%);
+    padding:0;overscroll-behavior:none;touch-action:manipulation}
+#vs.go{display:flex}
+.vspanel{display:flex;flex-direction:column;justify-content:center;gap:6px;
+         padding:8px 10px;min-height:0;position:relative;overflow:hidden}
+.vspanel.rival{flex:0 0 30%;background:rgba(255,46,136,.07);border-bottom:2px solid rgba(255,46,136,.35)}
+.vspanel.yo{flex:1 1 auto;background:rgba(57,255,136,.05)}
+.vshead{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:.5px}
+.vshead .av{font-size:22px}
+.vshead .nom{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vshead .mk{font-size:26px;font-weight:900;line-height:1}
+.rival .mk{color:var(--hot)} .yo .mk{color:var(--neon)}
+.luz{width:9px;height:9px;border-radius:50%;background:#555;flex:0 0 auto}
+.luz.on{background:var(--neon);box-shadow:0 0 8px var(--neon)}
+.vsq{font-size:clamp(20px,7vw,42px);font-weight:900;text-align:center;line-height:1.15;
+     word-break:break-word;flex:0 1 auto}
+.rival .vsq{font-size:clamp(16px,5vw,30px);opacity:.92}
+.vsmid{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:5px 10px;
+       background:rgba(0,0,0,.45);border-block:1px solid rgba(255,255,255,.09)}
+#vsReloj{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums;min-width:76px;text-align:center}
+#vsReloj.rojo{color:var(--hot);animation:latir .7s infinite}
+@keyframes latir{50%{transform:scale(1.12)}}
+.vsbar{flex:1;height:12px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden;display:flex}
+.vsbar i{display:block;height:100%;transition:width .3s}
+.vsbar i.a{background:var(--hot)} .vsbar i.b{background:var(--neon)}
+#vsInfo{font-size:11px;opacity:.85;text-align:right;min-width:74px;line-height:1.25}
+.vsops{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px}
+.vsops button{font-size:clamp(16px,4.6vw,24px);padding:14px 6px;font-weight:900;min-height:56px}
+.vsops button.bien{background:var(--neon);color:#04210f}
+.vsops button.mal{background:var(--hot);color:#fff}
+.vsesc{display:flex;gap:8px;align-items:stretch}
+.vsesc input{flex:1;font-size:26px;text-align:center;font-weight:900;padding:10px;border-radius:14px;
+             background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.18);color:#fff}
+.vspad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:7px}
+.vspad button{font-size:20px;padding:11px 0;font-weight:900}
+.vsltr{display:flex;flex-wrap:wrap;justify-content:center;gap:4px}
+.vsltr .lt{font-size:clamp(22px,7vw,40px);font-weight:900;padding:2px 3px;border-radius:8px;
+           background:none;border:none;color:#fff;line-height:1.1}
+.vsltr button.lt{background:rgba(34,211,238,.16);border:2px solid rgba(34,211,238,.5);cursor:pointer}
+.vsltr button.lt.bien{background:var(--neon);color:#04210f}
+.vsltr button.lt.mal{background:var(--hot)}
+.vsfb{font-size:13px;font-weight:800;text-align:center;min-height:18px}
+.vsfb.bien{color:var(--neon)} .vsfb.mal{color:var(--hot)} .vsfb.esp{color:var(--sun)}
+#vsCuenta{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+          font-size:22vw;font-weight:900;background:rgba(5,3,10,.86);z-index:5;color:var(--sun)}
+/* ---- amigos, buscador y chat ---- */
+.amg{display:flex;align-items:center;gap:8px;padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.08)}
+.amg .nom{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:800}
+.amg .sub{font-size:11px;opacity:.65;font-weight:600}
+.amg button{padding:7px 10px;font-size:12px;flex:0 0 auto}
+.chatbox{height:190px;overflow-y:auto;background:rgba(0,0,0,.28);border-radius:12px;padding:8px;
+         display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.msg{max-width:82%;padding:6px 10px;border-radius:12px;font-size:14px;line-height:1.35;word-break:break-word}
+.msg.yo{align-self:flex-end;background:rgba(57,255,136,.18)}
+.msg.el{align-self:flex-start;background:rgba(255,255,255,.10)}
+.pin{display:inline-block;min-width:18px;padding:0 5px;border-radius:99px;background:var(--hot);
+     color:#fff;font-size:11px;font-weight:900;line-height:18px;text-align:center;margin-left:4px}
+.vsopt{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.vsopt button{flex:1 1 140px;padding:12px 8px;font-size:13px;font-weight:800;opacity:.55}
+.vsopt button.on{opacity:1;outline:3px solid var(--cy)}
+@media(max-width:430px){
+  .vspanel.rival{flex-basis:27%}
+  .vsops button{min-height:50px;padding:11px 4px}
+  #vsReloj{font-size:22px;min-width:64px}
+}
+@media(min-width:760px){
+  #vs{padding:0 max(0px,calc(50vw - 380px))}
+}
+
 </style>
 </head>
 <body>
@@ -377,6 +449,30 @@ textarea{width:100%;height:110px;background:#100d18;color:#9ef;border:3px solid 
   </div>
   <div class="kbd">Esc o Enter para volver al juego. El cronómetro está detenido.</div>
 </div></div>
+
+<!-- ================= DUELO 1 CONTRA 1 ================= -->
+<div id="vs">
+  <div class="vspanel rival">
+    <div class="vshead"><span class="luz" id="vsLuz"></span><span class="av" id="vsAvEl">🙂</span>
+      <span class="nom" id="vsNomEl">-</span><span class="mk" id="vsMkEl">0</span></div>
+    <div class="vsq" id="vsQel">…</div>
+    <div class="vsfb" id="vsFel"></div>
+  </div>
+  <div class="vsmid">
+    <div id="vsReloj">1:00</div>
+    <div class="vsbar"><i class="a" id="vsBarEl" style="width:50%"></i><i class="b" id="vsBarYo" style="width:50%"></i></div>
+    <div id="vsInfo"></div>
+    <button class="sm ghost" id="vsSalir" style="flex:0 0 auto;padding:7px 9px;font-size:11px">SALIR</button>
+  </div>
+  <div class="vspanel yo">
+    <div class="vshead"><span class="av" id="vsAvYo">🙂</span>
+      <span class="nom" id="vsNomYo">-</span><span class="mk" id="vsMkYo">0</span></div>
+    <div class="vsq" id="vsQyo">…</div>
+    <div id="vsResp"></div>
+    <div class="vsfb" id="vsFyo"></div>
+    <div id="vsCuenta" class="hide">3</div>
+  </div>
+</div>
 
 <div class="wrap">
   <h1>TILDES <span>MAKE ME</span> CRAZY</h1>
@@ -431,6 +527,8 @@ textarea{width:100%;height:110px;background:#100d18;color:#9ef;border:3px solid 
     <div class="rowt" style="margin-top:14px">
       <button class="sm ghost bStats">📊 MIS NÚMEROS</button>
       <button class="sm ghost bMedals">🏅 MEDALLAS</button>
+      <button class="sm hot bVersus">⚔️ VERSUS 1v1</button>
+      <button class="sm cy bAmigos">👥 AMIGOS<span id="lbVsChip"></span></button>
       <button class="sm ghost bRank">🏆 RANKING DE LA CALLE</button>
       <button class="sm cy bGlobal">🌎 RANKING ONLINE</button>
       <button class="sm sun bReglas">📘 TODAS LAS REGLAS</button>
@@ -2077,7 +2175,8 @@ var MODOS = [
   { k: 'arcade300', t: '⏱ 5 MINUTOS', d: 'más aciertos en 5 minutos' },
   { k: 'arcade600', t: '⏱ 10 MINUTOS', d: 'más aciertos en 10 minutos' },
   { k: 'racha', t: '🔥 RACHA', d: 'más aciertos seguidos sin fallar' },
-  { k: 'pts', t: '⭐ PUNTOS', d: 'puntos juntados en total' }
+  { k: 'pts', t: '⭐ PUNTOS', d: 'puntos juntados en total' },
+  { k: 'vsGan', t: '⚔️ DUELOS', d: 'mas duelos 1v1 ganados' }
 ];
 /* ---------- subirse al ranking online sin salir de la partida ----------
    El progreso de cada persona vive en SU aparato: nadie puede subirlo por
@@ -2180,12 +2279,13 @@ function pintarTablaGlobal(filas) {
         '<td>' + f.nivel + '</td><td>' + fmtN(f.pts) + '</td><td>' + fmtN(f.partida) + '</td>' +
         '<td>' + (arc ? arc + ' en ' + nomDur(arcDur).replace(' segundos', 's').replace(' minutos', 'min') : '-') + '</td>' +
         '<td>' + (f.racha || 0) + '</td>' +
+        '<td>' + ((f.vsGan || 0) + '-' + (f.vsPer || 0)) + '</td>' +
         '<td>' + (tot ? Math.round(f.aciertos / tot * 100) + '%' : '-') + '</td></tr>';
     }).join('');
     modal('<h2>🌎 RANKING ONLINE</h2>' +
       '<div class="reyes">' + reyes + '</div>' +
       '<table><thead><tr><th>#</th><th>JUGADOR</th><th>NV</th><th>PUNTOS</th><th>PARTIDA</th>' +
-      '<th>CONTRARRELOJ</th><th>RACHA</th><th>PRECIS.</th></tr></thead><tbody>' + cuerpo + '</tbody></table>' +
+      '<th>CONTRARRELOJ</th><th>RACHA</th><th>DUELOS</th><th>PRECIS.</th></tr></thead><tbody>' + cuerpo + '</tbody></table>' +
       '<div class="kbd" style="margin-top:10px;line-height:1.7">Están todos los que juegan, ' +
       'en cualquier celular o computador. Las marcas solo suben: nadie puede borrarle un récord a otro.</div>' +
       invitacionOnline());
@@ -2345,6 +2445,785 @@ function verAyuda(){
    '<b>Atajos:</b> 1-9 vocal · 0 sin tilde · Enter seguir · P pista · S saltar · Esc pausa.</p>');
 }
 wire('.bStats',verStats); wire('.bMedals',verMedallas); wire('.bRank',verRanking); wire('.bGlobal',verRankingGlobal);
+
+/* ---------- lo que el duelo necesita saber de ESTE juego ---------- */
+var VSJUEGO = {
+  normaliza: function (g) {
+    g = g || {};
+    var c = g.cats || {}, r = {
+      modo: g.modo === 'mismas' ? 'mismas' : 'distintas',
+      cats: {}
+    };
+    var alguno = false;
+    for (var k = 1; k <= 6; k++) { r.cats[k] = c[k] !== false; if (r.cats[k]) alguno = true; }
+    if (!alguno) r.cats[1] = true;
+    return r;
+  },
+  reglasHTML: function () {
+    var h = '<label style="margin-top:12px">QUÉ BLOQUES ENTRAN</label><div class="vsopt" id="vsCatsBox">';
+    for (var k = 1; k <= 6; k++) h += '<button data-c="' + k + '" class="cy">' + CATTICK[k] + '</button>';
+    return h + '</div>' +
+      '<div class="kbd" style="line-height:1.7">Se contesta igual que en el juego de siempre: ' +
+      'tocas la vocal que lleva la tilde, o el botón de NO LLEVA TILDE.</div>';
+  },
+  engancha: function (r) {
+    Array.prototype.forEach.call(document.querySelectorAll('#vsCatsBox button'), function (b) {
+      var k = b.getAttribute('data-c');
+      b.classList.toggle('on', !!r.cats[k]);
+      b.onclick = function () {
+        r.cats[k] = !r.cats[k];
+        var n = 0; for (var j = 1; j <= 6; j++) if (r.cats[j]) n++;
+        if (!n) r.cats[k] = true;
+        b.classList.toggle('on', !!r.cats[k]);
+        try { SFX.clic(); } catch (e) { }
+      };
+    });
+  },
+  lee: function () { },
+  firma: function (r) {
+    var l = []; for (var k = 1; k <= 6; k++) if (r.cats[k]) l.push(k);
+    return l.join('');
+  },
+  resumen: function (r) {
+    var l = []; for (var k = 1; k <= 6; k++) if (r.cats[k]) l.push(k);
+    return 'bloques ' + l.join(', ') + ' · marcando la vocal';
+  },
+  generar: function (nivel, r, n) {
+    var antes = {};
+    for (var k = 1; k <= 6; k++) { antes[k] = CATS[k]; CATS[k] = !!r.cats[k]; }
+    var memoria = ultimas.slice();
+    ultimas.length = 0;                       /* la memoria de repetidas tiene que partir igual en los dos */
+    var out = [];
+    try {
+      for (var i = 0; i < n; i++) {
+        var it = sacarPalabra(nivel);
+        var q = { vis: it.vis, ans: it.ans, frase: it.f || '', pal: it.p };
+        out.push(q);
+      }
+    } finally {
+      for (var k2 = 1; k2 <= 6; k2++) CATS[k2] = antes[k2];
+      ultimas.length = 0;
+      memoria.forEach(function (x) { ultimas.push(x); });
+    }
+    return out;
+  },
+  pinta: function (q) {
+    var f = q.frase ? '<div style="font-size:13px;opacity:.75;font-weight:600;margin-bottom:3px">' +
+      esc(q.frase).replace('___', '<u>' + esc(q.vis) + '</u>') + '</div>' : '';
+    return f + esc(q.vis);
+  },
+  responde: function (q, host, cb) {
+    /* marcando la vocal, igual que en el juego de siempre */
+    var vis = q.vis, bajo = vis.toLowerCase(), html = '', num = 0;
+    for (var i = 0; i < vis.length; i++) {
+      var ch = vis[i];
+      if (ch === ' ') { html += '<span class="lt">&nbsp;</span>'; continue; }
+      if (esNucleo(bajo, i)) {
+        num++;
+        html += '<button class="lt" data-i="' + i + '">' + esc(ch) + '<sup style="font-size:11px;opacity:.6">' + num + '</sup></button>';
+      } else html += '<span class="lt">' + esc(ch) + '</span>';
+    }
+    host.innerHTML = '<div class="vsltr">' + html + '</div>' +
+      '<div class="vsops" style="grid-template-columns:1fr;margin-top:8px">' +
+      '<button data-i="-1" class="sun">NO LLEVA TILDE</button></div>';
+    Array.prototype.forEach.call(host.querySelectorAll('[data-i]'), function (b) {
+      b.onclick = function () {
+        var idx = parseInt(b.getAttribute('data-i'), 10);
+        var bien = idx === q.ans;
+        b.classList.add(bien ? 'bien' : 'mal');
+        cb(bien);
+      };
+    });
+  }
+};
+
+/* ============================================================
+   VERSUS: duelos 1 contra 1, amigos y mini chat
+   ------------------------------------------------------------
+   La gracia esta en que el servidor NO sabe nada de tildes, de
+   sumas ni de la tabla periodica: manda una SEMILLA y los dos
+   aparatos arman exactamente la misma lista de preguntas con el
+   generador que el juego ya tenia. Se logra sembrando Math.random
+   mientras se generan (conSemilla), porque todo el azar de los tres
+   juegos pasa por ahi.
+
+   Dos modos, los dos se ganan con mas respuestas buenas:
+     'mismas'    la misma pregunta para los dos y el punto es del
+                 que conteste bien primero. El arbitro es el servidor.
+     'distintas' cada uno con su propia lista y a su ritmo.
+
+   El reloj tambien es del servidor: 60 s, y si al minuto la
+   diferencia es menor a 10 aciertos, se estiran 30 s mas.
+   ============================================================ */
+var VS = {
+  duelo: null, preguntas: [], base: 0, i: 0, ok: 0, fail: 0,
+  reglas: null, modo: 'distintas', respondida: -1, bloqueada: -1,
+  poll: null, reloj: null, sonar: null, desfase: 0, ultMarca: 0,
+  amigos: [], piden: [], invita: null, vistos: {}, chatCon: null,
+  enCurso: false, avisado: {}
+};
+
+/* ---------- azar sembrado (mulberry32): mismo numero en los dos aparatos ---------- */
+function vsMotorAzar(semilla) {
+  var s = semilla >>> 0;
+  return function () {
+    s = (s + 0x6D2B79F5) >>> 0;
+    var t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function conSemilla(semilla, fn) {
+  var real = Math.random;
+  Math.random = vsMotorAzar(semilla);
+  try { return fn(); } finally { Math.random = real; }
+}
+
+/* ---------- hablar con el servidor ---------- */
+function vsPedir(op, extra, cb) {
+  var cuerpo = { juego: JUEGO, nombre: user, clave: nubeClave, op: op };
+  for (var k in extra) if (extra.hasOwnProperty(k)) cuerpo[k] = extra[k];
+  postear('/vs', cuerpo, function (r) {
+    if (r && r.ok && r.duelo && r.duelo.ahora) VS.desfase = r.duelo.ahora - Date.now();
+    else if (r && r.ok && r.ahora) VS.desfase = r.ahora - Date.now();
+    cb(r);
+  });
+}
+function vsAhora() { return Date.now() + VS.desfase; }
+
+/* para jugar online la cuenta tiene que estar publicada; ahora se publica sola */
+function vsListo(cb) {
+  if (!user || !DB[user]) { alert('Primero entra con tu nombre.'); return; }
+  if (nubeClave) { cb(true); return; }
+  subirCuenta(user, function (r) {
+    if (!nubeClave) {
+      if (r && r.error === 'clave') {
+        /* el nombre ya existe online con otra llave: puede ser SUYO (cambio de
+           celular, borro los datos) o de otra persona. Le doy las dos salidas. */
+        modal('<h2>⚔️ VERSUS</h2>' +
+          '<div class="warn" style="line-height:1.6"><b>El nombre "' + esc(user) + '" ya está ocupado ' +
+          'en el ranking online.</b></div>' +
+          '<p style="font-size:14px;line-height:1.8">Si esa cuenta es tuya (jugaste en otro celular ' +
+          'o le pusiste contraseña), escríbela y la recuperas aquí mismo. Si es de otra persona, ' +
+          'entra con otro nombre.</p>' +
+          '<div class="row"><button id="bSubirme" class="cy">🔑 ES MÍA, TENGO CONTRASEÑA</button>' +
+          '<button id="vsOtroNom" class="ghost">CAMBIAR DE NOMBRE</button></div>');
+        engancharSubirme();
+        $('#vsOtroNom').onclick = function () { cerrarModal(); salirDeVerdad(); };
+        return;
+      }
+      modal('<h2>⚔️ VERSUS</h2><div class="warn">No pude conectarte. Revisa el internet y vuelve a intentar.</div>' +
+        '<p style="font-size:14px;line-height:1.7">Los duelos necesitan internet. Tu progreso no se pierde: ' +
+        'sigue guardado en este aparato.</p>');
+      return;
+    }
+    cb(true);
+  });
+}
+
+/* ============================================================
+   1. Elegir las condiciones del duelo
+   ============================================================ */
+function vsReglasGuardadas() {
+  if (VS.reglas) return VS.reglas;
+  var g = null;
+  try { g = JSON.parse(localStorage.getItem('vsreglas:' + JUEGO) || 'null'); } catch (e) { }
+  VS.reglas = VSJUEGO.normaliza(g);
+  return VS.reglas;
+}
+function vsGuardarReglas() {
+  try { localStorage.setItem('vsreglas:' + JUEGO, JSON.stringify(VS.reglas)); } catch (e) { }
+}
+function abrirVersus() {
+  vsListo(function () {
+    var r = vsReglasGuardadas();
+    modal('<h2>⚔️ VERSUS · 1 contra 1</h2>' +
+      '<p style="font-size:14px;line-height:1.7;margin:0 0 10px">Elige las condiciones y después con quién juegas. ' +
+      'El duelo se juega en el <b>nivel promedio</b> de los dos: si tú vas en 40 y tu rival en 60, juegan en 50.</p>' +
+      '<label>MODO</label><div class="vsopt" id="vsModoBox">' +
+      '<button data-m="mismas" class="cy">⚡ MISMAS PREGUNTAS<br><i style="font-weight:600;font-size:11px;opacity:.8">' +
+      'los dos ven la misma y el punto es del que conteste bien primero</i></button>' +
+      '<button data-m="distintas" class="cy">🎯 PREGUNTAS DISTINTAS<br><i style="font-weight:600;font-size:11px;opacity:.8">' +
+      'cada uno con las suyas y a su ritmo; gana el que junte más</i></button></div>' +
+      VSJUEGO.reglasHTML(r) +
+      '<div class="kbd" style="margin:10px 0;line-height:1.7">Dura <b>1 minuto</b>. Si al minuto la diferencia es ' +
+      'menor a <b>10 respuestas buenas</b>, se estiran <b>30 segundos más</b> y ahí termina. ' +
+      'Gana el que hizo más preguntas buenas. Una vez que empieza <b>no hay pausa</b>.</div>' +
+      '<div class="row" style="margin-top:6px">' +
+      '<button id="vsAzar" class="cy">🎲 RIVAL AL AZAR</button>' +
+      '<button id="vsAmigo" class="sun">👥 RETAR A UN AMIGO</button></div>');
+    vsEngancharReglas();
+    $('#vsAzar').onclick = function () { vsLeerReglas(); vsBuscarAzar(); };
+    $('#vsAmigo').onclick = function () { vsLeerReglas(); verAmigos(); };
+  });
+}
+function vsEngancharReglas() {
+  var r = vsReglasGuardadas();
+  Array.prototype.forEach.call(document.querySelectorAll('#vsModoBox button'), function (b) {
+    b.classList.toggle('on', b.getAttribute('data-m') === r.modo);
+    b.onclick = function () {
+      r.modo = b.getAttribute('data-m');
+      Array.prototype.forEach.call(document.querySelectorAll('#vsModoBox button'), function (x) {
+        x.classList.toggle('on', x === b);
+      });
+      try { SFX.clic(); } catch (e) { }
+    };
+  });
+  VSJUEGO.engancha(r);
+}
+function vsLeerReglas() {
+  VSJUEGO.lee(VS.reglas);
+  VS.reglas = VSJUEGO.normaliza(VS.reglas);
+  vsGuardarReglas();
+}
+
+/* ============================================================
+   2. Buscar rival al azar
+   ============================================================ */
+function vsBuscarAzar() {
+  var r = VS.reglas, intentos = 0;
+  modal('<h2>🎲 BUSCANDO RIVAL…</h2>' +
+    '<p style="font-size:15px;line-height:1.8" id="vsEspera">Te estoy emparejando con alguien que esté ' +
+    'buscando lo mismo (<b>' + esc(VSJUEGO.resumen(r)) + '</b>).</p>' +
+    '<div class="row" style="margin-top:10px"><button id="vsCancelar" class="hot">CANCELAR</button></div>', true);
+  $('#vsCancelar').onclick = function () { pararBusqueda(); vsPedir('salirCola', {}, function () { }); cerrarModal(); };
+  function paso() {
+    vsPedir('azar', { reglas: JSON.stringify(r), firma: VSJUEGO.firma(r), modo: r.modo }, function (res) {
+      if (!VS.buscando) return;
+      if (!res || !res.ok) {
+        $('#vsEspera') && ($('#vsEspera').innerHTML = 'Sin conexión. Sigo intentando…');
+        return;
+      }
+      if (res.duelo) { pararBusqueda(); cerrarModal(); vsArrancar(res.duelo); return; }
+      intentos++;
+      var e = $('#vsEspera');
+      if (e) e.innerHTML = 'Buscando a alguien que quiera lo mismo (<b>' + esc(VSJUEGO.resumen(r)) + '</b>).<br>' +
+        'Esperando hace ' + Math.round(intentos * 1.6) + ' s · ' + (res.enCola || 1) + ' en la fila.<br>' +
+        '<span style="opacity:.7;font-size:13px">Si no aparece nadie, rétalo tú: 👥 amigos.</span>';
+    });
+  }
+  VS.buscando = setInterval(paso, 1600);
+  paso();
+}
+function pararBusqueda() { clearInterval(VS.buscando); VS.buscando = null; }
+
+/* ============================================================
+   3. Amigos, buscador y chat
+   ============================================================ */
+function verAmigos() {
+  vsListo(function () {
+    modal('<h2>👥 AMIGOS</h2><p style="color:#a89ac2;font-size:14px">Cargando…</p>');
+    vsPedir('sonar', {}, function (r) {
+      if (!r || !r.ok) { modal('<h2>👥 AMIGOS</h2><div class="warn">No pude conectarme.</div>'); return; }
+      VS.amigos = r.amigos || []; VS.piden = r.piden || []; VS.ultimos = r.ultimos || {};
+      pintarAmigos();
+    });
+  });
+}
+function vsSala(otro) { var a = vsMiClave(), b = String(otro); return a < b ? a + '|' + b : b + '|' + a; }
+function vsMiClave() { return String(user || '').replace(/\s+/g, ' ').trim().slice(0, 18).toLowerCase(); }
+function vsNoLeidos(clave) {
+  var s = vsSala(clave), ult = (VS.ultimos || {})[s] || 0, visto = 0;
+  try { visto = Number(localStorage.getItem('vschat:' + JUEGO + ':' + s) || 0); } catch (e) { }
+  return ult > visto ? 1 : 0;
+}
+function pintarAmigos() {
+  var piden = VS.piden.map(function (p) {
+    return '<div class="amg"><span class="av">' + esc(p.avatar || '🙂') + '</span>' +
+      '<span class="nom">' + esc(p.nombre) + '<div class="sub">nivel ' + p.nivel + ' · quiere ser tu amigo</div></span>' +
+      '<button class="cy" data-si="' + esc(p.clave) + '">ACEPTAR</button>' +
+      '<button class="ghost" data-no="' + esc(p.clave) + '">NO</button></div>';
+  }).join('');
+  var lista = VS.amigos.map(function (a) {
+    return '<div class="amg"><span class="luz ' + (a.conectado ? 'on' : '') + '"></span>' +
+      '<span class="av">' + esc(a.avatar || '🙂') + '</span>' +
+      '<span class="nom">' + esc(a.nombre) + (vsNoLeidos(a.clave) ? '<span class="pin">•</span>' : '') +
+      '<div class="sub">nivel ' + a.nivel + ' · ' + (a.conectado ? 'conectado' : 'desconectado') + '</div></span>' +
+      '<button class="hot" data-reta="' + esc(a.clave) + '">⚔️</button>' +
+      '<button class="cy" data-chat="' + esc(a.clave) + '">💬</button>' +
+      '<button class="ghost" data-quita="' + esc(a.clave) + '">🗑</button></div>';
+  }).join('');
+  modal('<h2>👥 AMIGOS</h2>' +
+    '<label>BUSCAR A ALGUIEN POR SU NOMBRE</label>' +
+    '<div class="row"><input id="vsQ" maxlength="18" placeholder="Escribe 2 letras o más" autocomplete="off" style="flex:2 1 160px">' +
+    '<button id="vsBuscarB" class="cy">BUSCAR</button></div>' +
+    '<div id="vsResultados"></div>' +
+    (piden ? '<label style="margin-top:14px">TE MANDARON SOLICITUD</label>' + piden : '') +
+    '<label style="margin-top:14px">TUS AMIGOS' + (VS.amigos.length ? ' (' + VS.amigos.length + ')' : '') + '</label>' +
+    (lista || '<div class="kbd" style="line-height:1.7">Todavía no tienes. Busca a alguien por su nombre ' +
+      'y mándale solicitud: cuando acepte pueden retarse y chatear.</div>') +
+    '<div class="kbd" style="margin-top:10px;line-height:1.7">⚔️ lo retas a un duelo · 💬 chat · 🗑 lo quitas.</div>');
+  $('#vsBuscarB').onclick = vsBuscarGente;
+  $('#vsQ').onkeydown = function (e) { if (e.key === 'Enter') vsBuscarGente(); };
+  vsEngancharAmigos();
+}
+function vsEngancharAmigos() {
+  function cada(attr, fn) {
+    Array.prototype.forEach.call(document.querySelectorAll('#modalBody [data-' + attr + ']'), function (b) {
+      b.onclick = function () { fn(b.getAttribute('data-' + attr), b); };
+    });
+  }
+  cada('si', function (c, b) { b.disabled = true; vsPedir('aceptar', { a: c }, function () { verAmigos(); }); });
+  cada('no', function (c, b) { b.disabled = true; vsPedir('quitar', { a: c }, function () { verAmigos(); }); });
+  cada('pide', function (c, b) {
+    b.disabled = true; b.textContent = '…';
+    vsPedir('pedir', { a: c }, function (r) {
+      b.textContent = (r && r.yaSon) ? 'YA SON AMIGOS' : 'SOLICITUD ENVIADA';
+      if (r && r.yaSon) verAmigos();
+    });
+  });
+  cada('quita', function (c) {
+    if (!confirm('¿Quitar a ' + c + ' de tus amigos?')) return;
+    vsPedir('quitar', { a: c }, function () { verAmigos(); });
+  });
+  cada('chat', function (c) { verChat(c); });
+  cada('reta', function (c) {
+    vsLeerReglas();
+    vsPedir('retar', { a: c, reglas: JSON.stringify(VS.reglas), modo: VS.reglas.modo }, function (r) {
+      if (!r || !r.ok) { alert('No pude mandar el reto. ¿Sigue siendo tu amigo?'); return; }
+      vsEsperarReto(r.duelo, c);
+    });
+  });
+}
+function vsBuscarGente() {
+  var q = $('#vsQ').value.trim();
+  if (q.length < 2) { $('#vsResultados').innerHTML = '<div class="kbd">Escribe al menos 2 letras.</div>'; return; }
+  $('#vsResultados').innerHTML = '<div class="kbd">Buscando…</div>';
+  vsPedir('buscar', { q: q }, function (r) {
+    if (!r || !r.ok) { $('#vsResultados').innerHTML = '<div class="warn">Sin conexión.</div>'; return; }
+    if (!r.filas.length) { $('#vsResultados').innerHTML = '<div class="kbd">Nadie se llama así en este juego.</div>'; return; }
+    $('#vsResultados').innerHTML = r.filas.map(function (f) {
+      var est = f.mio === 'ok' ? '<span class="sub">ya es tu amigo</span>'
+        : f.mio === 'pide' ? '<span class="sub">solicitud enviada</span>'
+          : f.suyo === 'pide' ? '<button class="cy" data-si="' + esc(f.clave) + '">ACEPTAR</button>'
+            : '<button class="cy" data-pide="' + esc(f.clave) + '">AGREGAR</button>';
+      return '<div class="amg"><span class="av">' + esc(f.avatar || '🙂') + '</span>' +
+        '<span class="nom">' + esc(f.nombre) + '<div class="sub">nivel ' + f.nivel + ' · ' + fmtN(f.pts) + ' pts</div></span>' +
+        est + '</div>';
+    }).join('');
+    vsEngancharAmigos();
+  });
+}
+function verChat(clave) {
+  VS.chatCon = clave;
+  var amigo = null;
+  VS.amigos.forEach(function (a) { if (a.clave === clave) amigo = a; });
+  modal('<h2>💬 ' + esc(amigo ? amigo.nombre : clave) + '</h2>' +
+    '<div class="chatbox" id="vsChat"><div class="kbd">Cargando…</div></div>' +
+    '<div class="row"><input id="vsMsg" maxlength="200" placeholder="Escribe algo…" autocomplete="off" style="flex:2 1 160px">' +
+    '<button id="vsEnviar" class="cy">ENVIAR</button></div>' +
+    '<div class="row" style="margin-top:8px">' +
+    '<button id="vsRetaAqui" class="hot">⚔️ RETARLO</button>' +
+    '<button id="vsVolverAm" class="ghost">← AMIGOS</button></div>');
+  $('#vsEnviar').onclick = vsDecir;
+  $('#vsMsg').onkeydown = function (e) { if (e.key === 'Enter') vsDecir(); };
+  $('#vsVolverAm').onclick = function () { VS.chatCon = null; verAmigos(); };
+  $('#vsRetaAqui').onclick = function () {
+    vsLeerReglas();
+    vsPedir('retar', { a: clave, reglas: JSON.stringify(VS.reglas), modo: VS.reglas.modo }, function (r) {
+      if (!r || !r.ok) { alert('No pude mandar el reto.'); return; }
+      vsEsperarReto(r.duelo, clave);
+    });
+  };
+  vsCargarChat();
+}
+function vsCargarChat() {
+  if (!VS.chatCon) return;
+  vsPedir('chat', { con: VS.chatCon }, function (r) {
+    if (!r || !r.ok || VS.chatCon === null) return;
+    vsPintarChat(r.mensajes || []);
+  });
+}
+function vsPintarChat(ms) {
+  var caja = $('#vsChat');
+  if (!caja) return;
+  var mi = vsMiClave();
+  caja.innerHTML = ms.length ? ms.map(function (m) {
+    return '<div class="msg ' + (m.de === mi ? 'yo' : 'el') + '">' + esc(m.texto) + '</div>';
+  }).join('') : '<div class="kbd">Nadie ha dicho nada todavía.</div>';
+  caja.scrollTop = caja.scrollHeight;
+  if (ms.length) {
+    try { localStorage.setItem('vschat:' + JUEGO + ':' + vsSala(VS.chatCon), String(ms[ms.length - 1].id)); } catch (e) { }
+  }
+}
+function vsDecir() {
+  var i = $('#vsMsg'), t = i.value.trim();
+  if (!t) return;
+  i.value = '';
+  vsPedir('decir', { con: VS.chatCon, texto: t }, function (r) {
+    if (r && r.ok) vsPintarChat(r.mensajes || []); else i.value = t;
+  });
+}
+
+/* ---------- esperar a que el amigo acepte el reto ---------- */
+function vsEsperarReto(duelo, clave) {
+  modal('<h2>⚔️ RETO ENVIADO</h2><p style="font-size:15px;line-height:1.8" id="vsRetoTxt">' +
+    'Le llegó el reto. Esperando que acepte…</p>' +
+    '<div class="row" style="margin-top:10px"><button id="vsCancelaReto" class="hot">CANCELAR</button></div>', true);
+  var id = duelo.id, n = 0;
+  $('#vsCancelaReto').onclick = function () { clearInterval(VS.esperaReto); VS.esperaReto = null; cerrarModal(); };
+  VS.esperaReto = setInterval(function () {
+    n++;
+    vsPedir('traer', { id: id }, function (r) {
+      if (!VS.esperaReto) return;
+      if (!r || !r.ok) return;
+      if (r.duelo.estado === 'juega') { clearInterval(VS.esperaReto); VS.esperaReto = null; cerrarModal(); vsArrancar(r.duelo); return; }
+      if (r.duelo.estado === 'muerto') {
+        clearInterval(VS.esperaReto); VS.esperaReto = null;
+        modal('<h2>⚔️ RETO</h2><p style="font-size:15px">Te dijo que no. Otra vez será.</p>');
+        return;
+      }
+      var e = $('#vsRetoTxt');
+      if (e && n > 10) e.innerHTML = 'Sigue sin contestar. Quizás no tiene el juego abierto.<br>' +
+        '<span style="opacity:.75;font-size:13px">El reto le va a aparecer apenas entre (dura 2 minutos).</span>';
+    });
+  }, 1800);
+}
+
+/* ============================================================
+   4. El duelo
+   ============================================================ */
+function vsArrancar(d) {
+  if (VS.enCurso && VS.duelo && VS.duelo.id === d.id) return;
+  vsLimpiar();
+  VS.enCurso = true; VS.terminado = false;
+  VS.duelo = d; VS.modo = d.modo; VS.ok = 0; VS.fail = 0; VS.i = 0;
+  VS.respondida = -1; VS.bloqueada = -1; VS.ultMarca = 0;
+  var reglas = VSJUEGO.normaliza(vsParse(d.reglas));
+  VS.reglasDuelo = reglas;
+  VS.preguntas = conSemilla(d.semilla, function () { return VSJUEGO.generar(d.nivel, reglas, 300); });
+  VS.base = (d.modo === 'distintas' && !d.soyA) ? 150 : 0;
+  VS.baseRival = (d.modo === 'distintas' && d.soyA) ? 150 : 0;
+
+  $('#vsAvYo').textContent = d.yo.avatar || '🙂';
+  $('#vsNomYo').textContent = d.yo.nombre + ' (tú)';
+  $('#vsAvEl').textContent = d.el.avatar || '🙂';
+  $('#vsNomEl').textContent = d.el.nombre;
+  $('#vs').classList.add('go');
+  $('#vsSalir').onclick = vsRendirse;
+  try { document.body.style.overflow = 'hidden'; } catch (e) { }
+
+  toast('⚔️ DUELO EN NIVEL ' + d.nivel, d.modo === 'mismas'
+    ? 'Los dos ven la misma pregunta. El punto es del que conteste bien primero.'
+    : 'Cada uno con sus propias preguntas. Gana el que junte más buenas.');
+
+  vsPintar();
+  VS.reloj = setInterval(vsTick, 100);
+  VS.poll = setInterval(vsMirar, 1000);
+}
+function vsParse(t) { try { return JSON.parse(t); } catch (e) { return null; } }
+function vsLimpiar() {
+  clearInterval(VS.poll); clearInterval(VS.reloj); clearInterval(VS.buscando); clearInterval(VS.esperaReto);
+  VS.poll = VS.reloj = VS.buscando = VS.esperaReto = null;
+}
+function vsCerrarPantalla() {
+  vsLimpiar();
+  VS.enCurso = false; VS.duelo = null;
+  $('#vs').classList.remove('go');
+  try { document.body.style.overflow = ''; } catch (e) { }
+  var c = $('#vsCuenta'); if (c) c.classList.add('hide');
+}
+
+function vsMiPregunta() {
+  var d = VS.duelo;
+  if (!d) return null;
+  var idx = d.modo === 'mismas' ? d.ronda : VS.i;
+  return VS.preguntas[(VS.base + idx) % VS.preguntas.length];
+}
+function vsSuPregunta() {
+  var d = VS.duelo;
+  if (!d) return null;
+  var idx = d.modo === 'mismas' ? d.ronda : (d.el.i || 0);
+  return VS.preguntas[(VS.baseRival + idx) % VS.preguntas.length];
+}
+
+function vsPintar() {
+  var d = VS.duelo;
+  if (!d) return;
+  var mia = vsMiPregunta(), suya = vsSuPregunta();
+  $('#vsQel').innerHTML = suya ? VSJUEGO.pinta(suya) : '…';
+  $('#vsQyo').innerHTML = mia ? VSJUEGO.pinta(mia) : '…';
+  $('#vsMkYo').textContent = Math.max(VS.ok, d.yo.ok);
+  $('#vsMkEl').textContent = d.el.ok;
+  $('#vsLuz').className = 'luz' + (d.el.conectado ? ' on' : '');
+  var a = d.el.ok, b = Math.max(VS.ok, d.yo.ok), tot = a + b;
+  $('#vsBarEl').style.width = (tot ? a / tot * 100 : 50) + '%';
+  $('#vsBarYo').style.width = (tot ? b / tot * 100 : 50) + '%';
+  $('#vsInfo').innerHTML = 'NV ' + d.nivel + '<br>' + (d.modo === 'mismas' ? 'misma preg.' : 'preg. distintas');
+  vsPintarRespuestas(mia);
+}
+function vsPintarRespuestas(q) {
+  var host = $('#vsResp');
+  var d = VS.duelo;
+  if (!q || !d) { host.innerHTML = ''; return; }
+  var bloqueado = (d.modo === 'mismas' && VS.respondida >= d.ronda);
+  var clave = d.modo === 'mismas' ? ('r' + d.ronda) : ('i' + VS.i);
+  if (host.getAttribute('data-q') === clave && !bloqueado) return;   /* no repinto por gusto */
+  host.setAttribute('data-q', clave);
+  if (bloqueado) {
+    host.innerHTML = '<div class="kbd" style="text-align:center;padding:10px">Esperando la siguiente…</div>';
+    return;
+  }
+  VSJUEGO.responde(q, host, vsContesta);
+  $('#vsFyo').textContent = '';
+  $('#vsFyo').className = 'vsfb';
+}
+
+/* ---------- contestar ---------- */
+function vsContesta(bien) {
+  var d = VS.duelo;
+  if (!d || d.estado !== 'juega') return;
+  if (vsAhora() < d.empieza) return;                 /* todavia esta la cuenta regresiva */
+  if (vsAhora() > d.termina) return;                 /* sono la bocina: esta ya no cuenta */
+  try { bien ? SFX.ok() : SFX.mal(); } catch (e) { }
+
+  if (d.modo === 'mismas') {
+    if (VS.respondida >= d.ronda) return;
+    VS.respondida = d.ronda;
+    var ronda = d.ronda;
+    $('#vsFyo').textContent = bien ? '✔ ¡bien! esperando…' : '✘ fallaste esta';
+    $('#vsFyo').className = 'vsfb ' + (bien ? 'bien' : 'mal');
+    vsPintarRespuestas(vsMiPregunta());
+    vsPedir('responder', { id: d.id, ronda: ronda, acierto: bien ? 1 : 0 }, function (r) {
+      if (r && r.ok && r.duelo) vsAplicar(r.duelo);
+    });
+    return;
+  }
+  /* modo distintas: avanzo yo solo */
+  if (bien) { VS.ok++; } else { VS.fail++; }
+  VS.i++;
+  $('#vsFyo').textContent = bien ? '✔' : '✘';
+  $('#vsFyo').className = 'vsfb ' + (bien ? 'bien' : 'mal');
+  vsPintar();
+  vsMarcar();
+}
+function vsMarcar() {
+  var d = VS.duelo;
+  if (!d) return;
+  VS.ultMarca = Date.now();
+  vsPedir('marcar', { id: d.id, ok: VS.ok, fail: VS.fail, i: VS.i }, function (r) {
+    if (r && r.ok && r.duelo) vsAplicar(r.duelo);
+  });
+}
+function vsMirar() {
+  var d = VS.duelo;
+  if (!d) return;
+  if (d.estado === 'fin' || VS.terminado) return;
+  if (Date.now() - (VS.ultMirar || 0) < 700) return;    /* como maximo una vez cada 0,7 s */
+  VS.ultMirar = Date.now();
+  var op = 'mirar', extra = { id: d.id };
+  if (d.modo === 'distintas' && (VS.ok > d.yo.ok || VS.fail > d.yo.fail || VS.i > d.yo.i)) {
+    op = 'marcar'; extra.ok = VS.ok; extra.fail = VS.fail; extra.i = VS.i;
+  }
+  vsPedir(op, extra, function (r) { if (r && r.ok && r.duelo) vsAplicar(r.duelo); });
+}
+function vsAplicar(nuevo) {
+  var antes = VS.duelo;
+  if (!antes || nuevo.id !== antes.id) return;
+  var cambioRonda = nuevo.ronda !== antes.ronda;
+  VS.duelo = nuevo;
+  VS.ok = Math.max(VS.ok, nuevo.yo.ok);
+  VS.fail = Math.max(VS.fail, nuevo.yo.fail);
+  if (nuevo.modo === 'mismas' && cambioRonda) {
+    var quien = nuevo.gano;
+    if (quien && quien !== vsMiClave()) {
+      $('#vsFel').textContent = '⚡ se la ganó';
+      $('#vsFel').className = 'vsfb bien';
+      setTimeout(function () { var e = $('#vsFel'); if (e) { e.textContent = ''; e.className = 'vsfb'; } }, 900);
+    }
+  }
+  if (nuevo.estado === 'fin') { vsFin(); return; }
+  vsPintar();
+}
+
+/* ---------- el reloj ---------- */
+function vsTick() {
+  var d = VS.duelo;
+  if (!d) return;
+  var ahora = vsAhora();
+  var c = $('#vsCuenta');
+  if (ahora < d.empieza) {
+    var falta = Math.ceil((d.empieza - ahora) / 1000);
+    c.classList.remove('hide');
+    c.textContent = falta <= 0 ? '¡YA!' : String(falta);
+    $('#vsReloj').textContent = '1:00';
+    return;
+  }
+  c.classList.add('hide');
+  var quedan = Math.max(0, d.termina - ahora);
+  var s = Math.ceil(quedan / 1000);
+  $('#vsReloj').textContent = Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2);
+  $('#vsReloj').className = s <= 10 ? 'rojo' : '';
+  if (d.alarga) $('#vsInfo').innerHTML = '<b style="color:var(--sun)">+30 s</b><br>estaban parejos';
+  if (quedan <= 0 && d.estado === 'juega') {
+    var f = $('#vsFyo');
+    if (f && !f.textContent) { f.textContent = '⏱ se acabó el tiempo'; f.className = 'vsfb esp'; }
+    vsMirar();                                       /* que el servidor cierre o alargue */
+  }
+}
+
+/* ---------- rendirse ---------- */
+function vsRendirse() {
+  var d = VS.duelo;
+  if (!d) { vsCerrarPantalla(); return; }
+  if (d.estado === 'fin') { vsCerrarPantalla(); irAlLobby(); return; }
+  if (!confirm('Si te sales ahora pierdes el duelo. ¿Seguro?')) return;
+  vsPedir('rendirse', { id: d.id }, function () { });
+  vsCerrarPantalla();
+  irAlLobby();
+}
+
+/* ---------- resultados ---------- */
+function vsFin() {
+  if (VS.terminado) return;      /* pueden llegar varias respuestas con 'fin' */
+  VS.terminado = true;
+  var d = VS.duelo;
+  vsLimpiar();
+  var mios = d.yo.ok, suyos = d.el.ok;      /* los del servidor: los dos ven lo mismo */
+  var meRendi = d.rendido && d.rendido === vsMiClave();
+  var gane, empate;
+  if (d.resultado) { gane = d.resultado === 'gane'; empate = d.resultado === 'empate'; }
+  else { gane = (!meRendi && mios > suyos) || (d.rendido && !meRendi); empate = !d.rendido && mios === suyos; }
+  $('#vsMkYo').textContent = mios;
+  $('#vsMkEl').textContent = suyos;
+  var dd = DB[user];
+  if (dd) {
+    dd.vsJug = (dd.vsJug || 0) + 1;
+    if (empate) dd.vsEmp = (dd.vsEmp || 0) + 1;
+    else if (gane) dd.vsGan = (dd.vsGan || 0) + 1;
+    else dd.vsPer = (dd.vsPer || 0) + 1;
+    save();
+  }
+  try { gane ? SFX.nivel() : SFX.fin(); if (gane) confetti(90); } catch (e) { }
+  var titulo = empate ? '🤝 EMPATE' : (gane ? '🏆 ¡GANASTE!' : '💀 PERDISTE');
+  var mp = mios + suyos ? Math.round(mios / (mios + suyos) * 100) : 50;
+  $('#vsResp').innerHTML =
+    '<div style="text-align:center;padding:6px 0">' +
+    '<div style="font-size:30px;font-weight:900;margin-bottom:4px">' + titulo + '</div>' +
+    (d.rendido ? '<div class="kbd" style="margin-bottom:6px">' + (meRendi ? 'Te saliste del duelo.' : 'Tu rival se salió.') + '</div>' : '') +
+    '<div style="font-size:40px;font-weight:900;letter-spacing:1px">' + mios + ' <span style="opacity:.5">–</span> ' + suyos + '</div>' +
+    '<div class="kbd" style="margin:6px 0 10px;line-height:1.7">' +
+    'Tú: ' + mios + ' buenas y ' + d.yo.fail + ' malas · ' +
+    esc(d.el.nombre) + ': ' + suyos + ' buenas y ' + d.el.fail + ' malas.' +
+    (d.alarga ? '<br>Se jugaron los 30 s extra porque estaban a menos de 10 de diferencia.' : '') +
+    (dd ? '<br>Llevas ' + (dd.vsGan || 0) + ' ganados, ' + (dd.vsPer || 0) + ' perdidos y ' + (dd.vsEmp || 0) + ' empatados.' : '') +
+    '</div>' +
+    '<div class="row"><button id="vsRev" class="cy">🔁 REVANCHA</button>' +
+    '<button id="vsLobby" class="ghost">🏠 IR AL LOBBY</button></div>' +
+    '<div class="kbd" id="vsRevTxt" style="margin-top:8px"></div></div>';
+  $('#vsBarEl').style.width = (100 - mp) + '%';
+  $('#vsBarYo').style.width = mp + '%';
+  $('#vsReloj').textContent = '0:00';
+  $('#vsFyo').textContent = ''; $('#vsFel').textContent = '';
+  $('#vsRev').onclick = vsRevancha;
+  $('#vsLobby').onclick = function () { vsCerrarPantalla(); irAlLobby(); };
+  nubeSubir();
+  VS.poll = setInterval(vsEsperarRevancha, 1600);
+}
+function vsRevancha() {
+  var d = VS.duelo;
+  $('#vsRev').disabled = true;
+  $('#vsRevTxt').textContent = 'Pediste revancha. Esperando a tu rival…';
+  vsPedir('revancha', { id: d.id }, function (r) {
+    if (!r || !r.ok) { $('#vsRev').disabled = false; $('#vsRevTxt').textContent = 'No pude. Intenta de nuevo.'; return; }
+    if (r.duelo && r.duelo.estado === 'juega' && r.duelo.id !== d.id) { vsArrancar(r.duelo); return; }
+    if (r.nuevo) vsTraerDuelo(r.nuevo);
+  });
+}
+function vsEsperarRevancha() {
+  var d = VS.duelo;
+  if (!d) return;
+  vsPedir('traer', { id: d.id }, function (r) {
+    if (!r || !r.ok || !VS.duelo) return;
+    if (r.duelo.revanchaId) { vsTraerDuelo(r.duelo.revanchaId); return; }
+    if (r.duelo.el.revancha && !r.duelo.yo.revancha) {
+      var t = $('#vsRevTxt');
+      if (t) t.innerHTML = '<b style="color:var(--sun)">Tu rival quiere la revancha.</b> Tócale a 🔁.';
+    }
+  });
+}
+function vsTraerDuelo(id) {
+  vsPedir('traer', { id: id }, function (r) {
+    if (r && r.ok && r.duelo) vsArrancar(r.duelo);
+  });
+}
+
+/* ============================================================
+   5. El sonar del lobby: solicitudes, retos y duelos que siguen vivos
+   ============================================================ */
+function vsSonarLobby() {
+  if (location.search.indexOf('test') >= 0) return;   /* el autotest no habla con el servidor */
+  if (!user || !nubeClave || VS.enCurso) return;
+  if ($('#lobby').classList.contains('hide')) return;
+  vsPedir('sonar', {}, function (r) {
+    if (!r || !r.ok) return;
+    VS.amigos = r.amigos || []; VS.piden = r.piden || []; VS.ultimos = r.ultimos || {};
+    /* un duelo que quedo a medias (se cerro el navegador): lo retomo */
+    if (r.duelo && r.duelo.estado === 'juega' && !VS.enCurso) { vsArrancar(r.duelo); return; }
+    if (r.invita && !VS.avisado[r.invita.id]) {
+      VS.avisado[r.invita.id] = 1;
+      vsPreguntarReto(r.invita);
+      return;
+    }
+    vsPintarChip();
+  });
+}
+function vsPintarChip() {
+  var b = $('#lbVsChip');
+  if (!b) return;
+  var n = VS.piden.length;
+  VS.amigos.forEach(function (a) { n += vsNoLeidos(a.clave); });
+  b.innerHTML = n ? '<span class="pin">' + n + '</span>' : '';
+}
+function vsPreguntarReto(inv) {
+  try { SFX.medalla(); } catch (e) { }
+  var reglas = VSJUEGO.normaliza(vsParse(inv.reglas));
+  modal('<h2>⚔️ ¡TE RETARON!</h2>' +
+    '<p style="font-size:16px;line-height:1.8"><b>' + esc(inv.avatar || '🙂') + ' ' + esc(inv.nombre) + '</b> ' +
+    '(nivel ' + inv.nivel + ') te reta a un duelo.</p>' +
+    '<div class="kbd" style="line-height:1.8;margin:8px 0">' +
+    'Nivel del duelo: <b>' + inv.nivelDuelo + '</b> (el promedio de los dos)<br>' +
+    'Modo: <b>' + (inv.modo === 'mismas' ? 'la misma pregunta para los dos' : 'preguntas distintas') + '</b><br>' +
+    'Condiciones: <b>' + esc(VSJUEGO.resumen(reglas)) + '</b><br>' +
+    '1 minuto (+30 s si quedan a menos de 10 de diferencia). No hay pausa.</div>' +
+    '<div class="row"><button id="vsSi" class="cy">⚔️ ACEPTAR</button>' +
+    '<button id="vsNo" class="ghost">AHORA NO</button></div>', true);
+  $('#vsSi').onclick = function () {
+    $('#vsSi').disabled = true;
+    vsPedir('entrar', { id: inv.id }, function (r) {
+      if (!r || !r.ok) { alert('El reto ya no está disponible.'); cerrarModal(); return; }
+      cerrarModal(); vsArrancar(r.duelo);
+    });
+  };
+  $('#vsNo').onclick = function () { vsPedir('rechazar', { id: inv.id }, function () { }); cerrarModal(); };
+}
+
+/* ---------- enganches ---------- */
+/* el historial de duelos va donde el alumno mira sus numeros */
+var vsStatsOriginal = verStats;
+function vsVerStats() {
+  vsStatsOriginal();
+  var d = DB[user];
+  if (!d) return;
+  var j = d.vsJug || 0, g = d.vsGan || 0, p = d.vsPer || 0, e = d.vsEmp || 0;
+  $('#modalBody').insertAdjacentHTML('beforeend',
+    '<label style="margin-top:14px">⚔️ DUELOS 1 CONTRA 1</label>' +
+    (j ? '<table><tbody>' +
+      '<tr><td>Jugados</td><td><b>' + j + '</b></td>' +
+      '<td>Ganados</td><td><b style="color:var(--neon)">' + g + '</b></td></tr>' +
+      '<tr><td>Perdidos</td><td><b style="color:var(--hot)">' + p + '</b></td>' +
+      '<td>Empatados</td><td><b>' + e + '</b></td></tr>' +
+      '<tr><td>Los ganas</td><td colspan="3"><b>' + Math.round(g / j * 100) + '%</b> de las veces</td></tr>' +
+      '</tbody></table>'
+      : '<div class="kbd" style="line-height:1.7">Todavía no juegas ninguno. ' +
+        'Toca ⚔️ VERSUS 1v1 en el lobby y reta a alguien.</div>'));
+}
+wire('.bStats', vsVerStats);
+wire('.bVersus', function () { try { SFX.clic(); } catch (e) { } abrirVersus(); });
+wire('.bAmigos', function () { try { SFX.clic(); } catch (e) { } verAmigos(); });
+VS.sonar = setInterval(vsSonarLobby, 4000);
+setInterval(function () { if (VS.chatCon && !VS.enCurso) vsCargarChat(); }, 3000);
+
 wire('.bReglas',verReglas); wire('.bHelp',verAyuda);
 
 /* ============================================================
@@ -2770,6 +3649,58 @@ if(location.search.indexOf('test')>=0){
   }catch(e){ bad.push(['ui-excepcion',e.message,String(e.stack||'').split('\n').slice(0,3).join(' | ')]); }
   clearInterval(tick); clearInterval(arcadeTick);
   try{ if(respaldo===null) localStorage.removeItem('tildes'); else localStorage.setItem('tildes',respaldo); }catch(e){}
+
+
+/* ---------- 11. VERSUS: que los dos aparatos armen LA MISMA lista ---------- */
+(function () {
+  var r = VSJUEGO.normaliza(null);
+  /* la semilla manda: misma semilla, mismas preguntas; otra semilla, otras */
+  var a = conSemilla(12345, function () { return VSJUEGO.generar(20, r, 200); });
+  var b = conSemilla(12345, function () { return VSJUEGO.generar(20, r, 200); });
+  var c = conSemilla(999, function () { return VSJUEGO.generar(20, r, 200); });
+  if (a.length !== 200) bad.push(['vs-pocas-preguntas', a.length]);
+  if (JSON.stringify(a) !== JSON.stringify(b)) bad.push(['vs-semilla-no-repite']);
+  if (JSON.stringify(a) === JSON.stringify(c)) bad.push(['vs-semilla-no-cambia']);
+  /* y que sembrar no deje a Math.random pisado para el resto del juego */
+  var m1 = Math.random(), m2 = Math.random();
+  if (m1 === m2) bad.push(['vs-math-random-pisado']);
+  /* nunca puede quedar un duelo sin nada ticado */
+  var vacio = VSJUEGO.normaliza({ cats: { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false },
+                                  ops: { '+': false, '-': false, '*': false, '/': false } });
+  var quedaAlgo = false;
+  ['ops', 'cats'].forEach(function (k) {
+    if (vacio[k]) for (var x in vacio[k]) if (vacio[k][x]) quedaAlgo = true;
+  });
+  if (!quedaAlgo) bad.push(['vs-reglas-vacias']);
+  /* la ficha de cada pregunta se dibuja y se puede contestar */
+  var host = document.createElement('div'), toco = null;
+  VSJUEGO.responde(a[0], host, function (bien) { toco = bien; });
+  var botones = host.querySelectorAll('[data-i]');
+  if (!botones.length && !host.querySelector('#vsIn')) bad.push(['vs-sin-forma-de-contestar']);
+  if (botones.length) {
+    var bueno = -1;
+    for (var i = 0; i < botones.length; i++) {
+      toco = null; botones[i].onclick();
+      if (toco === true) bueno = i;
+    }
+    if (bueno < 0) bad.push(['vs-ninguna-opcion-correcta']);
+  }
+  if (!VSJUEGO.pinta(a[0])) bad.push(['vs-enunciado-vacio']);
+  /* el reparto de preguntas del modo 'distintas': cada uno con las suyas */
+  if (JSON.stringify(a[0]) === JSON.stringify(a[150])) bad.push(['vs-mismo-desfase']);
+  /* el resultado se anota UNA vez aunque el servidor repita que ya termino */
+  var dbAntes = DB, uAntes = user, duAntes = VS.duelo, tAntes = VS.terminado;
+  DB = { 'Ficticio': blank() }; user = 'Ficticio';
+  VS.terminado = false; VS.ok = 3; VS.fail = 1;
+  VS.duelo = { id: 'x', estado: 'fin', modo: 'distintas', ronda: 0, alarga: 0, rendido: '',
+               yo: { nombre: 'Ficticio', ok: 3, fail: 1, i: 4 },
+               el: { nombre: 'Otro', ok: 1, fail: 0, i: 1, conectado: true } };
+  vsFin(); vsFin(); vsFin();
+  vsLimpiar();
+  if ((DB['Ficticio'].vsJug || 0) !== 1) bad.push(['vs-cuenta-repetida', DB['Ficticio'].vsJug]);
+  if ((DB['Ficticio'].vsGan || 0) !== 1) bad.push(['vs-no-anota-la-victoria']);
+  DB = dbAntes; user = uAntes; VS.duelo = duAntes; VS.terminado = tAntes;
+})();
 
   document.title = bad.length ? ('TEST FAIL '+bad.length) : 'TEST OK';
   document.body.insertAdjacentHTML('afterbegin',

@@ -1,4 +1,4 @@
-# Deja los tres juegos instalados en el Escritorio de Windows.
+# Deja los cuatro juegos instalados en el Escritorio de Windows.
 # Uso: clic derecho sobre este archivo > "Ejecutar con PowerShell"
 $origen = Split-Path -Parent $PSScriptRoot
 $destino = [Environment]::GetFolderPath('Desktop')
@@ -13,7 +13,8 @@ if (-not $navegador) { Write-Host "No encontre Chrome ni Edge."; exit 1 }
 $juegos = @(
   @{ slug = 'maths';  nombre = 'Maths Make Me Crazy' },
   @{ slug = 'tildes'; nombre = 'Tildes Make Me Crazy' },
-  @{ slug = 'tabla';  nombre = 'Tabla Make Me Crazy' }
+  @{ slug = 'tabla';  nombre = 'Tabla Make Me Crazy' },
+  @{ slug = 'sc';     nombre = 'SC' }
 )
 $ws = New-Object -ComObject WScript.Shell
 foreach ($j in $juegos) {
@@ -29,4 +30,4 @@ foreach ($j in $juegos) {
   $lnk.Save()
   Write-Host ("Listo: " + $j.nombre)
 }
-Write-Host "Los tres juegos quedaron en tu Escritorio."
+Write-Host "Los cuatro juegos quedaron en tu Escritorio."

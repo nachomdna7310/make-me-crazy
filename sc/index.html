@@ -8,10 +8,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Maths">
+<meta name="apple-mobile-web-app-title" content="Tildes">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
-<title>Maths Make Me Crazy</title>
+<title>SC? · ¿Cómo se escribe?</title>
 <style>
 :root{
   --neon:#39ff88; --hot:#ff2e88; --sun:#ffd21e; --cy:#22d3ee; --pur:#a855f7;
@@ -46,11 +46,10 @@ body{
 .tag.b{bottom:2%;right:-1%;transform:rotate(9deg);color:var(--cy);animation:sway 11s ease-in-out infinite reverse}
 @keyframes sway{50%{transform:rotate(-8deg) translateY(-10px)}}
 
-/* ---- muralla de grafitis con formulas ---- */
+/* ---- muralla de palabras rayadas ---- */
 #wall{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;user-select:none}
 #wall b{position:absolute;white-space:nowrap;line-height:1.05;font-weight:900;
-  font-family:"Cambria Math","Segoe UI Symbol",Georgia,"Times New Roman",serif;
-  text-shadow:2px 2px 0 rgba(0,0,0,.55)}
+  font-family:Georgia,"Times New Roman",serif;text-shadow:2px 2px 0 rgba(0,0,0,.55)}
 #wall b i{font-style:normal;display:block;font-family:Impact,"Arial Black",sans-serif;
   font-size:.42em;letter-spacing:3px;opacity:.85;margin-top:3px}
 
@@ -105,7 +104,6 @@ button.sm{font-size:13px;padding:8px 11px;border-radius:11px;box-shadow:3px 3px 
 .stat b{display:block;font-size:26px;color:#fff;font-family:Impact,"Arial Black",sans-serif;letter-spacing:0}
 .stat b.bump{animation:bump .5s cubic-bezier(.2,1.7,.4,1)}
 @keyframes bump{35%{transform:scale(1.9) rotate(-5deg);color:var(--sun);text-shadow:0 0 22px var(--sun)}}
-/* ---- el nivel, bien grande ---- */
 .lvlbox{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:112px;padding:6px 16px 9px;
   border:4px solid var(--sun);border-radius:18px;background:rgba(0,0,0,.42);
   box-shadow:5px 5px 0 rgba(0,0,0,.6),0 0 26px rgba(255,210,30,.28),inset 0 0 22px rgba(255,210,30,.12)}
@@ -113,12 +111,7 @@ button.sm{font-size:13px;padding:8px 11px;border-radius:11px;box-shadow:3px 3px 
 .lvlbox b{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(44px,11vw,62px);line-height:.92;
   color:#fff;-webkit-text-stroke:3px #000;text-shadow:0 0 26px currentColor,4px 4px 0 rgba(0,0,0,.75)}
 .lvlbox.up{animation:lvlpop 1s cubic-bezier(.2,1.7,.4,1)}
-@keyframes lvlpop{
-  0%{transform:scale(1)}
-  30%{transform:scale(1.55) rotate(-7deg)}
-  55%{transform:scale(.94) rotate(3deg)}
-  100%{transform:scale(1)}
-}
+@keyframes lvlpop{0%{transform:scale(1)}30%{transform:scale(1.55) rotate(-7deg)}55%{transform:scale(.94) rotate(3deg)}100%{transform:scale(1)}}
 .lvlbox.cerca{animation:casi 1.1s ease-in-out infinite}
 @keyframes casi{50%{box-shadow:5px 5px 0 rgba(0,0,0,.6),0 0 42px rgba(57,255,136,.75),inset 0 0 26px rgba(57,255,136,.25)}}
 #fire{display:inline-block}
@@ -133,25 +126,44 @@ button.sm{font-size:13px;padding:8px 11px;border-radius:11px;box-shadow:3px 3px 
 .tbar{height:9px;border:3px solid #000;border-radius:8px;background:#100d18;overflow:hidden;margin:10px 0 2px}
 .tbar>i{display:block;height:100%;width:100%;background:var(--neon);transition:width .1s linear,background .3s}
 
-/* ---- ejercicio ---- */
+/* ---- la palabra ---- */
 .probwrap{position:relative;text-align:center}
-.prob{font-family:Impact,"Arial Black",sans-serif;letter-spacing:-1px;font-size:clamp(40px,10.5vw,80px);
-  margin:10px 0 2px;color:#fff;text-shadow:5px 5px 0 rgba(0,0,0,.85);animation:probIn .42s cubic-bezier(.2,1.7,.4,1) both}
-@keyframes probIn{from{opacity:0;transform:translateY(-26px) rotate(-5deg) scale(.72)}}
-.prob.shake{animation:shake .55s}
+.frase{font-size:clamp(15px,3.7vw,21px);font-weight:800;color:#e8dcff;line-height:1.55;margin:8px 0 2px;
+  animation:probIn .35s cubic-bezier(.2,1.7,.4,1) both}
+.frase u{text-decoration:none;color:var(--sun);border-bottom:3px dashed var(--sun);padding-bottom:1px}
+.tipo{display:inline-block;background:var(--pur);color:#fff;font-size:11.5px;font-weight:800;letter-spacing:1px;
+  padding:4px 10px;border-radius:99px;border:2px solid #000;margin:6px 0 0}
+.word{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;align-items:stretch;margin:10px 0 2px;
+  animation:probIn .42s cubic-bezier(.2,1.7,.4,1) both}
+@keyframes probIn{from{opacity:0;transform:translateY(-26px) rotate(-4deg) scale(.78)}}
+.word.shake{animation:shake .55s}
 @keyframes shake{
   8%{transform:translateX(-9px) rotate(-2deg)}24%{transform:translateX(16px) rotate(2deg)}
   42%{transform:translateX(-18px) rotate(-3deg)}60%{transform:translateX(13px) rotate(2deg)}
   78%{transform:translateX(-7px)}100%{transform:none}}
+.lt{position:relative;font-family:Impact,"Arial Black",sans-serif;font-size:clamp(30px,8.2vw,56px);line-height:1.05;
+  padding:6px 9px 4px;border-radius:12px;border:3px solid #000;background:#241c33;color:#fff;letter-spacing:0;
+  box-shadow:4px 4px 0 rgba(0,0,0,.6);min-width:38px;text-align:center;font-weight:400}
+.lt.v{background:#3a2c52;color:var(--sun);cursor:pointer;transition:transform .08s,background .12s,box-shadow .08s}
+.lt.v:hover{transform:translate(-2px,-3px);background:var(--pur);color:#fff;box-shadow:6px 7px 0 rgba(0,0,0,.6)}
+.lt.v:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(0,0,0,.6)}
+.lt.c{cursor:default;opacity:.82}
+.lt.sp{background:none;border:none;box-shadow:none;min-width:16px}
+.lt sup{position:absolute;top:1px;right:4px;font-size:10.5px;color:#bdb0d4;font-family:"Segoe UI",sans-serif;font-weight:800}
+.lt.ok{background:var(--neon);color:#0d0b12;animation:bump .55s cubic-bezier(.2,1.7,.4,1)}
+.lt.err{background:var(--hot);color:#fff}
+.lt.real{outline:4px dashed var(--neon);outline-offset:3px}
 .timer{font-weight:900;font-size:14px;color:var(--sun);letter-spacing:1px}
 .repaso{display:inline-block;background:var(--pur);color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;
   padding:3px 9px;border-radius:99px;border:2px solid #000;margin-bottom:2px}
+#bNoTilde{width:100%;font-size:21px;margin-top:12px;background:var(--cy)}
 
-/* ---- teclado ---- */
-.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
-.pad button{font-size:24px;padding:14px 0;background:#2a2138;color:#fff;border-radius:12px}
-.pad button.act{background:var(--neon);color:#0d0b12}
-.pad button.del{background:var(--hot);color:#fff}
+/* ---- ruedas de apoyo (niveles bajos) ---- */
+.ayuda{background:rgba(0,0,0,.42);border:3px solid #000;border-left:8px solid var(--cy);border-radius:0 14px 14px 0;
+  padding:11px 13px;margin-top:12px;font-size:13.5px;line-height:1.7;color:#e4d9f5;animation:fbIn .3s ease both}
+.ayuda b{color:var(--sun);font-family:Impact,"Arial Black",sans-serif;letter-spacing:1px;font-size:15px}
+.ayuda .li{margin-top:6px}
+.ayuda .k{color:var(--neon);font-weight:800}
 
 /* ---- feedback ---- */
 .fb{border-left:8px solid var(--neon);background:rgba(0,0,0,.4);padding:12px 14px;border-radius:0 12px 12px 0;margin-top:12px;
@@ -160,6 +172,7 @@ button.sm{font-size:13px;padding:8px 11px;border-radius:11px;box-shadow:3px 3px 
 .fb.bad{border-color:var(--hot)}
 .fb h3{margin:0 0 6px;font-family:Impact,"Arial Black",sans-serif;letter-spacing:1px;font-size:19px}
 .fb p{margin:0;line-height:1.55;font-size:15px;color:#efe9f7}
+.fb p b{color:var(--sun)}
 .hint{margin-top:8px;font-size:13px;color:#bdb0d4}
 .pop{position:absolute;left:50%;top:6px;transform:translateX(-50%);font-family:Impact,"Arial Black",sans-serif;
   font-size:clamp(42px,11vw,66px);color:var(--neon);-webkit-text-stroke:3px #000;
@@ -186,13 +199,11 @@ button.sm{font-size:13px;padding:8px 11px;border-radius:11px;box-shadow:3px 3px 
   text-shadow:4px 4px 0 rgba(0,0,0,.7);margin-bottom:-.04em}
 #lvlup .big{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(76px,26vw,230px);line-height:.9;color:var(--sun);
   -webkit-text-stroke:5px #000;text-shadow:11px 11px 0 rgba(0,0,0,.9),0 0 70px currentColor;
-  /* sin fill-mode: si las animaciones no corren, el numero igual se ve */
   animation:zoomIn .65s cubic-bezier(.2,1.8,.35,1), latido 1.1s .65s ease-in-out infinite}
 @keyframes zoomIn{0%{transform:scale(.2) rotate(-18deg);opacity:0}70%{transform:scale(1.16) rotate(3deg)}100%{transform:scale(1) rotate(-2deg);opacity:1}}
 @keyframes latido{50%{transform:scale(1.06) rotate(1deg)}}
 #lvlup .liga{font-family:Impact,"Arial Black",sans-serif;font-size:clamp(20px,5.5vw,34px);letter-spacing:3px;margin-top:12px;
   -webkit-text-stroke:2px #000;animation:cardIn .5s ease}
-/* onda expansiva detras del numero */
 #lvlup .onda{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;
   border:8px solid var(--neon);animation:onda 1.4s ease-out infinite}
 #lvlup .onda.b{animation-delay:.45s;border-color:var(--hot)}
@@ -229,9 +240,9 @@ tr.yo{background:rgba(255,210,30,.12)}
 .pill:hover{background:#392c4d}
 .pill .x{font-size:12px;color:#8e81a8;padding:0 3px;border-radius:99px;line-height:1.4}
 .pill .x:hover{background:var(--hot);color:#fff}
-.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:8px;margin-top:4px}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:8px;margin-top:4px}
 .chk{display:flex;align-items:center;gap:10px;background:#2a2138;border:3px solid #000;border-radius:14px;
-  padding:11px 12px;cursor:pointer;font-weight:800;font-size:13.5px;letter-spacing:1px;color:#e9e2f5;margin:0}
+  padding:11px 12px;cursor:pointer;font-weight:800;font-size:13px;letter-spacing:.5px;color:#e9e2f5;margin:0}
 .chk:hover{background:#392c4d}
 .chk.on{background:var(--neon);color:#0d0b12}
 .chk input{width:22px;height:22px;flex:0 0 auto;accent-color:#0d0b12;cursor:pointer}
@@ -239,6 +250,9 @@ tr.yo{background:rgba(255,210,30,.12)}
 .ligaline{display:flex;gap:3px;margin:10px 0}
 .ligaline>div{flex:1;height:10px;border:2px solid #000;border-radius:4px;background:#221a30}
 .ligaline>div.on{background:var(--sun)}
+.reglas{font-size:14px;line-height:1.85}
+.reglas h3{font-family:Impact,"Arial Black",sans-serif;letter-spacing:1px;font-size:17px;color:var(--neon);margin:16px 0 4px}
+.reglas em{font-style:normal;color:var(--sun);font-weight:800}
 /* ---- ranking online ---- */
 .reyes{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:8px;margin-bottom:12px}
 .rey{background:#2a2138;border:3px solid #000;border-radius:12px;padding:8px 10px;box-shadow:3px 3px 0 rgba(0,0,0,.6)}
@@ -284,19 +298,6 @@ tr.yo{background:rgba(255,210,30,.12)}
 .mini{font-size:11.5px;color:#8e81a8;text-align:center;margin-top:16px;line-height:1.7}
 .kbd{font-size:11px;color:#7d7194;text-align:center;margin-top:8px}
 textarea{width:100%;height:110px;background:#100d18;color:#9ef;border:3px solid #000;border-radius:12px;padding:10px;font-family:monospace;font-size:11px}
-/* ---- en pantallas tactiles el campo es solo un visor: escribe el teclado del juego ---- */
-body.tactil #ans{text-align:center;font-size:26px;letter-spacing:2px;caret-color:transparent;
-  background:#0d0b12;border-color:var(--cy);cursor:default;padding:10px}
-body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
-/* ---- alternativas ---- */
-.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px}
-.op{position:relative;font-family:Impact,"Arial Black",sans-serif;font-size:clamp(24px,6vw,38px);padding:18px 10px 16px;
-  background:#2a2138;color:#fff;border-radius:14px;min-height:70px;overflow-wrap:anywhere;letter-spacing:1px}
-.op:hover{background:var(--pur)}
-.op sup{position:absolute;top:4px;left:9px;font-size:11px;font-family:"Segoe UI",sans-serif;color:#bdb0d4;font-weight:800}
-.op.ok{background:var(--neon);color:#0d0b12;animation:bump .55s cubic-bezier(.2,1.7,.4,1)}
-.op.err{background:var(--hot);color:#fff}
-.op.real{outline:4px dashed var(--neon);outline-offset:3px}
 
 /* ---- celular: que quepa todo el juego en una pantalla, sin scroll ---- */
 @media (max-width:560px){
@@ -329,6 +330,10 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
   #answerBox .kbd{display:none}
   .wrap>.kbd{display:none}   /* los atajos de teclado no sirven en el celular */
   #ayudaFija{max-height:150px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .lt{font-size:clamp(26px,7.4vw,50px);padding:5px 7px 3px;min-width:32px}
+  #bNoTilde{font-size:19px;margin-top:9px;padding:13px}
+  .frase{font-size:clamp(14px,3.6vw,19px)}
+  .timer{font-size:12.5px}
   /* mientras se juega, el titulo grande estorba en el celular */
   body.jugando h1{font-size:22px;margin:0 0 2px;text-shadow:3px 3px 0 var(--hot)}
   #bPause span{display:none}   /* el (Esc) no sirve en el celular */
@@ -336,7 +341,12 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
   #legend{display:none}
 }
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
-@media (max-width:520px){.stat b{font-size:18px}.pad button{font-size:21px;padding:12px 0}}
+@media (max-width:520px){.stat b{font-size:18px}.lt{min-width:30px;padding:5px 6px 3px}}
+.lt.hueco{background:rgba(255,210,30,.22);border:2px dashed var(--sun);color:var(--sun);
+  border-radius:10px;min-width:.9em;text-align:center}
+.lt.hueco.ok{background:var(--neon);border-color:var(--neon);color:#04210f}
+.lt.hueco.err{background:var(--hot);border-color:var(--hot);color:#fff}
+#opts .opt sup{font-size:.5em;opacity:.55;margin-right:3px}
 
 /* ================= VERSUS: duelos 1 contra 1 ================= */
 #vs{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;
@@ -415,7 +425,7 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
 <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
 <div class="grain"></div>
 <div id="wall"></div>
-<div class="tag a">MATHS</div><div class="tag b">CRAZY</div>
+<div class="tag a">SC?</div><div class="tag b">ESCRIBE</div>
 <div id="flash" class="flash"></div><div id="conf"></div>
 <div id="lvlup"><div class="onda"></div><div class="onda b"></div>
   <div style="position:relative"><div class="big" id="lvlupTxt"><span class="lbl">NIVEL</span><span id="lvlupNum">2</span></div>
@@ -434,6 +444,7 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
     <button class="sm ghost bMedals">🏅 MEDALLAS</button>
     <button class="sm ghost bRank">🏆 RANKING DE LA CALLE</button>
     <button class="sm cy bGlobal">🌎 RANKING ONLINE</button>
+    <button class="sm ghost bReglas">📘 REGLAS</button>
     <button class="sm ghost bHelp">❓ AYUDA</button>
     <button class="sm ghost bSound">🔊</button>
   </div>
@@ -469,8 +480,8 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
 </div>
 
 <div class="wrap">
-  <h1>MATHS <span>MAKE ME</span> CRAZY</h1>
-  <div class="sub">CALCULA RAPIDO · SUBE DE NIVEL · DOMINA LA CALLE</div>
+  <h1>SC<span>?</span></h1>
+  <div class="sub">¿CÓMO SE ESCRIBE? · RÁPIDO · ANTES QUE SE ACABE EL TIEMPO</div>
   <div id="warn" class="warn hide"></div>
 
   <!-- ================= LOGIN ================= -->
@@ -496,13 +507,13 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
   <!-- ================= LOBBY ================= -->
   <section id="lobby" class="card hide">
     <div class="hero">
-      <div class="bigav" id="lbAv">🧠</div>
+      <div class="bigav" id="lbAv">✏️</div>
       <div class="lvlbox" id="lbLvlBox"><span>NIVEL</span><b id="lbLvl">1</b></div>
       <div class="info">
         <div class="nom" id="lbName">-</div>
         <div class="sub2" id="lbLiga">BRONCE</div>
         <div class="bar" style="margin-top:8px"><i id="lbBar"></i></div>
-        <div class="sub2" id="lbTxt" style="margin-top:5px">0 de 5 ejercicios rápidos</div>
+        <div class="sub2" id="lbTxt" style="margin-top:5px">0 de 5 palabras rápidas</div>
       </div>
     </div>
 
@@ -510,8 +521,8 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
     <div id="lbPlaySub">Continúa tu carrera donde la dejaste</div>
 
     <div class="tiles">
-      <button class="tile" id="tCarrera"><div class="ic">🏁</div><b>CARRERA</b><i>Sube de nivel juntando ejercicios rápidos. El modo principal.</i></button>
-      <button class="tile" id="tEntrenar"><div class="ic">🎯</div><b>ENTRENAR</b><i>Eliges la operación y la dificultad. Sin presión, para practicar.</i></button>
+      <button class="tile" id="tCarrera"><div class="ic">🏁</div><b>CARRERA</b><i>Sube de nivel juntando palabras rápidas. El modo principal.</i></button>
+      <button class="tile" id="tEntrenar"><div class="ic">🎯</div><b>ENTRENAR</b><i>Eliges el bloque de reglas y la dificultad. Sin presión.</i></button>
       <button class="tile" id="tArcade"><div class="ic">⏱</div><b>CONTRARRELOJ</b><i>De 1 a 10 minutos, y cada acierto te suma medio segundo. <span id="lbRec"></span></i></button>
     </div>
 
@@ -525,6 +536,7 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
       <button class="sm cy bAmigos">👥 AMIGOS<span id="lbVsChip"></span></button>
       <button class="sm ghost bRank">🏆 RANKING DE LA CALLE</button>
       <button class="sm cy bGlobal">🌎 RANKING ONLINE</button>
+      <button class="sm sun bReglas">📘 TODAS LAS REGLAS</button>
       <button class="sm ghost bHelp">❓ CÓMO SE JUEGA</button>
       <button class="sm ghost bSound">🔊</button>
       <button class="sm hot" id="lbSalir">CAMBIAR USUARIO</button>
@@ -534,7 +546,7 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
   <!-- ================= JUEGO ================= -->
   <section id="game" class="card hide">
     <div class="top">
-      <div class="me"><span class="av" id="meAv">🧠</span><span><b id="who">-</b><i id="meLiga">BRONCE</i></span></div>
+      <div class="me"><span class="av" id="meAv">✏️</span><span><b id="who">-</b><i id="meLiga">BRONCE</i></span></div>
       <div class="rowt">
         <button class="sm sun" id="bPause">⏸ PAUSA <span style="opacity:.6">(Esc)</span></button>
         <button class="sm ghost" id="bLobby">🏠 LOBBY</button>
@@ -549,17 +561,18 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
 
     <div id="trainBox" class="hide" style="margin-bottom:10px">
       <div class="row">
-        <select id="trainOp">
-          <option value="all">Las que ticaste al entrar</option>
-          <option value="+">Solo sumas</option>
-          <option value="-">Solo restas</option>
-          <option value="*">Solo multiplicaciones</option>
-          <option value="/">Solo divisiones</option>
-          <option value="mix">Operaciones combinadas</option>
+        <select id="trainCat">
+          <option value="all">Los bloques que ticaste al entrar</option>
+          <option value="1">1 · Agudas, graves, esdrújulas</option>
+          <option value="2">2 · Hiatos y diptongos</option>
+          <option value="3">3 · Tildes diacríticas y porqués</option>
+          <option value="4">4 · Compuestas y adverbios en -mente</option>
+          <option value="5">5 · Plurales que cambian</option>
+          <option value="6">6 · Excepciones y casos raros</option>
         </select>
         <select id="trainLvl"></select>
       </div>
-      <div class="kbd">Entrenar no sube de nivel: es para practicar tu punto débil sin presión. Igual suma medallas y estadísticas.</div>
+      <div class="kbd">Entrenar no sube de nivel: es para machacar el bloque que te cuesta. Igual suma medallas y estadísticas.</div>
     </div>
 
     <div class="hud">
@@ -574,57 +587,51 @@ body.tactil #ans::placeholder{font-size:14px;letter-spacing:1px;color:#6f6389}
 
     <div class="tbar"><i id="tbar"></i></div>
     <div class="probwrap">
-      <div id="repaso" class="repaso hide">🔁 REPASO: este te lo comiste antes</div>
-      <div class="prob" id="prob">3 + 4</div>
+      <div id="repaso" class="repaso hide">🔁 REPASO: esta te la comiste antes</div>
+      <div class="word" id="word"></div>
+      <div id="tipo" class="tipo hide"></div>
       <div class="timer" id="timer">0.0 s</div>
     </div>
 
-    <div id="answerBox" style="margin-top:12px">
-      <div id="altBox" class="opts hide"></div>
-      <div id="escribirBox">
-      <input id="ans" inputmode="decimal" autocomplete="off" placeholder="Tu respuesta y Enter">
-      <div class="pad">
-        <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
-        <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
-        <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
-        <button data-k=",">,</button><button data-k="0">0</button><button data-k="del" class="del">⌫</button>
-      </div>
-      </div>
+    <div id="answerBox" style="margin-top:6px">
+      <div class="kbd" id="comoResponder">¿Qué va en el hueco? Toca la opción correcta · (teclas 1, 2, 3 y 4)</div>
+      <div id="opts" class="opts"></div>
       <div class="row" style="margin-top:9px">
-        <button id="send" style="flex:2 1 200px">RESPONDER</button>
         <button id="bPista" class="sun sm">💡 PISTA</button>
         <button id="bSkip" class="ghost sm">SALTAR</button>
+        <button id="bReglasJuego" class="ghost sm bReglas">📘 REGLAS</button>
       </div>
+      <div id="ayudaFija" class="ayuda hide"></div>
     </div>
 
     <div id="fb" class="fb hide"><h3 id="fbTitle"></h3><p id="fbText"></p><div class="hint" id="fbPts"></div>
       <div class="row" style="margin-top:12px">
-        <button id="again" class="hot hide">REINTENTAR ESTE</button>
+        <button id="again" class="hot hide">REINTENTAR ESTA</button>
         <button id="next">SEGUIR ▶</button>
       </div>
     </div>
   </section>
 
   <div class="mini" id="legend">
-    Para subir de nivel juntas ejercicios: nivel 1 → 2 son 5, nivel 3 son 10, y en el nivel 160 ya son 30.<br>
+    Para subir de nivel juntas palabras: del nivel 1 al 2 son 5, en el nivel 3 son 10, y en el 160 ya son 30.<br>
     Cada acierto vale según lo que te demores: ⚡ RELÁMPAGO 1,5 · ✔ RÁPIDO 1 · 🐢 LENTO 0,6 · 😴 MUY LENTO 0,3.<br>
-    Por eso en el nivel 160 pasas con 30 ejercicios bajo 10 s, pero necesitas 50 si te demoras entre 10 y 20 s.
+    Niveles 1-10 con las reglas a la vista · 11-30 sin ayuda y con hiatos, plurales y -mente · 31+ diacríticas, porqués y excepciones a toda velocidad.
   </div>
-  <div class="kbd">Atajos: <b>Enter</b> responder y seguir · <b>P</b> pista · <b>S</b> saltar · <b>Esc</b> cerrar ventanas</div>
+  <div class="kbd">Atajos: <b>1-9</b> elegir vocal · <b>0</b> no lleva tilde · <b>Enter</b> seguir · <b>P</b> pista · <b>S</b> saltar · <b>Esc</b> pausa</div>
 </div>
-
 <script>
 "use strict";
 /* ============================================================
-   MATHS MAKE ME CRAZY - todo en un archivo, sin internet ni instalacion
-   La llave de guardado sigue siendo 'crazymath' a proposito:
-   asi nadie pierde el progreso que ya tenia con el nombre viejo.
+   SC? - ortografia, todo en un archivo, sin internet ni instalacion
+   Hermano chico de "Maths Make Me Crazy": mismo diseno, mismas animaciones,
+   mismas cuentas locales y mismo ranking, pero en vez de calcular
+   aca hay que ponerle la tilde a la vocal correcta.
+   Llave de guardado: 'tildes' (la de matematicas es 'crazymath', no se tocan).
    ============================================================ */
 var $ = function(s){ return document.querySelector(s); };
 var ri = function(a,b){ return a + Math.floor(Math.random()*(b-a+1)); };
 var pick = function(a){ return a[ri(0,a.length-1)]; };
 var fmt = function(n){ return (Math.round(n*100)/100).toString().replace('.',','); };
-/* numeros grandes con puntito de miles, para que se lean */
 function fmtN(n){
   var neg = n<0; n = Math.abs(n);
   var e = Math.floor(n), dec = Math.round((n-e)*100);
@@ -632,23 +639,16 @@ function fmtN(n){
   if(dec) s += ','+('0'+dec).slice(-2).replace(/0$/,'');
   return (neg?'-':'')+s;
 }
-/* acepta 79,5 · 1.234,5 · 79.5 · 1234 */
-function parseNum(s){
-  s = String(s).trim().replace(/\s/g,'');
-  if(s==='') return NaN;
-  if(s.indexOf(',')>=0) s = s.replace(/\./g,'').replace(',','.');
-  else if((s.match(/\./g)||[]).length>1) s = s.replace(/\./g,'');
-  return Number(s);
-}
 var hoy = function(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); };
 function ayerDe(f){ var d=new Date(f+'T12:00:00'); d.setDate(d.getDate()-1);
   return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
 /* ---------- almacenamiento ---------- */
 var memOnly=false, DB={};
-function load(){ try{ DB = JSON.parse(localStorage.getItem('crazymath') || '{}'); }catch(e){ DB={}; } }
+function load(){ try{ DB = JSON.parse(localStorage.getItem('sc') || '{}'); }catch(e){ DB={}; } }
 function save(){
-  try{ localStorage.setItem('crazymath', JSON.stringify(DB)); }
+  try{ localStorage.setItem('sc', JSON.stringify(DB)); }
   catch(e){ if(!memOnly){ memOnly=true;
     $('#warn').textContent='Ojo: este navegador no deja guardar. El progreso durara solo mientras la ventana este abierta.';
     $('#warn').classList.remove('hide'); } }
@@ -661,10 +661,9 @@ var LIGAS=[[1,'BRONCE','#c98b4b'],[21,'PLATA','#cfd8e3'],[46,'ORO','#ffd21e'],[7
 function liga(l){ var t=LIGAS[0]; for(var i=0;i<LIGAS.length;i++){ if(l>=LIGAS[i][0]) t=LIGAS[i]; } return t; }
 
 /* ---------- cuanto cuesta subir de nivel ----------
-   metaSeg = segundos en que el ejercicio cuenta como "rapido" (nv1: 14 s, nv160: 10 s)
-   reqEjer = ejercicios rapidos para pasar de nivel (nv1: 5, nv3: 10, nv160: 30)
-   credito = cuanto vale el que acabas de hacer segun tu tiempo */
-function metaSeg(l){ return Math.max(8, 14 - 0.025*l); }
+   metaSeg = segundos en que la palabra cuenta como "rapida" (nv1: 10,9 s · nv30: 6,8 s · nv50 en adelante: 4 s)
+   reqEjer = palabras rapidas para pasar de nivel (nv1: 5, nv3: 10, nv160: 30)  */
+function metaSeg(l){ return Math.max(4, 11 - 0.14*l); }
 function reqEjer(l){ return Math.round(5 + 5*Math.log(l)); }
 function credito(l, secs){
   var m = metaSeg(l);
@@ -679,149 +678,741 @@ function scorePts(l, secs, streak){
   return Math.max(1, Math.round((8 + 0.6*l) * speed * comboM));
 }
 
-/* ---------- generador de ejercicios ---------- */
-function digitsFor(L){ return Math.min(5, 1 + Math.floor(L/18)); }
-function randD(d){ return d===1 ? ri(2,9) : ri(Math.pow(10,d-1), Math.pow(10,d)-1); }
-function P(a,b,op,ans){ return {a:a,b:b,op:op,ans:ans,text:fmtN(a)+' '+op+' '+fmtN(b),kind:'simple'}; }
+/* ============================================================
+   MOTOR DE ACENTUACION
+   silabea, ubica la fuerza, clasifica y decide si la palabra
+   necesita tilde. Con esto se arman solas las explicaciones
+   y ademas el autotest revisa que el banco no tenga errores.
+   ============================================================ */
+var BANCO=[
+{p:'barco',v:'_arco',r:'b',o:['b','v'],c:1,d:1},
+{p:'boca',v:'_oca',r:'b',o:['b','v'],c:1,d:1},
+{p:'blanco',v:'_lanco',r:'b',o:['b','v'],c:1,d:1},
+{p:'caballo',v:'ca_allo',r:'b',o:['b','v'],c:1,d:1},
+{p:'bueno',v:'_ueno',r:'b',o:['b','v'],c:1,d:1},
+{p:'hombre',v:'hom_re',r:'b',o:['b','v'],c:1,d:1},
+{p:'brazo',v:'_razo',r:'b',o:['b','v'],c:1,d:1},
+{p:'bicicleta',v:'_icicleta',r:'b',o:['b','v'],c:1,d:1},
+{p:'botella',v:'_otella',r:'b',o:['b','v'],c:1,d:1},
+{p:'cabeza',v:'ca_eza',r:'b',o:['b','v'],c:1,d:1},
+{p:'libro',v:'li_ro',r:'b',o:['b','v'],c:1,d:1},
+{p:'nube',v:'nu_e',r:'b',o:['b','v'],c:1,d:1},
+{p:'sábado',v:'sá_ado',r:'b',o:['b','v'],c:1,d:1},
+{p:'trabajo',v:'tra_ajo',r:'b',o:['b','v'],c:1,d:1},
+{p:'abuela',v:'a_uela',r:'b',o:['b','v'],c:1,d:1},
+{p:'bosque',v:'_osque',r:'b',o:['b','v'],c:1,d:1},
+{p:'banco',v:'_anco',r:'b',o:['b','v'],c:1,d:1},
+{p:'bailar',v:'_ailar',r:'b',o:['b','v'],c:1,d:1},
+{p:'beber',v:'_eber',r:'b',o:['b','v'],c:1,d:1},
+{p:'bonito',v:'_onito',r:'b',o:['b','v'],c:1,d:1},
+{p:'nombre',v:'nom_re',r:'b',o:['b','v'],c:1,d:2},
+{p:'pobre',v:'po_re',r:'b',o:['b','v'],c:1,d:2},
+{p:'blusa',v:'_lusa',r:'b',o:['b','v'],c:1,d:2},
+{p:'bruja',v:'_ruja',r:'b',o:['b','v'],c:1,d:2},
+{p:'cambio',v:'cam_io',r:'b',o:['b','v'],c:1,d:2},
+{p:'hambre',v:'ham_re',r:'b',o:['b','v'],c:1,d:2},
+{p:'alfombra',v:'alfom_ra',r:'b',o:['b','v'],c:1,d:2},
+{p:'abrir',v:'a_rir',r:'b',o:['b','v'],c:1,d:2},
+{p:'cabra',v:'ca_ra',r:'b',o:['b','v'],c:1,d:2},
+{p:'bandera',v:'_andera',r:'b',o:['b','v'],c:1,d:2},
+{p:'escribir',v:'escri_ir',r:'b',o:['b','v'],c:1,d:2},
+{p:'recibir',v:'reci_ir',r:'b',o:['b','v'],c:1,d:2},
+{p:'subir',v:'su_ir',r:'b',o:['b','v'],c:1,d:2},
+{p:'deber',v:'de_er',r:'b',o:['b','v'],c:1,d:2},
+{p:'hablar',v:'ha_lar',r:'b',o:['b','v'],c:1,d:2},
+{p:'cambiar',v:'cam_iar',r:'b',o:['b','v'],c:1,d:2},
+{p:'sábana',v:'sá_ana',r:'b',o:['b','v'],c:1,d:2},
+{p:'bailarina',v:'_ailarina',r:'b',o:['b','v'],c:1,d:2},
+{p:'biblioteca',v:'_iblioteca',r:'b',o:['b','v'],c:1,d:2},
+{p:'absoluto',v:'a_soluto',r:'b',o:['b','v'],c:1,d:3},
+{p:'observar',v:'o_servar',r:'b',o:['b','v'],c:1,d:3},
+{p:'obvio',v:'o_vio',r:'b',o:['b','v'],c:1,d:3},
+{p:'bienvenida',v:'_ienvenida',r:'b',o:['b','v'],c:1,d:3},
+{p:'vibrar',v:'vi_rar',r:'b',o:['b','v'],c:1,d:3},
+{p:'herbívoro',v:'her_ívoro',r:'b',o:['b','v'],c:1,d:3},
+{p:'vagabundo',v:'vaga_undo',r:'b',o:['b','v'],c:1,d:3},
+{p:'bóveda',v:'_óveda',r:'b',o:['b','v'],c:1,d:3},
+{p:'combinar',v:'com_inar',r:'b',o:['b','v'],c:1,d:3},
+{p:'posible',v:'posi_le',r:'b',o:['b','v'],c:1,d:3},
+{p:'increíble',v:'increí_le',r:'b',o:['b','v'],c:1,d:3},
+{p:'amable',v:'ama_le',r:'b',o:['b','v'],c:1,d:3},
+{p:'estable',v:'esta_le',r:'b',o:['b','v'],c:1,d:3},
+{p:'obtener',v:'o_tener',r:'b',o:['b','v'],c:1,d:3},
+{p:'obedecer',v:'o_edecer',r:'b',o:['b','v'],c:1,d:3},
+{p:'abundante',v:'a_undante',r:'b',o:['b','v'],c:1,d:3},
+{p:'verde',v:'_erde',r:'v',o:['b','v'],c:1,d:1},
+{p:'viento',v:'_iento',r:'v',o:['b','v'],c:1,d:1},
+{p:'vivir',v:'_ivir',r:'v',o:['b','v'],c:1,d:1},
+{p:'nuevo',v:'nue_o',r:'v',o:['b','v'],c:1,d:1},
+{p:'joven',v:'jo_en',r:'v',o:['b','v'],c:1,d:1},
+{p:'huevo',v:'hue_o',r:'v',o:['b','v'],c:1,d:1},
+{p:'llave',v:'lla_e',r:'v',o:['b','v'],c:1,d:1},
+{p:'nieve',v:'nie_e',r:'v',o:['b','v'],c:1,d:1},
+{p:'avión',v:'a_ión',r:'v',o:['b','v'],c:1,d:1},
+{p:'volar',v:'_olar',r:'v',o:['b','v'],c:1,d:1},
+{p:'ventana',v:'_entana',r:'v',o:['b','v'],c:1,d:1},
+{p:'verano',v:'_erano',r:'v',o:['b','v'],c:1,d:1},
+{p:'viaje',v:'_iaje',r:'v',o:['b','v'],c:1,d:1},
+{p:'invierno',v:'in_ierno',r:'v',o:['b','v'],c:1,d:1},
+{p:'nervioso',v:'ner_ioso',r:'v',o:['b','v'],c:1,d:1},
+{p:'servir',v:'ser_ir',r:'v',o:['b','v'],c:1,d:1},
+{p:'olvidar',v:'ol_idar',r:'v',o:['b','v'],c:1,d:1},
+{p:'primavera',v:'prima_era',r:'v',o:['b','v'],c:1,d:1},
+{p:'vecino',v:'_ecino',r:'v',o:['b','v'],c:1,d:1},
+{p:'valiente',v:'_aliente',r:'v',o:['b','v'],c:1,d:2},
+{p:'vestido',v:'_estido',r:'v',o:['b','v'],c:1,d:2},
+{p:'viajero',v:'_iajero',r:'v',o:['b','v'],c:1,d:2},
+{p:'volcán',v:'_olcán',r:'v',o:['b','v'],c:1,d:2},
+{p:'ave',v:'a_e',r:'v',o:['b','v'],c:1,d:2},
+{p:'nave',v:'na_e',r:'v',o:['b','v'],c:1,d:2},
+{p:'lavar',v:'la_ar',r:'v',o:['b','v'],c:1,d:2},
+{p:'llevar',v:'lle_ar',r:'v',o:['b','v'],c:1,d:2},
+{p:'mover',v:'mo_er',r:'v',o:['b','v'],c:1,d:2},
+{p:'viernes',v:'_iernes',r:'v',o:['b','v'],c:1,d:2},
+{p:'hervir',v:'her_ir',r:'v',o:['b','v'],c:1,d:2},
+{p:'advertir',v:'ad_ertir',r:'v',o:['b','v'],c:1,d:2},
+{p:'convertir',v:'con_ertir',r:'v',o:['b','v'],c:1,d:2},
+{p:'evidente',v:'e_idente',r:'v',o:['b','v'],c:1,d:2},
+{p:'ventaja',v:'_entaja',r:'v',o:['b','v'],c:1,d:2},
+{p:'valle',v:'_alle',r:'v',o:['b','v'],c:1,d:2},
+{p:'violín',v:'_iolín',r:'v',o:['b','v'],c:1,d:2},
+{p:'volumen',v:'_olumen',r:'v',o:['b','v'],c:1,d:2},
+{p:'carnívoro',v:'carní_oro',r:'v',o:['b','v'],c:1,d:3},
+{p:'voraz',v:'_oraz',r:'v',o:['b','v'],c:1,d:3},
+{p:'aventura',v:'a_entura',r:'v',o:['b','v'],c:1,d:3},
+{p:'universo',v:'uni_erso',r:'v',o:['b','v'],c:1,d:3},
+{p:'devolver',v:'de_olver',r:'v',o:['b','v'],c:1,d:3},
+{p:'revolver',v:'re_olver',r:'v',o:['b','v'],c:1,d:3},
+{p:'conversar',v:'con_ersar',r:'v',o:['b','v'],c:1,d:3},
+{p:'diverso',v:'di_erso',r:'v',o:['b','v'],c:1,d:3},
+{p:'novedad',v:'no_edad',r:'v',o:['b','v'],c:1,d:3},
+{p:'juventud',v:'ju_entud',r:'v',o:['b','v'],c:1,d:3},
+{p:'atrever',v:'atre_er',r:'v',o:['b','v'],c:1,d:3},
+{p:'llover',v:'llo_er',r:'v',o:['b','v'],c:1,d:3},
+{p:'nevar',v:'ne_ar',r:'v',o:['b','v'],c:1,d:3},
+{p:'convivir',v:'con_ivir',r:'v',o:['b','v'],c:1,d:3},
+{p:'vigilante',v:'_igilante',r:'v',o:['b','v'],c:1,d:3},
+{p:'cocina',v:'_ocina',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cerca',v:'_erca',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cielo',v:'_ielo',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'ciudad',v:'_iudad',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cinco',v:'_inco',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'doce',v:'do_e',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'trece',v:'tre_e',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'dulce',v:'dul_e',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'oficina',v:'ofi_ina',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'medicina',v:'medi_ina',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'gracias',v:'gra_ias',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cero',v:'_ero',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cine',v:'_ine',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cebolla',v:'_ebolla',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cepillo',v:'_epillo',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cesta',v:'_esta',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cierto',v:'_ierto',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'cigüeña',v:'_igüeña',r:'c',o:['c','s','z'],c:2,d:1},
+{p:'decir',v:'de_ir',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'hacer',v:'ha_er',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'nacer',v:'na_er',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'crecer',v:'_recer',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'conocer',v:'_onocer',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'parecer',v:'pare_er',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'ejercicio',v:'ejer_icio',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'silencio',v:'silen_io',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'paciencia',v:'pa_iencia',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'ciencia',v:'_iencia',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'edificio',v:'edifi_io',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'precio',v:'pre_io',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'servicio',v:'servi_io',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'noticia',v:'noti_ia',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'delicioso',v:'deli_ioso',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'espacio',v:'espa_io',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'palacio',v:'pala_io',r:'c',o:['c','s','z'],c:2,d:2},
+{p:'agradecer',v:'agrade_er',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'permanecer',v:'permane_er',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'establecer',v:'estable_er',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'obedecer',v:'obede_er',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'merecer',v:'mere_er',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'ofrecer',v:'ofre_er',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'pertenecer',v:'pertene_er',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'felicidad',v:'feli_idad',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'capacidad',v:'_apacidad',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'velocidad',v:'velo_idad',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'crecimiento',v:'_recimiento',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'nacimiento',v:'na_imiento',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'aparecer',v:'apare_er',r:'c',o:['c','s','z'],c:2,d:3},
+{p:'zapato',v:'_apato',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'zorro',v:'_orro',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'azul',v:'a_ul',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'cabeza',v:'cabe_a',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'azúcar',v:'a_úcar',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'corazón',v:'cora_ón',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'lápiz',v:'lápi_',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'nariz',v:'nari_',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'cruz',v:'cru_',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'arroz',v:'arro_',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'zanahoria',v:'_anahoria',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'zapatilla',v:'_apatilla',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'zorrillo',v:'_orrillo',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'azadón',v:'a_adón',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'lazo',v:'la_o',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'pereza',v:'pere_a',r:'z',o:['c','s','z'],c:2,d:1},
+{p:'riqueza',v:'rique_a',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'tristeza',v:'triste_a',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'belleza',v:'belle_a',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'naturaleza',v:'naturale_a',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'pobreza',v:'pobre_a',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'cerveza',v:'cerve_a',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'raíz',v:'raí_',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'feliz',v:'feli_',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'almuerzo',v:'almuer_o',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'esfuerzo',v:'esfuer_o',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'comienzo',v:'comien_o',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'tropiezo',v:'tropie_o',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'zafiro',v:'_afiro',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'azotea',v:'a_otea',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'cabezal',v:'cabe_al',r:'z',o:['c','s','z'],c:2,d:2},
+{p:'firmeza',v:'firme_a',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'rareza',v:'rare_a',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'limpieza',v:'limpie_a',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'torpeza',v:'torpe_a',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'dureza',v:'dure_a',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'grandeza',v:'grande_a',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'flaqueza',v:'flaque_a',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'destreza',v:'destre_a',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'zurdo',v:'_urdo',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'zócalo',v:'_ócalo',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'zumbido',v:'_umbido',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'azufre',v:'a_ufre',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'azabache',v:'a_abache',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'azaroso',v:'a_aroso',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'azucena',v:'a_ucena',r:'z',o:['c','s','z'],c:2,d:3},
+{p:'mesa',v:'me_a',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'camisa',v:'cami_a',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'peso',v:'pe_o',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'isla',v:'i_la',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'sonrisa',v:'_onrisa',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'silla',v:'_illa',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'semana',v:'_emana',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'sombra',v:'_ombra',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'susto',v:'_usto',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'siesta',v:'_iesta',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'sabor',v:'_abor',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'salsa',v:'_alsa',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'sueño',v:'_ueño',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'sueldo',v:'_ueldo',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'suerte',v:'_uerte',r:'s',o:['c','s','z'],c:2,d:1},
+{p:'música',v:'mú_ica',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'física',v:'fí_ica',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'básico',v:'bá_ico',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'clásico',v:'clá_ico',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'universo',v:'univer_o',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'diverso',v:'diver_o',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'inmenso',v:'inmen_o',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'curso',v:'cur_o',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'sorpresa',v:'_orpresa',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'pasar',v:'pa_ar',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'presente',v:'pre_ente',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'ausente',v:'au_ente',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'descanso',v:'de_canso',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'suceso',v:'_uceso',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'proceso',v:'proce_o',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'intenso',v:'inten_o',r:'s',o:['c','s','z'],c:2,d:2},
+{p:'análisis',v:'análi_is',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'síntesis',v:'_íntesis',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'paréntesis',v:'parénte_is',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'énfasis',v:'énfa_is',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'oasis',v:'oa_is',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'crisis',v:'cri_is',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'tesis',v:'te_is',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'dosis',v:'do_is',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'espeso',v:'e_peso',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'confeso',v:'confe_o',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'profeso',v:'profe_o',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'escaso',v:'e_caso',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'preciso',v:'preci_o',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'conciso',v:'conci_o',r:'s',o:['c','s','z'],c:2,d:3},
+{p:'gente',v:'_ente',r:'g',o:['g','j'],c:3,d:1},
+{p:'gigante',v:'_igante',r:'g',o:['g','j'],c:3,d:1},
+{p:'general',v:'_eneral',r:'g',o:['g','j'],c:3,d:1},
+{p:'gimnasio',v:'_imnasio',r:'g',o:['g','j'],c:3,d:1},
+{p:'imagen',v:'ima_en',r:'g',o:['g','j'],c:3,d:1},
+{p:'origen',v:'ori_en',r:'g',o:['g','j'],c:3,d:1},
+{p:'urgente',v:'ur_ente',r:'g',o:['g','j'],c:3,d:1},
+{p:'colegio',v:'cole_io',r:'g',o:['g','j'],c:3,d:1},
+{p:'magia',v:'ma_ia',r:'g',o:['g','j'],c:3,d:1},
+{p:'página',v:'pá_ina',r:'g',o:['g','j'],c:3,d:1},
+{p:'girar',v:'_irar',r:'g',o:['g','j'],c:3,d:1},
+{p:'generoso',v:'_eneroso',r:'g',o:['g','j'],c:3,d:1},
+{p:'gato',v:'_ato',r:'g',o:['g','j'],c:3,d:1},
+{p:'gorra',v:'_orra',r:'g',o:['g','j'],c:3,d:1},
+{p:'guante',v:'_uante',r:'g',o:['g','j'],c:3,d:1},
+{p:'gusano',v:'_usano',r:'g',o:['g','j'],c:3,d:1},
+{p:'globo',v:'_lobo',r:'g',o:['g','j'],c:3,d:1},
+{p:'grande',v:'_rande',r:'g',o:['g','j'],c:3,d:1},
+{p:'margen',v:'mar_en',r:'g',o:['g','j'],c:3,d:2},
+{p:'virgen',v:'vir_en',r:'g',o:['g','j'],c:3,d:2},
+{p:'sugerir',v:'su_erir',r:'g',o:['g','j'],c:3,d:2},
+{p:'dirigir',v:'diri_ir',r:'g',o:['g','j'],c:3,d:2},
+{p:'corregir',v:'corre_ir',r:'g',o:['g','j'],c:3,d:2},
+{p:'elegir',v:'ele_ir',r:'g',o:['g','j'],c:3,d:2},
+{p:'proteger',v:'prote_er',r:'g',o:['g','j'],c:3,d:2},
+{p:'recoger',v:'reco_er',r:'g',o:['g','j'],c:3,d:2},
+{p:'escoger',v:'esco_er',r:'g',o:['g','j'],c:3,d:2},
+{p:'religión',v:'reli_ión',r:'g',o:['g','j'],c:3,d:2},
+{p:'región',v:'re_ión',r:'g',o:['g','j'],c:3,d:2},
+{p:'energía',v:'ener_ía',r:'g',o:['g','j'],c:3,d:2},
+{p:'biología',v:'biolo_ía',r:'g',o:['g','j'],c:3,d:2},
+{p:'geografía',v:'_eografía',r:'g',o:['g','j'],c:3,d:2},
+{p:'geometría',v:'_eometría',r:'g',o:['g','j'],c:3,d:2},
+{p:'gimnasia',v:'_imnasia',r:'g',o:['g','j'],c:3,d:2},
+{p:'tecnología',v:'tecnolo_ía',r:'g',o:['g','j'],c:3,d:3},
+{p:'ligero',v:'li_ero',r:'g',o:['g','j'],c:3,d:3},
+{p:'agitar',v:'a_itar',r:'g',o:['g','j'],c:3,d:3},
+{p:'agente',v:'a_ente',r:'g',o:['g','j'],c:3,d:3},
+{p:'vigente',v:'vi_ente',r:'g',o:['g','j'],c:3,d:3},
+{p:'lógica',v:'ló_ica',r:'g',o:['g','j'],c:3,d:3},
+{p:'refugio',v:'refu_io',r:'g',o:['g','j'],c:3,d:3},
+{p:'agencia',v:'a_encia',r:'g',o:['g','j'],c:3,d:3},
+{p:'inteligente',v:'inteli_ente',r:'g',o:['g','j'],c:3,d:3},
+{p:'dirigente',v:'diri_ente',r:'g',o:['g','j'],c:3,d:3},
+{p:'vigilar',v:'vi_ilar',r:'g',o:['g','j'],c:3,d:3},
+{p:'registro',v:'re_istro',r:'g',o:['g','j'],c:3,d:3},
+{p:'genio',v:'_enio',r:'g',o:['g','j'],c:3,d:3},
+{p:'gesto',v:'_esto',r:'g',o:['g','j'],c:3,d:3},
+{p:'girasol',v:'_irasol',r:'g',o:['g','j'],c:3,d:3},
+{p:'viaje',v:'via_e',r:'j',o:['g','j'],c:3,d:1},
+{p:'mensaje',v:'mensa_e',r:'j',o:['g','j'],c:3,d:1},
+{p:'garaje',v:'gara_e',r:'j',o:['g','j'],c:3,d:1},
+{p:'jugar',v:'_ugar',r:'j',o:['g','j'],c:3,d:1},
+{p:'joven',v:'_oven',r:'j',o:['g','j'],c:3,d:1},
+{p:'junto',v:'_unto',r:'j',o:['g','j'],c:3,d:1},
+{p:'julio',v:'_ulio',r:'j',o:['g','j'],c:3,d:1},
+{p:'junio',v:'_unio',r:'j',o:['g','j'],c:3,d:1},
+{p:'mujer',v:'mu_er',r:'j',o:['g','j'],c:3,d:1},
+{p:'trabajo',v:'traba_o',r:'j',o:['g','j'],c:3,d:1},
+{p:'dibujo',v:'dibu_o',r:'j',o:['g','j'],c:3,d:1},
+{p:'ojo',v:'o_o',r:'j',o:['g','j'],c:3,d:1},
+{p:'rojo',v:'ro_o',r:'j',o:['g','j'],c:3,d:1},
+{p:'dejar',v:'de_ar',r:'j',o:['g','j'],c:3,d:1},
+{p:'bajar',v:'ba_ar',r:'j',o:['g','j'],c:3,d:1},
+{p:'jardín',v:'_ardín',r:'j',o:['g','j'],c:3,d:1},
+{p:'jaula',v:'_aula',r:'j',o:['g','j'],c:3,d:1},
+{p:'jefe',v:'_efe',r:'j',o:['g','j'],c:3,d:2},
+{p:'jirafa',v:'_irafa',r:'j',o:['g','j'],c:3,d:2},
+{p:'jinete',v:'_inete',r:'j',o:['g','j'],c:3,d:2},
+{p:'paisaje',v:'paisa_e',r:'j',o:['g','j'],c:3,d:2},
+{p:'lenguaje',v:'lengua_e',r:'j',o:['g','j'],c:3,d:2},
+{p:'personaje',v:'persona_e',r:'j',o:['g','j'],c:3,d:2},
+{p:'equipaje',v:'equipa_e',r:'j',o:['g','j'],c:3,d:2},
+{p:'ejemplo',v:'e_emplo',r:'j',o:['g','j'],c:3,d:2},
+{p:'objeto',v:'ob_eto',r:'j',o:['g','j'],c:3,d:2},
+{p:'jamás',v:'_amás',r:'j',o:['g','j'],c:3,d:2},
+{p:'tijeras',v:'ti_eras',r:'j',o:['g','j'],c:3,d:2},
+{p:'jamón',v:'_amón',r:'j',o:['g','j'],c:3,d:2},
+{p:'jueves',v:'_ueves',r:'j',o:['g','j'],c:3,d:2},
+{p:'extranjero',v:'extran_ero',r:'j',o:['g','j'],c:3,d:2},
+{p:'jefatura',v:'_efatura',r:'j',o:['g','j'],c:3,d:2},
+{p:'jugoso',v:'_ugoso',r:'j',o:['g','j'],c:3,d:2},
+{p:'jabón',v:'_abón',r:'j',o:['g','j'],c:3,d:2},
+{p:'aterrizaje',v:'aterriza_e',r:'j',o:['g','j'],c:3,d:3},
+{p:'crujir',v:'cru_ir',r:'j',o:['g','j'],c:3,d:3},
+{p:'tejer',v:'te_er',r:'j',o:['g','j'],c:3,d:3},
+{p:'relojero',v:'relo_ero',r:'j',o:['g','j'],c:3,d:3},
+{p:'cajero',v:'ca_ero',r:'j',o:['g','j'],c:3,d:3},
+{p:'granjero',v:'gran_ero',r:'j',o:['g','j'],c:3,d:3},
+{p:'mensajero',v:'mensa_ero',r:'j',o:['g','j'],c:3,d:3},
+{p:'pasajero',v:'pasa_ero',r:'j',o:['g','j'],c:3,d:3},
+{p:'consejero',v:'conse_ero',r:'j',o:['g','j'],c:3,d:3},
+{p:'callejero',v:'calle_ero',r:'j',o:['g','j'],c:3,d:3},
+{p:'brujería',v:'bru_ería',r:'j',o:['g','j'],c:3,d:3},
+{p:'lejano',v:'le_ano',r:'j',o:['g','j'],c:3,d:3},
+{p:'jocoso',v:'_ocoso',r:'j',o:['g','j'],c:3,d:3},
+{p:'jornada',v:'_ornada',r:'j',o:['g','j'],c:3,d:3},
+{p:'jubilar',v:'_ubilar',r:'j',o:['g','j'],c:3,d:3},
+{p:'hoy',v:'_oy',r:'h',o:['h',''],c:4,d:1},
+{p:'hombre',v:'_ombre',r:'h',o:['h',''],c:4,d:1},
+{p:'hermano',v:'_ermano',r:'h',o:['h',''],c:4,d:1},
+{p:'hueso',v:'_ueso',r:'h',o:['h',''],c:4,d:1},
+{p:'huevo',v:'_uevo',r:'h',o:['h',''],c:4,d:1},
+{p:'hueco',v:'_ueco',r:'h',o:['h',''],c:4,d:1},
+{p:'hierro',v:'_ierro',r:'h',o:['h',''],c:4,d:1},
+{p:'hielo',v:'_ielo',r:'h',o:['h',''],c:4,d:1},
+{p:'hierba',v:'_ierba',r:'h',o:['h',''],c:4,d:1},
+{p:'humo',v:'_umo',r:'h',o:['h',''],c:4,d:1},
+{p:'historia',v:'_istoria',r:'h',o:['h',''],c:4,d:1},
+{p:'hospital',v:'_ospital',r:'h',o:['h',''],c:4,d:1},
+{p:'hotel',v:'_otel',r:'h',o:['h',''],c:4,d:1},
+{p:'humano',v:'_umano',r:'h',o:['h',''],c:4,d:1},
+{p:'hambre',v:'_ambre',r:'h',o:['h',''],c:4,d:1},
+{p:'hacer',v:'_acer',r:'h',o:['h',''],c:4,d:1},
+{p:'hablar',v:'_ablar',r:'h',o:['h',''],c:4,d:1},
+{p:'haber',v:'_aber',r:'h',o:['h',''],c:4,d:2},
+{p:'habitación',v:'_abitación',r:'h',o:['h',''],c:4,d:2},
+{p:'helado',v:'_elado',r:'h',o:['h',''],c:4,d:2},
+{p:'herida',v:'_erida',r:'h',o:['h',''],c:4,d:2},
+{p:'hermoso',v:'_ermoso',r:'h',o:['h',''],c:4,d:2},
+{p:'hoja',v:'_oja',r:'h',o:['h',''],c:4,d:2},
+{p:'horno',v:'_orno',r:'h',o:['h',''],c:4,d:2},
+{p:'hormiga',v:'_ormiga',r:'h',o:['h',''],c:4,d:2},
+{p:'huir',v:'_uir',r:'h',o:['h',''],c:4,d:2},
+{p:'hundir',v:'_undir',r:'h',o:['h',''],c:4,d:2},
+{p:'húmedo',v:'_úmedo',r:'h',o:['h',''],c:4,d:2},
+{p:'huerta',v:'_uerta',r:'h',o:['h',''],c:4,d:2},
+{p:'hermana',v:'_ermana',r:'h',o:['h',''],c:4,d:2},
+{p:'hilo',v:'_ilo',r:'h',o:['h',''],c:4,d:2},
+{p:'hueca',v:'_ueca',r:'h',o:['h',''],c:4,d:2},
+{p:'huella',v:'_uella',r:'h',o:['h',''],c:4,d:2},
+{p:'humilde',v:'_umilde',r:'h',o:['h',''],c:4,d:2},
+{p:'horrible',v:'_orrible',r:'h',o:['h',''],c:4,d:2},
+{p:'hormigón',v:'_ormigón',r:'h',o:['h',''],c:4,d:2},
+{p:'ahora',v:'a_ora',r:'h',o:['h',''],c:4,d:3},
+{p:'alcohol',v:'alco_ol',r:'h',o:['h',''],c:4,d:3},
+{p:'almohada',v:'almo_ada',r:'h',o:['h',''],c:4,d:3},
+{p:'bahía',v:'ba_ía',r:'h',o:['h',''],c:4,d:3},
+{p:'búho',v:'bú_o',r:'h',o:['h',''],c:4,d:3},
+{p:'cohete',v:'co_ete',r:'h',o:['h',''],c:4,d:3},
+{p:'prohibir',v:'pro_ibir',r:'h',o:['h',''],c:4,d:3},
+{p:'vehículo',v:'ve_ículo',r:'h',o:['h',''],c:4,d:3},
+{p:'zanahoria',v:'zana_oria',r:'h',o:['h',''],c:4,d:3},
+{p:'deshacer',v:'des_acer',r:'h',o:['h',''],c:4,d:3},
+{p:'inhalar',v:'in_alar',r:'h',o:['h',''],c:4,d:3},
+{p:'exhibir',v:'ex_ibir',r:'h',o:['h',''],c:4,d:3},
+{p:'anhelo',v:'an_elo',r:'h',o:['h',''],c:4,d:3},
+{p:'rehacer',v:'re_acer',r:'h',o:['h',''],c:4,d:3},
+{p:'adherir',v:'ad_erir',r:'h',o:['h',''],c:4,d:3},
+{p:'azahar',v:'aza_ar',r:'h',o:['h',''],c:4,d:3},
+{p:'calle',v:'ca_e',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'caballo',v:'caba_o',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'llave',v:'_ave',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'lluvia',v:'_uvia',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'llorar',v:'_orar',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'llegar',v:'_egar',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'llamar',v:'_amar',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'llenar',v:'_enar',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'llevar',v:'_evar',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'bello',v:'be_o',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'cuello',v:'cue_o',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'cabello',v:'cabe_o',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'estrella',v:'estre_a',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'silla',v:'si_a',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'gallina',v:'ga_ina',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'cuchillo',v:'cuchi_o',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'martillo',v:'marti_o',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'castillo',v:'casti_o',r:'ll',o:['ll','y'],c:5,d:1},
+{p:'bolsillo',v:'bolsi_o',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'tortilla',v:'torti_a',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'orilla',v:'ori_a',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'brillar',v:'bri_ar',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'sello',v:'se_o',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'valle',v:'va_e',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'olla',v:'o_a',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'rodilla',v:'rodi_a',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'semilla',v:'semi_a',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'pastilla',v:'pasti_a',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'zapatilla',v:'zapati_a',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'maravilla',v:'maravi_a',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'ardilla',v:'ardi_a',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'amarillo',v:'amari_o',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'ladrillo',v:'ladri_o',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'cepillo',v:'cepi_o',r:'ll',o:['ll','y'],c:5,d:2},
+{p:'millón',v:'mi_ón',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'sencillo',v:'senci_o',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'bombilla',v:'bombi_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'pesadilla',v:'pesadi_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'mejilla',v:'meji_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'rodillo',v:'rodi_o',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'tobillo',v:'tobi_o',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'hebilla',v:'hebi_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'mantequilla',v:'mantequi_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'pantalla',v:'panta_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'muralla',v:'mura_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'batalla',v:'bata_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'medalla',v:'meda_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'botella',v:'bote_a',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'caballero',v:'caba_ero',r:'ll',o:['ll','y'],c:5,d:3},
+{p:'yema',v:'_ema',r:'y',o:['ll','y'],c:5,d:1},
+{p:'yerno',v:'_erno',r:'y',o:['ll','y'],c:5,d:1},
+{p:'yeso',v:'_eso',r:'y',o:['ll','y'],c:5,d:1},
+{p:'yate',v:'_ate',r:'y',o:['ll','y'],c:5,d:1},
+{p:'ayer',v:'a_er',r:'y',o:['ll','y'],c:5,d:1},
+{p:'ayuda',v:'a_uda',r:'y',o:['ll','y'],c:5,d:1},
+{p:'ayudar',v:'a_udar',r:'y',o:['ll','y'],c:5,d:1},
+{p:'mayo',v:'ma_o',r:'y',o:['ll','y'],c:5,d:1},
+{p:'mayor',v:'ma_or',r:'y',o:['ll','y'],c:5,d:1},
+{p:'playa',v:'pla_a',r:'y',o:['ll','y'],c:5,d:1},
+{p:'joya',v:'jo_a',r:'y',o:['ll','y'],c:5,d:1},
+{p:'apoyo',v:'apo_o',r:'y',o:['ll','y'],c:5,d:1},
+{p:'desayuno',v:'desa_uno',r:'y',o:['ll','y'],c:5,d:1},
+{p:'yogur',v:'_ogur',r:'y',o:['ll','y'],c:5,d:1},
+{p:'yunta',v:'_unta',r:'y',o:['ll','y'],c:5,d:1},
+{p:'yuca',v:'_uca',r:'y',o:['ll','y'],c:5,d:1},
+{p:'leyenda',v:'le_enda',r:'y',o:['ll','y'],c:5,d:2},
+{p:'proyecto',v:'pro_ecto',r:'y',o:['ll','y'],c:5,d:2},
+{p:'ensayo',v:'ensa_o',r:'y',o:['ll','y'],c:5,d:2},
+{p:'mayoría',v:'ma_oría',r:'y',o:['ll','y'],c:5,d:2},
+{p:'payaso',v:'pa_aso',r:'y',o:['ll','y'],c:5,d:2},
+{p:'desmayo',v:'desma_o',r:'y',o:['ll','y'],c:5,d:2},
+{p:'virrey',v:'virre_',r:'y',o:['ll','y'],c:5,d:2},
+{p:'convoy',v:'convo_',r:'y',o:['ll','y'],c:5,d:2},
+{p:'yodo',v:'_odo',r:'y',o:['ll','y'],c:5,d:2},
+{p:'yegua',v:'_egua',r:'y',o:['ll','y'],c:5,d:2},
+{p:'ayuno',v:'a_uno',r:'y',o:['ll','y'],c:5,d:2},
+{p:'reyes',v:'re_es',r:'y',o:['ll','y'],c:5,d:2},
+{p:'bueyes',v:'bue_es',r:'y',o:['ll','y'],c:5,d:2},
+{p:'yacaré',v:'_acaré',r:'y',o:['ll','y'],c:5,d:2},
+{p:'proyectar',v:'pro_ectar',r:'y',o:['ll','y'],c:5,d:3},
+{p:'ensayar',v:'ensa_ar',r:'y',o:['ll','y'],c:5,d:3},
+{p:'apoyar',v:'apo_ar',r:'y',o:['ll','y'],c:5,d:3},
+{p:'desayunar',v:'desa_unar',r:'y',o:['ll','y'],c:5,d:3},
+{p:'subrayar',v:'subra_ar',r:'y',o:['ll','y'],c:5,d:3},
+{p:'concluye',v:'conclu_e',r:'y',o:['ll','y'],c:5,d:3},
+{p:'influye',v:'influ_e',r:'y',o:['ll','y'],c:5,d:3},
+{p:'construye',v:'constru_e',r:'y',o:['ll','y'],c:5,d:3},
+{p:'destruye',v:'destru_e',r:'y',o:['ll','y'],c:5,d:3},
+{p:'incluye',v:'inclu_e',r:'y',o:['ll','y'],c:5,d:3},
+{p:'atribuye',v:'atribu_e',r:'y',o:['ll','y'],c:5,d:3},
+{p:'oso',v:'_oso',r:'',o:['h',''],c:4,d:1},
+{p:'oro',v:'_oro',r:'',o:['h',''],c:4,d:1},
+{p:'oreja',v:'_oreja',r:'',o:['h',''],c:4,d:1},
+{p:'uña',v:'_uña',r:'',o:['h',''],c:4,d:1},
+{p:'uva',v:'_uva',r:'',o:['h',''],c:4,d:1},
+{p:'isla',v:'_isla',r:'',o:['h',''],c:4,d:1},
+{p:'imagen',v:'_imagen',r:'',o:['h',''],c:4,d:1},
+{p:'escuela',v:'_escuela',r:'',o:['h',''],c:4,d:1},
+{p:'estrella',v:'_estrella',r:'',o:['h',''],c:4,d:1},
+{p:'elefante',v:'_elefante',r:'',o:['h',''],c:4,d:1},
+{p:'examen',v:'_examen',r:'',o:['h',''],c:4,d:1},
+{p:'avión',v:'_avión',r:'',o:['h',''],c:4,d:1},
+{p:'árbol',v:'_árbol',r:'',o:['h',''],c:4,d:1},
+{p:'agua',v:'_agua',r:'',o:['h',''],c:4,d:1},
+{p:'aire',v:'_aire',r:'',o:['h',''],c:4,d:1},
+{p:'año',v:'_año',r:'',o:['h',''],c:4,d:1},
+{p:'amigo',v:'_amigo',r:'',o:['h',''],c:4,d:1},
+{p:'alumno',v:'_alumno',r:'',o:['h',''],c:4,d:1},
+{p:'océano',v:'_océano',r:'',o:['h',''],c:4,d:1},
+{p:'insecto',v:'_insecto',r:'',o:['h',''],c:4,d:1},
+{p:'edificio',v:'_edificio',r:'',o:['h',''],c:4,d:2},
+{p:'ejemplo',v:'_ejemplo',r:'',o:['h',''],c:4,d:2},
+{p:'esfuerzo',v:'_esfuerzo',r:'',o:['h',''],c:4,d:2},
+{p:'espejo',v:'_espejo',r:'',o:['h',''],c:4,d:2},
+{p:'estómago',v:'_estómago',r:'',o:['h',''],c:4,d:2},
+{p:'izquierda',v:'_izquierda',r:'',o:['h',''],c:4,d:2},
+{p:'idea',v:'_idea',r:'',o:['h',''],c:4,d:2},
+{p:'iglesia',v:'_iglesia',r:'',o:['h',''],c:4,d:2},
+{p:'igual',v:'_igual',r:'',o:['h',''],c:4,d:2},
+{p:'imposible',v:'_imposible',r:'',o:['h',''],c:4,d:2},
+{p:'increíble',v:'_increíble',r:'',o:['h',''],c:4,d:2},
+{p:'instante',v:'_instante',r:'',o:['h',''],c:4,d:2},
+{p:'interés',v:'_interés',r:'',o:['h',''],c:4,d:2},
+{p:'inventar',v:'_inventar',r:'',o:['h',''],c:4,d:2},
+{p:'invitar',v:'_invitar',r:'',o:['h',''],c:4,d:2},
+{p:'óptimo',v:'_óptimo',r:'',o:['h',''],c:4,d:3},
+{p:'órbita',v:'_órbita',r:'',o:['h',''],c:4,d:3},
+{p:'órgano',v:'_órgano',r:'',o:['h',''],c:4,d:3},
+{p:'ánimo',v:'_ánimo',r:'',o:['h',''],c:4,d:3},
+{p:'ámbito',v:'_ámbito',r:'',o:['h',''],c:4,d:3},
+{p:'énfasis',v:'_énfasis',r:'',o:['h',''],c:4,d:3},
+{p:'época',v:'_época',r:'',o:['h',''],c:4,d:3},
+{p:'útil',v:'_útil',r:'',o:['h',''],c:4,d:3},
+{p:'único',v:'_único',r:'',o:['h',''],c:4,d:3},
+{p:'urgente',v:'_urgente',r:'',o:['h',''],c:4,d:3},
+{p:'olvidar',v:'_olvidar',r:'',o:['h',''],c:4,d:3},
+{p:'ordenar',v:'_ordenar',r:'',o:['h',''],c:4,d:3},
+{p:'orgullo',v:'_orgullo',r:'',o:['h',''],c:4,d:3},
+{p:'oscuro',v:'_oscuro',r:'',o:['h',''],c:4,d:3},
+{p:'observar',v:'_observar',r:'',o:['h',''],c:4,d:3},
+{p:'obtener',v:'_obtener',r:'',o:['h',''],c:4,d:3},
+{p:'ocupar',v:'_ocupar',r:'',o:['h',''],c:4,d:3},
+{p:'oficio',v:'_oficio',r:'',o:['h',''],c:4,d:3},
+{p:'examen',v:'e_amen',r:'x',o:['x','s'],c:6,d:1,n:'Con <b>x</b>: examen, éxito, exacto. Suena a "ks", no a "s" sola.'},
+{p:'exacto',v:'e_acto',r:'x',o:['x','s'],c:6,d:1},
+{p:'éxito',v:'é_ito',r:'x',o:['x','s'],c:6,d:1},
+{p:'texto',v:'te_to',r:'x',o:['x','s'],c:6,d:1},
+{p:'taxi',v:'ta_i',r:'x',o:['x','s'],c:6,d:1},
+{p:'máximo',v:'má_imo',r:'x',o:['x','s'],c:6,d:2},
+{p:'próximo',v:'pró_imo',r:'x',o:['x','s'],c:6,d:2},
+{p:'extraño',v:'e_traño',r:'x',o:['x','s'],c:6,d:2},
+{p:'extremo',v:'e_tremo',r:'x',o:['x','s'],c:6,d:2},
+{p:'explicar',v:'e_plicar',r:'x',o:['x','s'],c:6,d:2},
+{p:'explorar',v:'e_plorar',r:'x',o:['x','s'],c:6,d:2},
+{p:'expresar',v:'e_presar',r:'x',o:['x','s'],c:6,d:2},
+{p:'exterior',v:'e_terior',r:'x',o:['x','s'],c:6,d:2},
+{p:'oxígeno',v:'o_ígeno',r:'x',o:['x','s'],c:6,d:3},
+{p:'exigir',v:'e_igir',r:'x',o:['x','s'],c:6,d:3},
+{p:'existir',v:'e_istir',r:'x',o:['x','s'],c:6,d:3},
+{p:'experimento',v:'e_perimento',r:'x',o:['x','s'],c:6,d:3},
+{p:'excelente',v:'e_elente',r:'xc',o:['xc','sc','x'],c:6,d:3,n:'Va <b>xc</b>: excelente, excepción, exceso. Con <b>sc</b> serían escena o piscina.'},
+{p:'excepción',v:'e_epción',r:'xc',o:['xc','sc','x'],c:6,d:3},
+{p:'exceso',v:'e_eso',r:'xc',o:['xc','sc','x'],c:6,d:3},
+{p:'excursión',v:'e_ursión',r:'xc',o:['xc','sc','x'],c:6,d:3},
+{p:'excavar',v:'e_avar',r:'xc',o:['xc','sc','x'],c:6,d:3},
+{p:'escena',v:'e_ena',r:'sc',o:['sc','s','c'],c:6,d:2,n:'La <b>sc</b> suena igual que una s sola: escena, piscina, ascensor.'},
+{p:'escenario',v:'e_enario',r:'sc',o:['sc','s','c'],c:6,d:3},
+{p:'piscina',v:'pi_ina',r:'sc',o:['sc','s','c'],c:6,d:2},
+{p:'ascensor',v:'a_ensor',r:'sc',o:['sc','s','c'],c:6,d:2},
+{p:'descender',v:'de_ender',r:'sc',o:['sc','s','c'],c:6,d:3},
+{p:'adolescente',v:'adole_ente',r:'sc',o:['sc','s','c'],c:6,d:3},
+{p:'disciplina',v:'di_iplina',r:'sc',o:['sc','s','c'],c:6,d:3},
+{p:'fascinar',v:'fa_inar',r:'sc',o:['sc','s','c'],c:6,d:3},
+{p:'imprescindible',v:'impre_indible',r:'sc',o:['sc','s','c'],c:6,d:3},
+{p:'acción',v:'a_ión',r:'cc',o:['cc','c','x'],c:6,d:2,n:'Va <b>cc</b> cuando la familia tiene <b>ct</b>: acto → acción, directo → dirección.'},
+{p:'dirección',v:'dire_ión',r:'cc',o:['cc','c','x'],c:6,d:2},
+{p:'colección',v:'cole_ión',r:'cc',o:['cc','c','x'],c:6,d:2},
+{p:'lección',v:'le_ión',r:'cc',o:['cc','c','x'],c:6,d:2},
+{p:'sección',v:'se_ión',r:'cc',o:['cc','c','x'],c:6,d:2},
+{p:'elección',v:'ele_ión',r:'cc',o:['cc','c','x'],c:6,d:3},
+{p:'protección',v:'prote_ión',r:'cc',o:['cc','c','x'],c:6,d:3},
+{p:'corrección',v:'corre_ión',r:'cc',o:['cc','c','x'],c:6,d:3},
+{p:'construcción',v:'constru_ión',r:'cc',o:['cc','c','x'],c:6,d:3},
+{p:'producción',v:'produ_ión',r:'cc',o:['cc','c','x'],c:6,d:3},
+{p:'traducción',v:'tradu_ión',r:'cc',o:['cc','c','x'],c:6,d:3},
+{p:'selección',v:'sele_ión',r:'cc',o:['cc','c','x'],c:6,d:3},
+{p:'reacción',v:'rea_ión',r:'cc',o:['cc','c','x'],c:6,d:3},
+{p:'ficción',v:'fi_ión',r:'cc',o:['cc','c','x'],c:6,d:3},
+{p:'tierra',v:'tie_a',r:'rr',o:['rr','r'],c:6,d:1,n:'La <b>rr</b> solo va entre vocales. Después de n, l o s va una sola: enredo, alrededor.'},
+{p:'guitarra',v:'guita_a',r:'rr',o:['rr','r'],c:6,d:1},
+{p:'cigarro',v:'ciga_o',r:'rr',o:['rr','r'],c:6,d:2},
+{p:'correr',v:'co_er',r:'rr',o:['rr','r'],c:6,d:1},
+{p:'arriba',v:'a_iba',r:'rr',o:['rr','r'],c:6,d:1},
+{p:'hierro',v:'hie_o',r:'rr',o:['rr','r'],c:6,d:2},
+{p:'torre',v:'to_e',r:'rr',o:['rr','r'],c:6,d:1},
+{p:'sierra',v:'sie_a',r:'rr',o:['rr','r'],c:6,d:2},
+{p:'burro',v:'bu_o',r:'rr',o:['rr','r'],c:6,d:1},
+{p:'corriente',v:'co_iente',r:'rr',o:['rr','r'],c:6,d:2},
+{p:'terror',v:'te_or',r:'rr',o:['rr','r'],c:6,d:3},
+{p:'ferrocarril',v:'fe_ocarril',r:'rr',o:['rr','r'],c:6,d:3},
+{p:'barrer',v:'ba_er',r:'rr',o:['rr','r'],c:6,d:2},
+{p:'enredo',v:'en_edo',r:'r',o:['r','rr'],c:6,d:3,n:'Después de n, l o s va <b>una sola r</b> aunque suene fuerte.'},
+{p:'alrededor',v:'al_ededor',r:'r',o:['r','rr'],c:6,d:3},
+{p:'honrado',v:'hon_ado',r:'r',o:['r','rr'],c:6,d:3},
+{p:'campo',v:'ca_po',r:'m',o:['m','n'],c:6,d:1,n:'Antes de <b>b</b> y <b>p</b> siempre va <b>m</b>, nunca n.'},
+{p:'tiempo',v:'tie_po',r:'m',o:['m','n'],c:6,d:1},
+{p:'siempre',v:'sie_pre',r:'m',o:['m','n'],c:6,d:1},
+{p:'cambiar',v:'ca_biar',r:'m',o:['m','n'],c:6,d:1},
+{p:'tambor',v:'ta_bor',r:'m',o:['m','n'],c:6,d:2},
+{p:'sombra',v:'so_bra',r:'m',o:['m','n'],c:6,d:1},
+{p:'hombro',v:'ho_bro',r:'m',o:['m','n'],c:6,d:2},
+{p:'alfombra',v:'alfo_bra',r:'m',o:['m','n'],c:6,d:2},
+{p:'empezar',v:'e_pezar',r:'m',o:['m','n'],c:6,d:2},
+{p:'importante',v:'i_portante',r:'m',o:['m','n'],c:6,d:2},
+{p:'comprar',v:'co_prar',r:'m',o:['m','n'],c:6,d:1},
+{p:'temprano',v:'te_prano',r:'m',o:['m','n'],c:6,d:2},
+{p:'ejemplo',v:'eje_plo',r:'m',o:['m','n'],c:6,d:2},
+{p:'simple',v:'si_ple',r:'m',o:['m','n'],c:6,d:2},
+{p:'limpio',v:'li_pio',r:'m',o:['m','n'],c:6,d:1},
+{p:'campana',v:'ca_pana',r:'m',o:['m','n'],c:6,d:1},
+{p:'lámpara',v:'lá_para',r:'m',o:['m','n'],c:6,d:1},
+{p:'bombero',v:'bo_bero',r:'m',o:['m','n'],c:6,d:1},
+{p:'sombrero',v:'so_brero',r:'m',o:['m','n'],c:6,d:1},
+{p:'costumbre',v:'costu_bre',r:'m',o:['m','n'],c:6,d:2},
+{p:'diciembre',v:'dicie_bre',r:'m',o:['m','n'],c:6,d:2},
+{p:'noviembre',v:'novie_bre',r:'m',o:['m','n'],c:6,d:2},
+{p:'septiembre',v:'septie_bre',r:'m',o:['m','n'],c:6,d:3},
+{p:'invierno',v:'i_vierno',r:'n',o:['n','m'],c:6,d:3,n:'Antes de <b>v</b> va <b>n</b>: invierno, invitar, envío.'},
+{p:'invitar',v:'i_vitar',r:'n',o:['n','m'],c:6,d:3},
+{p:'enviar',v:'e_viar',r:'n',o:['n','m'],c:6,d:3},
+{p:'también',v:'tambié_',r:'n',o:['n','m'],c:6,d:2,n:'Al final de palabra va <b>n</b>: también, jamón, jardín.'}
+];
 
-/* que operaciones estan ticadas en la ventana de antes de jugar.
-   El nivel manda en lo dificil de los numeros; esto manda en QUE operacion sale,
-   asi en nivel 1 tambien pueden salir restas, multiplicaciones y divisiones simples. */
-var OPS={'+':true,'-':true,'*':true,'/':true,'mix':true};
-function opsElegidas(){
-  var l=[]; ['+','-','*','/'].forEach(function(o){ if(OPS[o]) l.push(o); });
-  return l.length ? l : ['+'];          /* si desticaron todo, no dejo el juego sin ejercicios */
-}
-function makeProblem(L, force){
-  L = Math.max(1, L);
-  if(force==='mix') return combo(Math.max(105,L));
-  if(!force && OPS.mix && L>=105 && Math.random()<0.35) return combo(L);
-  var op = (force && force!=='all') ? force : pick(opsElegidas());
-  var a,b,q,d;
-  if(op==='+'){
-    d=digitsFor(L); a=randD(d); b=randD(Math.max(1,d-(Math.random()<0.3?1:0)));
-    return P(a,b,'+',a+b);
-  }
-  if(op==='-'){
-    d=digitsFor(L); a=randD(d); b=randD(Math.max(1,d-(Math.random()<0.3?1:0)));
-    if(a<b){ var t=a; a=b; b=t; }
-    return P(a,b,'−',a-b);
-  }
-  if(op==='*'){
-    if(L<=50){ a=ri(2,10); b=ri(2,10); }
-    else if(L<=70){ a=ri(11,99); b=ri(2,9); }
-    else if(L<=95){ a=ri(11,99); b=ri(11,29); }
-    else if(L<=125){ a=ri(12,99); b=ri(12,99); }
-    else { a=ri(101,999); b=ri(11,99); }
-    return P(a,b,'×',a*b);
-  }
-  if(L>=90 && Math.random()<0.30){ b=pick([2,2,4]); a=b*ri(10,60)+b/2; return P(a,b,'÷',a/b); }
-  if(L<=70){ b=ri(2,12); q=ri(2,12); }
-  else if(L<=95){ b=ri(3,12); q=ri(10,40); }
-  else if(L<=125){ b=ri(4,25); q=ri(10,99); }
-  else { b=ri(11,99); q=ri(11,99); }
-  return P(b*q, b, '÷', q);
-}
-function combo(L){
-  var big=L>125;
-  var a=big?ri(11,60):ri(2,12), b=big?ri(3,9):ri(2,9), c=big?ri(20,300):ri(5,90);
-  var t=pick(['a*b+c','a*b-c','c+a*b','(a+b)*c','a*b+a']);
-  var text,ans,cc,v;
-  if(t==='a*b+c'){ text=a+' × '+b+' + '+c; ans=a*b+c; }
-  else if(t==='a*b-c'){ v=a*b; c=Math.min(c,v); text=a+' × '+b+' − '+c; ans=v-c; }
-  else if(t==='c+a*b'){ text=c+' + '+a+' × '+b; ans=c+a*b; }
-  else if(t==='(a+b)*c'){ cc=big?ri(3,12):ri(2,9); c=cc; text='('+a+' + '+b+') × '+cc; ans=(a+b)*cc; }
-  else { text=a+' × '+b+' + '+a; ans=a*b+a; }
-  return {a:a,b:b,c:c,op:'mix',ans:ans,text:text,kind:'combo',t:t};
-}
-/* que operacion es, para las estadisticas */
-function opKey(p){ return p.kind==='combo' ? 'mix' : p.op; }
+/* ---------- el motor de SC? ----------
+   Cada palabra del banco viene con el hueco ya marcado:
+     p = como se escribe de verdad      v = lo que se muestra ("co_ina")
+     r = lo que va en el hueco          o = las opciones que se ofrecen
+   El indice de la respuesta se calcula al cargar; PORP sirve para el repaso.
+   El autotest revisa el banco entero: dos palabras distintas NO pueden dejar
+   el mismo hueco, porque entonces la pregunta tendria dos respuestas buenas
+   (ca_a valdria para casa y para caza). */
+var PORP={};
+BANCO.forEach(function(it){
+  it.ans = it.o.indexOf(it.r);
+  PORP[it.p] = it;
+});
+function nombreOpcion(o){ return o === '' ? 'nada' : o; }
+function conHueco(vis, o){ return vis.replace('_', o); }
 
-/* ---------- alternativas: la correcta + 3 senuelos creibles ----------
-   Los senuelos son los errores tipicos: uno mas, uno menos, olvidar el acarreo (±9, ±11),
-   confundir la operacion (sumar en vez de multiplicar) o dejar la decena de mas. */
-function alternativas(p){
-  var ans=p.ans, entero=Math.abs(ans-Math.round(ans))<1e-9, pool=[];
-  function push(v){
-    if(!isFinite(v)) return;
-    v=Math.round(v*100)/100;
-    if(v<0) return;
-    if(Math.abs(v-ans)<1e-9) return;
-    if(entero && Math.abs(v-Math.round(v))>1e-9) return;
-    if(pool.indexOf(v)<0) pool.push(v);
-  }
-  push(ans+1); push(ans-1); push(ans+2); push(ans-2);
-  push(ans+9); push(ans-9); push(ans+10); push(ans-10); push(ans+11); push(ans-11);
-  if(p.kind==='simple'){
-    if(p.op==='+'){ push(p.a-p.b); push(p.b-p.a); push(p.a*p.b); }
-    if(p.op==='−'){ push(p.a+p.b); }
-    if(p.op==='×'){ push(p.a+p.b); push(ans-p.a); push(ans+p.a); push(ans-p.b); push(ans+p.b); }
-    if(p.op==='÷'){ push(p.a-p.b); push(ans*2); push(ans+p.b); push(p.b); }
-  } else { push(ans+(p.c||3)); push(ans-(p.c||3)); push(p.a*p.b); push(p.a+p.b); }
-  push(ans*10); push(Math.round(ans/2)); push(ans+3); push(ans-3); push(ans+20); push(ans-20);
-  var ops=[ans];
-  while(ops.length<4 && pool.length){ ops.push(pool.splice(ri(0,pool.length-1),1)[0]); }
-  var extra=1;
-  while(ops.length<4){                       /* red de seguridad: nunca quedan menos de 4 */
-    var v2=ans+extra*100;
-    if(ops.indexOf(v2)<0) ops.push(v2);
-    extra++;
-  }
-  for(var k=ops.length-1;k>0;k--){ var j=ri(0,k), t=ops[k]; ops[k]=ops[j]; ops[j]=t; }
-  return ops;
+function banda(L){ return L<=10 ? 1 : (L<=30 ? 2 : 3); }
+/* que bloques entran segun el nivel: primero los que se oyen igual y hay que
+   saberse de memoria, despues los que tienen regla, y al final las raras */
+var CATS_BANDA={1:[4,5],2:[1,3,4,5],3:[1,2,3,4,5,6]};
+var CATNOM={1:'B y V',2:'C, S y Z',3:'G y J',4:'La H (o ninguna)',5:'LL e Y',
+            6:'Las raras: X, CC, SC, RR, M antes de B y P'};
+var CATTICK={1:'1 · B / V',2:'2 · C / S / Z',3:'3 · G / J',4:'4 · LA H',
+             5:'5 · LL / Y',6:'6 · LAS RARAS'};
+var CATS={1:true,2:true,3:true,4:true,5:true,6:true};
+function catsElegidas(){
+  var l=[]; for(var k=1;k<=6;k++){ if(CATS[k]) l.push(k); }
+  return l.length? l : [4];
+}
+function bolsa(L, forzar){
+  var b=banda(L), permitidas=CATS_BANDA[b], elegidas=catsElegidas();
+  var out=BANCO.filter(function(it){
+    if(forzar) return it.c===forzar;
+    return permitidas.indexOf(it.c)>=0 && elegidas.indexOf(it.c)>=0 && it.d<=b;
+  });
+  /* si tico bloques que su nivel todavia no toca, igual le doy palabras */
+  if(!out.length) out=BANCO.filter(function(it){ return elegidas.indexOf(it.c)>=0 && it.d<=b; });
+  if(!out.length) out=BANCO.filter(function(it){ return elegidas.indexOf(it.c)>=0; });
+  if(!out.length) out=BANCO.filter(function(it){ return it.c===4; });
+  return out;
+}
+var ultimas=[];
+function sacarPalabra(L, forzar){
+  var b=bolsa(L,forzar), it=pick(b), n=0;
+  while(ultimas.indexOf(it.p)>=0 && n<25 && b.length>ultimas.length){ it=pick(b); n++; }
+  ultimas.push(it.p); if(ultimas.length>10) ultimas.shift();
+  return it;
 }
 
-/* ---------- pista corta (no da el resultado) ---------- */
-function pista(p){
-  if(p.kind==='combo') return 'Primero resuelve la multiplicación, y recién ahí sumas o restas.';
-  if(p.op==='+') return 'Redondea el segundo número a la decena más cercana, suma fácil y después devuelve la diferencia.';
-  if(p.op==='−') return 'Resta la decena redonda más cercana y después ajusta lo que te sobró o faltó.';
-  if(p.op==='×') return 'Parte el número en decenas y unidades, multiplica cada pedazo y suma los dos resultados.';
-  return 'No dividas: pregúntate "¿'+fmtN(p.b)+' por cuánto da '+fmtN(p.a)+'?" y anda probando desde '+fmtN(p.b)+' × 10.';
+/* ---------- explicaciones ---------- */
+var REGLA={
+1:'La <b>b</b> va antes de otra consonante (bl, br: blanco, brazo), en las terminaciones <b>-aba</b> del imperfecto '+
+  '(cantaba) y en bu-, bur-, bus-. La <b>v</b> va después de <b>n</b> (invierno), en <b>-ívoro</b> (carnívoro) y en '+
+  'los adjetivos terminados en <b>-ave, -eve, -ivo</b> (suave, breve, activo).',
+2:'La <b>c</b> suena a s antes de <b>e</b> e <b>i</b> (cielo, cocina). La <b>z</b> va antes de <b>a, o, u</b> '+
+  '(zapato, zorro, azúcar) y en las terminaciones <b>-eza</b> y <b>-anza</b> (belleza, esperanza). Los verbos '+
+  'terminados en <b>-cer</b> y <b>-cir</b> van con c: hacer, decir, conocer.',
+3:'La <b>g</b> suena a j antes de <b>e</b> e <b>i</b>: gente, gigante. Van con g las terminaciones <b>-gen</b> '+
+  '(imagen, origen), <b>-gia, -gio</b> (magia, colegio), <b>-logía</b>, y los verbos en <b>-ger</b> y <b>-gir</b> '+
+  '(proteger, dirigir). Solo <b>tejer</b> y <b>crujir</b> se escapan. La <b>j</b> va en <b>-aje</b> y <b>-eje</b> '+
+  '(viaje, mensaje).',
+4:'La <b>h</b> no suena, por eso hay que aprendérsela. Llevan h las palabras que empiezan en <b>hue-, hie-, hum-, '+
+  'hosp-, herm-, hist-</b> (hueso, hielo, humo, hospital, hermano, historia) y todo el verbo <b>haber</b> y '+
+  '<b>hacer</b>. Si no cae en esa lista, lo más probable es que NO lleve.',
+5:'Se escriben con <b>ll</b> las terminaciones <b>-illo, -illa</b> (bolsillo, orilla) y casi todas las palabras '+
+  'terminadas en <b>-alle, -elle, -ello</b> (calle, cuello). Se escriben con <b>y</b> las formas de los verbos '+
+  'en <b>-uir</b> (construye, incluye) y las palabras que empiezan en <b>ye-</b> o <b>yu-</b>.',
+6:'Aquí entran las que hay que mirar dos veces: la <b>x</b> que suena a "ks" (examen), la <b>cc</b> de las palabras '+
+  'cuya familia tiene <b>ct</b> (acto → acción, directo → dirección), la <b>sc</b> muda (escena, piscina), la '+
+  '<b>rr</b> que solo va entre vocales, y la <b>m</b> obligatoria antes de <b>b</b> y <b>p</b>.'
+};
+function explica(it){
+  var txt = (it.r==='') ? ('<b>'+it.p+'</b> va <b>SIN H</b>. ')
+                        : ('<b>'+it.p+'</b> se escribe con <b>'+it.r.toUpperCase()+'</b>. ');
+  txt += it.n ? it.n : REGLA[it.c];
+  return txt;
 }
-/* ---------- explicacion completa ---------- */
-function tip(p){
-  var a=p.a,b=p.b,op=p.op,ans=p.ans;
-  if(p.kind==='combo'){
-    if(p.t==='a*b+a') return 'Truco: '+a+' × '+b+' + '+a+' es lo mismo que '+a+' × '+(b+1)+' = '+fmtN(ans)+'. Cuando ves el mismo número sumado aparte, súbelo al multiplicador.';
-    return 'Regla de oro: primero × y ÷, después + y −. Resuelve la multiplicación aparte, guárdala en la cabeza y recién ahí suma o resta. Resultado: '+fmtN(ans)+'.';
-  }
-  if(op==='+'){
-    if(b<=10 && a>b) return 'Empieza siempre por el número grande: párate en '+fmtN(a)+' y avanza '+b+'. Contar desde '+b+' te hace perder tiempo.';
-    var rb=Math.round(b/10)*10;
-    if(rb!==b && rb>0){ var d1=Math.abs(rb-b);
-      return rb>b ? 'Redondea y devuelve: '+fmtN(a)+' + '+fmtN(rb)+' = '+fmtN(a+rb)+'. Como agregaste '+d1+' de más, quítalos → '+fmtN(ans)+'.'
-                  : 'Redondea y completa: '+fmtN(a)+' + '+fmtN(rb)+' = '+fmtN(a+rb)+'. Faltaban '+d1+', súmalos → '+fmtN(ans)+'.';
-    }
-    return 'Suma por partes: primero las decenas, después las unidades. '+fmtN(a)+' + '+fmtN(b)+' = '+fmtN(ans)+'.';
-  }
-  if(op==='−'){
-    var r2=Math.round(b/10)*10;
-    if(r2!==b && r2>0){ var d2=Math.abs(r2-b);
-      return r2>b ? 'Resta redondo y devuelve: '+fmtN(a)+' − '+fmtN(r2)+' = '+fmtN(a-r2)+'. Le quitaste '+d2+' de más, devuélvelos → '+fmtN(ans)+'.'
-                  : 'Resta redondo y ajusta: '+fmtN(a)+' − '+fmtN(r2)+' = '+fmtN(a-r2)+'. Todavía faltaban '+d2+' por quitar → '+fmtN(ans)+'.';
-    }
-    return 'Cuenta hacia arriba: desde '+fmtN(b)+' ¿cuánto falta para llegar a '+fmtN(a)+'? Esa distancia es la respuesta: '+fmtN(ans)+'.';
-  }
-  if(op==='×'){
-    var o;
-    if(b===5||a===5){ o=(b===5?a:b); return '×5 = la mitad de ×10: '+fmtN(o)+' × 10 = '+fmtN(o*10)+', la mitad es '+fmtN(ans)+'.'; }
-    if(b===9||a===9){ o=(b===9?a:b); return '×9 = ×10 menos una vez: '+fmtN(o)+' × 10 = '+fmtN(o*10)+', quítale '+fmtN(o)+' → '+fmtN(ans)+'.'; }
-    if(b===4||a===4){ o=(b===4?a:b); return '×4 = duplicar dos veces: '+fmtN(o)+' → '+fmtN(o*2)+' → '+fmtN(ans)+'.'; }
-    if(b===11&&a<100) return '×11 rápido: separa las cifras de '+a+' y pon la suma de ellas al medio ('+Math.floor(a/10)+' | '+(Math.floor(a/10)+a%10)+' | '+(a%10)+') → '+fmtN(ans)+'.';
-    var tens=Math.floor(b/10)*10, un=b%10;
-    if(tens>0&&un>0) return 'Parte el número: '+fmtN(a)+' × '+b+' = '+fmtN(a)+'×'+tens+' + '+fmtN(a)+'×'+un+' = '+fmtN(a*tens)+' + '+fmtN(a*un)+' = '+fmtN(ans)+'.';
-    return 'Ancla en la decena: '+fmtN(a)+' × 10 = '+fmtN(a*10)+', y desde ahí ajusta hasta '+b+' veces → '+fmtN(ans)+'.';
-  }
-  if(Math.abs(ans-Math.round(ans))<1e-9)
-    return 'No dividas: multiplica. Pregúntate "¿'+b+' por cuánto da '+fmtN(a)+'?". Ancla en '+b+' × 10 = '+fmtN(b*10)+' y sube o baja hasta calzar: '+b+' × '+fmtN(ans)+' = '+fmtN(a)+'.';
-  var up=Math.ceil(ans)*b, sobra=up-a;
-  return 'Busca el múltiplo cercano: '+b+' × '+Math.ceil(ans)+' = '+fmtN(up)+', y tú necesitas '+fmtN(a)+', o sea '+sobra+' menos. Ese '+sobra+' repartido entre '+b+' es '+fmt(sobra/b)+', así que '+Math.ceil(ans)+' − '+fmt(sobra/b)+' = '+fmt(ans)+'.';
+function pista(it){
+  if(it.c===4) return it.r==='' ? 'Piensa si la has visto escrita con h alguna vez. Muchas palabras cortas no llevan.'
+                                : 'Fíjate cómo empieza: hue-, hie-, hum-, herm-, hist- casi siempre llevan h.';
+  if(it.c===1) return 'Después de <b>n</b> siempre va v (invierno). Antes de otra consonante siempre va b (blanco, brazo).';
+  if(it.c===2) return 'Antes de <b>e</b> o <b>i</b> el sonido s se escribe con c; antes de <b>a, o, u</b> se escribe con z.';
+  if(it.c===3) return 'Las terminaciones -gen, -gia, -gio y los verbos -ger/-gir van con g. Las terminaciones -aje van con j.';
+  if(it.c===5) return 'Las terminaciones -illo/-illa van con ll. Las formas de construir, incluir y destruir van con y.';
+  return 'Léela en voz alta y piensa de qué familia viene: acto → acción, directo → dirección.';
+}
+/* el cartel de ayuda que acompana en los niveles bajos */
+function textoAyuda(){
+  return '<b>LO QUE MÁS SE CAE</b>'+
+   '<div class="li"><span class="k">LA H</span> · no suena, pero está: <b>hue</b>so, <b>hie</b>lo, <b>hum</b>o, <b>herm</b>ano, <b>hist</b>oria, <b>hosp</b>ital. Y todo <b>haber</b> y <b>hacer</b>.</div>'+
+   '<div class="li"><span class="k">LL / Y</span> · terminaciones <b>-illo, -illa</b>: bols<b>illo</b>, or<b>illa</b>. Verbos -uir: constru<b>y</b>e, inclu<b>y</b>e.</div>'+
+   '<div class="li"><span class="k">B / V</span> · después de <b>n</b> va v (i<b>nv</b>ierno). Antes de consonante va b (<b>bl</b>anco, <b>br</b>azo).</div>'+
+   '<div class="li"><span class="k">C / S / Z</span> · antes de e, i el sonido s se escribe <b>c</b>; antes de a, o, u se escribe <b>z</b>.</div>'+
+   '<div class="li" style="color:#a89ac2">Del nivel 11 en adelante este cartel desaparece y van entrando los demás bloques.</div>';
 }
 
 /* ---------- audio ---------- */
 var AC=null, mute=false;
-try{ mute = localStorage.getItem('cm_mute')==='1'; }catch(e){}
+try{ mute = localStorage.getItem('sc_mute')==='1'; }catch(e){}
 function tono(f,d,type,vol,delay){
   if(mute) return;
   try{
@@ -876,69 +1467,32 @@ function toast(titulo,texto){
 }
 function bump(sel){ var e=$(sel); e.classList.remove('bump'); void e.offsetWidth; e.classList.add('bump'); }
 
-/* ---------- muralla: las formulas mas famosas de la ciencia, rayadas en el fondo ---------- */
-var FORMULAS=[
-  ['E = mc²','EINSTEIN'],
-  ['∮∂Σ F·dr = ∬Σ (∇×F)·dS','STOKES'],
-  ['Rμν − ½R gμν + Λgμν = 8πG/c⁴ · Tμν','RELATIVIDAD'],
-  ['iħ ∂Ψ/∂t = ĤΨ','SCHRÖDINGER'],
-  ['∇·E = ρ/ε₀','GAUSS'],
-  ['∇×B = μ₀J + μ₀ε₀ ∂E/∂t','MAXWELL'],
-  ['∇·B = 0','MAXWELL'],
-  ['∇×E = −∂B/∂t','FARADAY'],
-  ['F = G·m₁m₂/r²','NEWTON'],
-  ['ΣF = m·a','NEWTON'],
-  ['ΔxΔp ≥ ħ/2','HEISENBERG'],
-  ['a² + b² = c²','PITÁGORAS'],
-  ['e^{iπ} + 1 = 0','EULER'],
-  ['∫ₐᵇ f′(x)dx = f(b) − f(a)','T. FUNDAMENTAL'],
-  ['∮ E·dA = q/ε₀',''],
-  ['PV = nRT','GASES IDEALES'],
-  ['ΔS ≥ 0','2ª LEY'],
-  ['S = k·log W','BOLTZMANN'],
-  ['E = h·f','PLANCK'],
-  ['λ = h/p','DE BROGLIE'],
-  ['x = (−b ± √(b²−4ac)) / 2a',''],
-  ['sin²θ + cos²θ = 1',''],
-  ['c² = a² + b² − 2ab·cos C','T. DEL COSENO'],
-  ['∇²φ = 0','LAPLACE'],
-  ['∂²u/∂t² = c²∇²u','ONDA'],
-  ['P(A|B) = P(B|A)P(A) / P(B)','BAYES'],
-  ['∑ₙ 1/n² = π²/6','BASILEA'],
-  ['eˣ = ∑ xⁿ/n!',''],
-  ['lim(x→0) sin x / x = 1',''],
-  ['d/dx eˣ = eˣ',''],
-  ['Ec = ½mv²',''],
-  ['p = m·v',''],
-  ['W = F·d',''],
-  ['V = I·R','OHM'],
-  ['A = πr²',''],
-  ['V = (4/3)πr³',''],
-  ['φ = (1+√5)/2','ÁUREO'],
-  ['π = 3,14159265…',''],
-  ['ρ = m/V',''],
-  ['F = −k·x','HOOKE'],
-  ['n! = n·(n−1)!',''],
-  ['log(ab) = log a + log b',''],
-  ['t′ = t/√(1−v²/c²)','DILATACIÓN'],
-  ['H = −∑ p·log p','SHANNON'],
-  ['dS/dt ≥ 0',''],
-  ['∇f = 0','PUNTO CRÍTICO']
-];
+/* ---------- muralla: palabras rayadas con su tipo ---------- */
+var MURO=[['canción','AGUDA'],['árbol','GRAVE'],['brújula','ESDRÚJULA'],['dígamelo','SOBRESDRÚJULA'],
+  ['país','HIATO'],['examen','SIN TILDE'],['exámenes','PLURAL'],['él','DIACRÍTICA'],['por qué','PREGUNTA'],
+  ['porque','RESPUESTA'],['rápidamente','-MENTE'],['baúl','HIATO'],['reloj','AGUDA'],['lápiz','GRAVE'],
+  ['música','ESDRÚJULA'],['aún','TODAVÍA'],['aun','INCLUSO'],['solo','SIN TILDE'],['guion','MONOSÍLABO'],
+  ['bíceps','EXCEPCIÓN'],['carácter','GRAVE'],['caracteres','PLURAL'],['jamás','AGUDA'],['maíz','HIATO'],
+  ['sofá','AGUDA'],['ángel','GRAVE'],['teléfono','ESDRÚJULA'],['ciempiés','COMPUESTA'],['jóvenes','PLURAL'],
+  ['tú','PRONOMBRE'],['tu','POSESIVO'],['más','CANTIDAD'],['mas','PERO'],['sí','AFIRMA'],['si','CONDICIÓN'],
+  ['esdrújula','ELLA MISMA'],['corazón','AGUDA'],['césped','GRAVE'],['pájaro','ESDRÚJULA'],['río','HIATO'],
+  ['virrey','LA Y NO CUENTA'],['álbum','LATINISMO'],['África','MAYÚSCULA'],['fácilmente','-MENTE'],
+  ['orígenes','PLURAL'],['qué','PREGUNTA'],['que','UNE'],['veintidós','COMPUESTA'],['todavía','HIATO'],
+  ['papel','SIN TILDE']];
 function pintarMuralla(){
   var w=$('#wall'); if(!w) return;
   var cols=Math.max(3,Math.round(window.innerWidth/195));
   var rows=Math.max(8,Math.round(window.innerHeight/88));
   var cols_=['#ff2e88','#39ff88','#ffd21e','#22d3ee','#a855f7','#ffffff'];
-  var html='', k=ri(0,FORMULAS.length-1);
+  var html='', k=ri(0,MURO.length-1);
   for(var y=0;y<rows;y++){
     for(var x=0;x<cols;x++){
-      var f=FORMULAS[k++ % FORMULAS.length];
+      var f=MURO[k++ % MURO.length];
       var left=(x+0.5)/cols*100 + (Math.random()*10-5);
       var top =(y+0.5)/rows*100 + (Math.random()*7-3.5);
       var st='left:'+left.toFixed(2)+'%;top:'+top.toFixed(2)+'%;'+
         'transform:translate(-50%,-50%) rotate('+ri(-17,17)+'deg);'+
-        'font-size:'+ri(12,25)+'px;'+
+        'font-size:'+ri(14,28)+'px;'+
         'color:'+cols_[ri(0,cols_.length-1)]+';'+
         'opacity:'+(0.10+Math.random()*0.12).toFixed(2)+';';
       html+='<b style="'+st+'">'+f[0]+(f[1]?'<i>'+f[1]+'</i>':'')+'</b>';
@@ -952,27 +1506,31 @@ window.addEventListener('resize',function(){ clearTimeout(wallT); wallT=setTimeo
 
 /* ---------- medallas ---------- */
 var MEDALLAS=[
-  {id:'primer', e:'👟', n:'PRIMER PASO',   d:'Responde tu primer ejercicio',        t:function(d){return d.ok>=1;}},
-  {id:'ok50',   e:'💪', n:'CINCUENTA',     d:'50 ejercicios correctos',            t:function(d){return d.ok>=50;}},
-  {id:'ok250',  e:'🦾', n:'DOSCIENTOS 50', d:'250 ejercicios correctos',           t:function(d){return d.ok>=250;}},
-  {id:'ok1000', e:'👑', n:'MIL',           d:'1000 ejercicios correctos',          t:function(d){return d.ok>=1000;}},
+  {id:'primer', e:'👟', n:'PRIMER PASO',   d:'Responde tu primera palabra',        t:function(d){return d.ok>=1;}},
+  {id:'ok50',   e:'💪', n:'CINCUENTA',     d:'50 palabras correctas',              t:function(d){return d.ok>=50;}},
+  {id:'ok250',  e:'🦾', n:'DOSCIENTAS 50', d:'250 palabras correctas',             t:function(d){return d.ok>=250;}},
+  {id:'ok1000', e:'👑', n:'MIL',           d:'1000 palabras correctas',            t:function(d){return d.ok>=1000;}},
   {id:'r10',    e:'🔥', n:'DIEZ SEGUIDAS', d:'Racha de 10 sin fallar',             t:function(d){return d.best>=10;}},
   {id:'r25',    e:'🚀', n:'IMPARABLE',     d:'Racha de 25 sin fallar',             t:function(d){return d.best>=25;}},
   {id:'r50',    e:'🌪', n:'HURACAN',       d:'Racha de 50 sin fallar',             t:function(d){return d.best>=50;}},
-  {id:'ray25',  e:'⚡', n:'MANOS RAPIDAS', d:'25 respuestas relámpago',            t:function(d){return d.rayos>=25;}},
+  {id:'ray25',  e:'⚡', n:'DEDOS RAPIDOS', d:'25 respuestas relámpago',            t:function(d){return d.rayos>=25;}},
   {id:'nv10',   e:'🥉', n:'NIVEL 10',      d:'Llega al nivel 10',                  t:function(d){return d.level>=10;}},
+  {id:'nv11',   e:'🚲', n:'SIN RUEDITAS',  d:'Nivel 11: se van las ayudas',        t:function(d){return d.level>=11;}},
   {id:'nv25',   e:'🥈', n:'NIVEL 25',      d:'Llega al nivel 25',                  t:function(d){return d.level>=25;}},
+  {id:'nv31',   e:'🎓', n:'LAS DIFICILES', d:'Nivel 31: entran las diacríticas',   t:function(d){return d.level>=31;}},
   {id:'nv50',   e:'🥇', n:'NIVEL 50',      d:'Llega al nivel 50',                  t:function(d){return d.level>=50;}},
   {id:'nv100',  e:'💎', n:'NIVEL 100',     d:'Llega al nivel 100',                 t:function(d){return d.level>=100;}},
-  {id:'suma',   e:'➕', n:'REY DE LA SUMA',d:'50 sumas correctas',                 t:function(d){return d.byOp['+'].ok>=50;}},
-  {id:'resta',  e:'➖', n:'REY DE LA RESTA',d:'50 restas correctas',               t:function(d){return d.byOp['−'].ok>=50;}},
-  {id:'multi',  e:'✖', n:'REY DEL POR',   d:'50 multiplicaciones correctas',      t:function(d){return d.byOp['×'].ok>=50;}},
-  {id:'divi',   e:'➗', n:'REY DEL ENTRE', d:'50 divisiones correctas',            t:function(d){return d.byOp['÷'].ok>=50;}},
+  {id:'c1',     e:'📏', n:'LAS TRES BASES',d:'50 aciertos en agudas/graves/esdrújulas', t:function(d){return d.byCat['1'].ok>=50;}},
+  {id:'c2',     e:'🌊', n:'ROMPE HIATOS',  d:'30 aciertos en hiatos y diptongos',  t:function(d){return d.byCat['2'].ok>=30;}},
+  {id:'c3',     e:'🎭', n:'DIACRITICO',    d:'30 aciertos en diacríticas y porqués',t:function(d){return d.byCat['3'].ok>=30;}},
+  {id:'c4',     e:'🧩', n:'COMPUESTAS',    d:'25 aciertos en compuestas y -mente', t:function(d){return d.byCat['4'].ok>=25;}},
+  {id:'c5',     e:'👥', n:'PLURALERO',     d:'25 aciertos en plurales',            t:function(d){return d.byCat['5'].ok>=25;}},
+  {id:'c6',     e:'🃏', n:'EXCEPCIONES',   d:'25 aciertos en excepciones',         t:function(d){return d.byCat['6'].ok>=25;}},
   {id:'arc20',  e:'⏱', n:'ARCADE 20',     d:'20 aciertos en los 60 segundos',     t:function(d){return d.arcadeBest>=20;}},
   {id:'arc35',  e:'🏎', n:'ARCADE 35',     d:'35 aciertos en los 60 segundos',     t:function(d){return d.arcadeBest>=35;}},
   {id:'dia3',   e:'📅', n:'TRES DIAS',     d:'Juega 3 días seguidos',              t:function(d){return d.dias.seguidos>=3;}},
   {id:'dia7',   e:'🗓', n:'UNA SEMANA',    d:'Juega 7 días seguidos',              t:function(d){return d.dias.seguidos>=7;}},
-  {id:'limpio', e:'🎯', n:'PUNTERIA',      d:'80% de precisión con 100+ ejercicios',t:function(d){return (d.ok+d.fail)>=100 && d.ok/(d.ok+d.fail)>=0.8;}},
+  {id:'limpio', e:'🎯', n:'PUNTERIA',      d:'80% de precisión con 100+ palabras', t:function(d){return (d.ok+d.fail)>=100 && d.ok/(d.ok+d.fail)>=0.8;}},
   {id:'zen',    e:'🧘', n:'SIN AYUDA',     d:'40 aciertos sin pedir pista',        t:function(d){return d.sinPista>=40;}},
   {id:'mis5',   e:'🎁', n:'CUMPLIDOR',     d:'Completa la misión del día 5 veces', t:function(d){return d.misiones>=5;}}
 ];
@@ -989,52 +1547,51 @@ function chequearMedallas(){
 }
 
 /* ---------- cuentas ---------- */
-var AVATARS=['🧠','😎','🐯','🦊','👽','🤖','🐲','🦁','🐼','🚀','⚡','👾','🐸','🦄','🎧','🔥'];
-var avatarSel='🧠';
+var AVATARS=['✏️','😎','🐯','🦊','👽','🤖','🐲','🦁','🐼','🚀','⚡','👾','🐸','🦄','🎧','🔥'];
+var avatarSel='✏️';
 function blank(){
-  return {v:4,pin:'',avatar:'🧠',level:1,cred:0,pts:0,ok:0,fail:0,best:0,streak:0,time:0,rayos:0,
-          pistas:0,sinPista:0,saltos:0,arcadeBest:0,arcadeRecs:{},arcDur:60,misiones:0,medals:{},mejorPartida:0,online:false,resp:'escribir',mejorPartida:0,
-          ops:{'+':true,'-':true,'*':true,'/':true,'mix':true},
-          byOp:{'+':{ok:0,fail:0,t:0},'−':{ok:0,fail:0,t:0},'×':{ok:0,fail:0,t:0},'÷':{ok:0,fail:0,t:0},'mix':{ok:0,fail:0,t:0}},
+  return {v:1,pin:'',avatar:'✏️',level:1,cred:0,pts:0,ok:0,fail:0,best:0,streak:0,time:0,rayos:0,
+          pistas:0,sinPista:0,saltos:0,arcadeBest:0,arcadeRecs:{},arcDur:60,misiones:0,medals:{},mejorPartida:0,online:false,
+          cats:{1:true,2:true,3:true,4:true,5:true,6:true},
+          byCat:{'1':{ok:0,fail:0,t:0},'2':{ok:0,fail:0,t:0},'3':{ok:0,fail:0,t:0},
+                 '4':{ok:0,fail:0,t:0},'5':{ok:0,fail:0,t:0},'6':{ok:0,fail:0,t:0}},
           dias:{last:'',seguidos:0,hechos:0,meta:15,cumplida:false}, repaso:[], hist:[]};
 }
-/* la mision del dia crece contigo, pero no se vuelve eterna */
 function metaDelDia(nivel){ return Math.min(30, 12 + Math.floor(nivel/6)); }
-/* cuentas viejas (v1/v2) se rellenan sin perder nivel ni puntos */
+/* cuentas de versiones viejas se rellenan sin perder nivel ni puntos */
 function migrar(d){
   var base=blank();
   for(var k in base){ if(!(k in d) || d[k]===null || d[k]===undefined) d[k]=base[k]; }
-  if(typeof d.cred!=='number'){ d.cred=0; } delete d.xp;
-  for(var op in base.byOp){ if(!d.byOp[op]) d.byOp[op]={ok:0,fail:0,t:0}; }
+  if(typeof d.cred!=='number') d.cred=0;
+  if(!d.byCat || typeof d.byCat!=='object') d.byCat={};
+  for(var c=1;c<=6;c++){ if(!d.byCat[String(c)]) d.byCat[String(c)]={ok:0,fail:0,t:0}; }
   if(!d.dias || typeof d.dias!=='object') d.dias={last:'',seguidos:0,hechos:0,meta:15,cumplida:false};
   if(typeof d.dias.hechos!=='number') d.dias.hechos=0;
   if(typeof d.dias.meta!=='number') d.dias.meta=metaDelDia(d.level||1);
   if(typeof d.dias.cumplida!=='boolean') d.dias.cumplida=false;
-  if(!d.ops || typeof d.ops!=='object') d.ops={'+':true,'-':true,'*':true,'/':true,'mix':true};
-  ['+','-','*','/','mix'].forEach(function(o){ if(typeof d.ops[o]!=='boolean') d.ops[o]=true; });
-  if(d.resp!=='alt' && d.resp!=='escribir') d.resp='escribir';   /* cuentas viejas: siguen escribiendo */
-  if(typeof d.mejorPartida!=='number') d.mejorPartida=0;
+  if(!d.cats || typeof d.cats!=='object') d.cats={};
+  for(var c2=1;c2<=6;c2++){ if(typeof d.cats[c2]!=='boolean' && typeof d.cats[String(c2)]!=='boolean') d.cats[c2]=true; }
   if(typeof d.arcDur!=='number') d.arcDur=60;
   if(!d.arcadeRecs || typeof d.arcadeRecs!=='object') d.arcadeRecs={};
   if(!Array.isArray(d.repaso)) d.repaso=[];
   if(!Array.isArray(d.hist)) d.hist=[];
   if(!d.medals) d.medals={};
-  d.v=4; return d;
+  d.v=1; return d;
 }
 function marcarDia(d){
   var h=hoy();
   if(d.dias.last===h) return 0;
   d.dias.seguidos = (d.dias.last===ayerDe(h)) ? d.dias.seguidos+1 : 1;
   d.dias.last=h;
-  d.dias.hechos=0; d.dias.cumplida=false; d.dias.meta=metaDelDia(d.level);  /* mision nueva cada dia */
+  d.dias.hechos=0; d.dias.cumplida=false; d.dias.meta=metaDelDia(d.level);
   return d.dias.seguidos;
 }
 
 /* ---------- estado ---------- */
-var user=null, P0=null, t0=0, tick=null, genLevel=1, MODE='carrera', pistaUsada=false, desdeRepaso=false;
+var user=null, IT=null, t0=0, tick=null, MODE='carrera', pistaUsada=false, desdeRepaso=false;
 var arcadeLeft=0, arcadeDur=60, arcadeTick=null, arcadeOk=0, arcadeFail=0, sesion=null;
 var BONO=0.5;
-var arcadePts=0;        /* puntos del contrarreloj: NO se suman hasta que el reloj llega a cero */                       /* cada acierto del contrarreloj te regala medio segundo */
+var arcadePts=0;        /* puntos del contrarreloj: NO se suman hasta que el reloj llega a cero */
 var paused=false, pausaT=0;
 
 function show(id){
@@ -1044,7 +1601,7 @@ function show(id){
 function enJuego(){ return user && !$('#game').classList.contains('hide'); }
 function modal(html,sinCerrar){ $('#modalBody').innerHTML=html;
   $('#modalClose').classList.toggle('hide',!!sinCerrar); $('#modal').classList.add('go'); }
-function cerrarModal(){ $('#modal').classList.remove('go'); if(user && MODE!=='arcade') $('#ans').focus(); }
+function cerrarModal(){ $('#modal').classList.remove('go'); }
 $('#modalClose').onclick=cerrarModal;
 $('#modal').onclick=function(e){ if(e.target===$('#modal')) cerrarModal(); };
 
@@ -1066,7 +1623,7 @@ function renderUsers(){
   nombres.forEach(function(n){
     var d=document.createElement('span'); d.className='pill';
     var txt=document.createElement('span');
-    txt.textContent=(DB[n].avatar||'🧠')+' '+n+' · Nv '+DB[n].level+' · '+liga(DB[n].level)[1];
+    txt.textContent=(DB[n].avatar||'✏️')+' '+n+' · Nv '+DB[n].level+' · '+liga(DB[n].level)[1];
     var x=document.createElement('b'); x.className='x'; x.textContent='✕'; x.title='Borrar la cuenta de '+n;
     x.onclick=function(e){ e.stopPropagation(); borrarCuenta(n); };
     d.appendChild(txt); d.appendChild(x);
@@ -1077,10 +1634,6 @@ function renderUsers(){
     box.appendChild(d);
   });
 }
-
-/* ---------- borrar cuentas ---------- */
-function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-/* la parte que de verdad borra, separada de los avisos para poder probarla */
 function quitarCuenta(n){
   if(!DB[n]) return false;
   delete DB[n]; save(); renderUsers();
@@ -1094,7 +1647,7 @@ function borrarCuenta(n, alBorrar){
     if(p.trim()!==d.pin){ alert('PIN incorrecto. No se borró nada.'); return; }
   }
   if(!confirm('¿BORRAR la cuenta de "'+n+'"?\n\n'+
-      'Nivel '+d.level+' · '+d.pts+' puntos · '+d.ok+' ejercicios correctos.\n\n'+
+      'Nivel '+d.level+' · '+d.pts+' puntos · '+d.ok+' palabras correctas.\n\n'+
       'Se pierde todo su progreso y NO se puede recuperar.')) return;
   if(quitarCuenta(n)){
     SFX.mal();
@@ -1107,9 +1660,9 @@ function verCuentas(){
   if(!nombres.length){ modal('<h2>🗑 CUENTAS</h2><p>No hay ninguna cuenta guardada en este computador.</p>'); return; }
   var filas=nombres.map(function(n){
     var d=DB[n], L=liga(d.level), tot=d.ok+d.fail;
-    return '<tr><td>'+(d.avatar||'🧠')+' <b>'+esc(n)+'</b>'+(d.pin?' 🔒':'')+'</td>'+
+    return '<tr><td>'+(d.avatar||'✏️')+' <b>'+esc(n)+'</b>'+(d.pin?' 🔒':'')+'</td>'+
       '<td style="color:'+L[2]+';font-weight:800">'+L[1]+'</td><td>Nv '+d.level+'</td>'+
-      '<td>'+fmtN(d.pts)+' pts</td><td>'+tot+' ejerc.</td>'+
+      '<td>'+fmtN(d.pts)+' pts</td><td>'+tot+' palabras</td>'+
       '<td><button class="sm ghost bCopy" data-n="'+esc(n)+'">📤</button> '+
           '<button class="sm hot bDel" data-n="'+esc(n)+'">🗑 BORRAR</button></td></tr>';
   }).join('');
@@ -1147,13 +1700,13 @@ function entrarDeVerdad(n,pin,nueva,online){
   DB[n]=migrar(DB[n]);
   DB[n].online = !!online || !!DB[n].online || !!DB[n].autoClave;
   if(online){ nubeClave=pin; DB[n].pin=pin; }
-  user=n; OPS=DB[n].ops;
+  user=n; leerCats();
   var racha=marcarDia(DB[n]);
   sesion={ok:0,fail:0,t:0,nivel0:DB[n].level,pts0:DB[n].pts};
   save();
-  $('#who').textContent=n; $('#meAv').textContent=DB[n].avatar||'🧠';
+  $('#who').textContent=n; $('#meAv').textContent=DB[n].avatar||'✏️';
   llenarNiveles(); irAlLobby();
-  if(nueva) toast('¡BIENVENIDO!','Empiezas en el nivel 1. Junta 5 ejercicios rápidos y subes al 2.');
+  if(nueva) toast('¡BIENVENIDO!','Partes en el nivel 1 con las reglas a la vista. Junta 5 palabras rápidas y subes al 2.');
   else if(racha>1) toast('🔥 RACHA DE '+racha+' DÍAS','Volviste. Sigue así y desbloqueas medallas.');
   chequearMedallas();
   if(online) nubeSubir();
@@ -1217,6 +1770,13 @@ $('#onlineSw').onchange=function(){
   SFX.clic(); pintarOnline();
 };
 pintarOnline();
+function leerCats(){
+  var g=DB[user].cats||{};
+  for(var k=1;k<=6;k++){
+    var v = (typeof g[k]==='boolean') ? g[k] : (typeof g[String(k)]==='boolean' ? g[String(k)] : true);
+    CATS[k]=v;
+  }
+}
 $('#name').onkeydown=function(e){ if(e.key==='Enter') $('#pin').focus(); };
 $('#pin').onkeydown =function(e){ if(e.key==='Enter') $('#enter').click(); };
 $('#toRank').onclick=function(){ verRanking(); };
@@ -1229,7 +1789,7 @@ function irAlLobby(){
 }
 function renderLobby(){
   var d=DB[user], L=liga(d.level), need=reqEjer(d.level), tot=d.ok+d.fail;
-  $('#lbAv').textContent=d.avatar||'🧠';
+  $('#lbAv').textContent=d.avatar||'✏️';
   $('#lbName').textContent=user;
   $('#lbLiga').textContent='LIGA '+L[1];
   $('#lbLiga').style.color=L[2];
@@ -1238,22 +1798,20 @@ function renderLobby(){
   $('#lbLvlBox').style.borderColor=L[2];
   $('#lbLvlBox').style.boxShadow='5px 5px 0 rgba(0,0,0,.6),0 0 26px '+L[2]+'55,inset 0 0 22px '+L[2]+'22';
   $('#lbBar').style.width=Math.min(100,d.cred/need*100)+'%';
-  $('#lbTxt').textContent=fmt(d.cred)+' de '+need+' ejercicios rápidos para el nivel '+(d.level+1);
+  $('#lbTxt').textContent=fmt(d.cred)+' de '+need+' palabras rápidas para el nivel '+(d.level+1);
   $('#lbPlay').textContent = tot? '▶ SEGUIR JUGANDO' : '▶ JUGAR';
   $('#lbPlaySub').textContent = tot
-    ? 'Carrera · nivel '+d.level+' · te faltan '+fmt(Math.max(0,need-d.cred))+' ejercicios'
-    : 'Empiezas en el nivel 1. Junta 5 ejercicios rápidos y subes.';
+    ? 'Carrera · nivel '+d.level+' · te faltan '+fmt(Math.max(0,need-d.cred))+' palabras'
+    : 'Nivel 1: con las reglas a la vista y sin apuro.';
   $('#lbRec').textContent = mejorArcade(d).v? 'Tu récord: '+textoArcade(d)+'.' : '';
-  /* mision del dia */
   var m=d.dias, pct=Math.min(100, m.hechos/m.meta*100);
   $('#lbMision').className = 'mision'+(m.cumplida?' ok':'');
   $('#lbMision').innerHTML = '<b>'+(m.cumplida?'🎁 MISIÓN DEL DÍA CUMPLIDA':'🎯 MISIÓN DE HOY')+'</b>'+
     '<div style="font-size:13px;color:#d6cbe8;margin:5px 0 7px">'+
     (m.cumplida ? 'Ya te ganaste el bono de hoy. Todo lo que hagas ahora es puro nivel.'
-                : 'Acierta <b>'+m.meta+'</b> ejercicios hoy y te llevas un bono de puntos.')+'</div>'+
+                : 'Acierta <b>'+m.meta+'</b> palabras hoy y te llevas un bono de puntos.')+'</div>'+
     '<div class="opbar"><i style="width:'+pct+'%"></i></div>'+
     '<div style="font-size:12px;color:#a89ac2;margin-top:5px">'+Math.min(m.hechos,m.meta)+' / '+m.meta+' de hoy</div>';
-  /* chips resumen */
   var nMed=0; MEDALLAS.forEach(function(x){ if(d.medals[x.id]) nMed++; });
   $('#lbChips').innerHTML =
     '<span class="chip">PUNTOS <b>'+fmtN(d.pts)+'</b></span>'+
@@ -1280,7 +1838,7 @@ function pausar(){
   clearInterval(tick); clearInterval(arcadeTick);
   var d=DB[user], tot=sesion.ok+sesion.fail;
   var modo = MODE==='carrera'?'🏁 Carrera · nivel '+d.level : (MODE==='entrenar'?'🎯 Entrenamiento':'⏱ Contrarreloj de '+nomDur(arcadeDur));
-  $('#pauseInfo').innerHTML = modo+'<br>En esta sesión llevas <b>'+tot+'</b> ejercicios'+
+  $('#pauseInfo').innerHTML = modo+'<br>En esta sesión llevas <b>'+tot+'</b> palabras'+
     (tot?' con <b>'+Math.round(sesion.ok/tot*100)+'%</b> de precisión':'')+'.'+
     (MODE==='arcade'?'<br>Te quedan <b>'+mmss(arcadeLeft)+'</b> del reloj.':'');
   $('#pause').classList.add('go');
@@ -1289,11 +1847,10 @@ function pausar(){
 function reanudar(){
   if(!paused) return;
   paused=false;
-  t0 += performance.now()-pausaT;          /* el tiempo en pausa no te lo cobro */
+  t0 += performance.now()-pausaT;
   $('#pause').classList.remove('go');
   if(MODE==='arcade' && arcadeLeft>0) arcadeTick=setInterval(arcadeStep,1000);
   if($('#fb').classList.contains('hide')) startClock(true);
-  $('#ans').focus();
 }
 $('#bPause').onclick=pausar;
 $('#pSeguir').onclick=reanudar;
@@ -1312,9 +1869,9 @@ function resumenSesion(){
   var d=DB[user], tot=sesion.ok+sesion.fail;
   var prec = tot? Math.round(sesion.ok/tot*100):0;
   var med = sesion.ok? (sesion.t/sesion.ok):0;
-  modal('<h2>👋 HASTA LA PRÓXIMA, '+user+'</h2>'+
-    '<p style="line-height:1.8;font-size:15px">En esta sesión hiciste <b>'+tot+'</b> ejercicios con <b>'+prec+'%</b> de precisión'+
-    (sesion.ok? ', a un promedio de <b>'+med.toFixed(1)+' s</b> cada uno':'')+'.<br>'+
+  modal('<h2>👋 HASTA LA PRÓXIMA, '+esc(user)+'</h2>'+
+    '<p style="line-height:1.8;font-size:15px">En esta sesión viste <b>'+tot+'</b> palabras con <b>'+prec+'%</b> de precisión'+
+    (sesion.ok? ', a un promedio de <b>'+med.toFixed(1)+' s</b> cada una':'')+'.<br>'+
     'Subiste <b>'+(d.level-sesion.nivel0)+'</b> nivel(es) y ganaste <b>'+(d.pts-sesion.pts0)+'</b> puntos.<br>'+
     'Tu progreso quedó guardado en este computador: cuando vuelvas, entra con tu nombre y sigues en el nivel '+d.level+'.</p>'+
     cierrePartida()+
@@ -1340,16 +1897,14 @@ function setMode(m){
   $('#mArcade').classList.toggle('on',m==='arcade');
   $('#trainBox').classList.toggle('hide',m!=='entrenar');
   $('#fb').classList.add('hide'); $('#answerBox').classList.remove('hide');
-  if(m==='arcade') arrancarArcade(); else { $('#legend').classList.remove('hide'); newProblem(true); }
+  if(m==='arcade') arrancarArcade(); else { $('#legend').classList.remove('hide'); newWord(); }
 }
-/* cambiar de modo dentro del juego tambien pasa por la ventana (ATRAS te deja donde estabas) */
 $('#mCarrera').onclick=function(){ SFX.clic(); abrirSetup('carrera'); };
 $('#mEntrenar').onclick=function(){ SFX.clic(); abrirSetup('entrenar'); };
 $('#mArcade').onclick =function(){ SFX.clic(); abrirSetup('arcade'); };
-$('#trainOp').onchange=function(){ newProblem(true); };
-$('#trainLvl').onchange=function(){ newProblem(true); };
+$('#trainCat').onchange=function(){ newWord(); };
+$('#trainLvl').onchange=function(){ newWord(); };
 
-/* 65 -> "1:05", 59 -> "59 s", 600 -> "10:00" */
 function mmss(sg){
   sg=Math.max(0,Math.ceil(sg));
   var m=Math.floor(sg/60);
@@ -1360,7 +1915,7 @@ function arrancarArcade(){
   arcadeOk=0; arcadeFail=0; arcadePts=0;
   arcadeDur=DB[user].arcDur||60; arcadeLeft=arcadeDur;
   toast('⏱ CONTRARRELOJ '+mmss(arcadeDur),'Cada acierto te regala medio segundo más. Fallar no descuenta, pero pierdes tiempo.');
-  newProblem(true);
+  newWord();
   pintarReloj();
   arcadeTick=setInterval(arcadeStep,1000);
 }
@@ -1383,7 +1938,6 @@ function terminarArcade(){
   var ganados=arcadePts; arcadePts=0;
   d.pts+=ganados; bump('#pts');
   if(record){ d.arcadeRecs[k]=arcadeOk; confetti(70); }
-  /* el record de 60 s es el que sale en el ranking y en las medallas: no lo mezclo con los largos */
   if(arcadeDur===60 && arcadeOk>d.arcadeBest) d.arcadeBest=arcadeOk;
   var globArc=mejorGlobalArcade(arcadeDur,user);
   if(record && arcadeOk>globArc.v){ confetti(90); toast('👑 RÉCORD DE LA TABLA','Nadie había hecho '+arcadeOk+' en '+nomDur(arcadeDur)+'.'); }
@@ -1391,7 +1945,7 @@ function terminarArcade(){
   var tarjeta=cierrePartida();          /* misma tarjeta de records que los otros modos */
   nubeSubir();
   modal('<h2>⏱ SE ACABÓ EL TIEMPO</h2>'+
-    '<p style="font-size:17px;line-height:1.8">Acertaste <b style="font-size:30px;color:var(--neon)">'+arcadeOk+'</b> ejercicios en '+nomDur(arcadeDur)+
+    '<p style="font-size:17px;line-height:1.8">Acertaste <b style="font-size:30px;color:var(--neon)">'+arcadeOk+'</b> palabras en '+nomDur(arcadeDur)+
     (arcadeFail?' (y fallaste '+arcadeFail+')':'')+'.<br>'+
     lineasRecord(arcadeOk,antes,globArc,'aciertos')+'<br>'+
     'Ganaste <b style="color:var(--sun)">'+fmtN(ganados)+' puntos</b> en esta partida.</p>'+
@@ -1404,38 +1958,30 @@ function terminarArcade(){
   $('#arcVolver').onclick=function(){ cerrarModal(); abrirSetup('carrera'); };
 }
 
-/* ---------- ventana de antes de jugar: con que operaciones y cuanto rato ---------- */
-var OPNOM={'+':'➕ SUMAS','-':'➖ RESTAS','*':'✖ MULTIPLICAR','/':'➗ DIVIDIR','mix':'🔀 COMBINADAS'};
+/* ---------- ventana de antes de jugar ---------- */
 var DURS=[60,120,180,300,600];
 function abrirSetup(modo){
   if(!user) return;
-  var d=DB[user];
+  var d=DB[user], b=banda(d.level);
   var titulo = modo==='carrera' ? '🏁 CARRERA' : (modo==='entrenar' ? '🎯 ENTRENAR' : '⏱ CONTRARRELOJ');
-  var checks=['+','-','*','/','mix'].map(function(o){
-    return '<label class="chk'+(d.ops[o]?' on':'')+'"><input type="checkbox" data-op="'+o+'"'+(d.ops[o]?' checked':'')+
-           '><span>'+OPNOM[o]+'</span></label>';
+  var checks=[1,2,3,4,5,6].map(function(o){
+    var on=CATS[o], toca=CATS_BANDA[b].indexOf(o)>=0;
+    return '<label class="chk'+(on?' on':'')+'"><input type="checkbox" data-cat="'+o+'"'+(on?' checked':'')+
+           '><span>'+CATTICK[o]+(toca?'':' <i style="font-style:normal;opacity:.6">(desde nivel '+(o===3||o===6?31:11)+')</i>')+'</span></label>';
   }).join('');
   var dur = modo!=='arcade' ? '' :
     '<label style="margin-top:14px">¿CUÁNTO RATO AGUANTAS?</label><select id="setDur">'+
     DURS.map(function(x){ return '<option value="'+x+'"'+(d.arcDur===x?' selected':'')+'>'+nomDur(x)+
       (d.arcadeRecs[String(x)]?' · tu récord: '+d.arcadeRecs[String(x)]:'')+'</option>'; }).join('')+'</select>';
-  var respSel='<label style="margin-top:14px">¿CÓMO QUIERES RESPONDER?</label>'+
-    '<div class="checks">'+
-    '<label class="chk'+(d.resp!=='alt'?' on':'')+'"><input type="radio" name="resp" value="escribir"'+(d.resp!=='alt'?' checked':'')+'><span>⌨ ESCRIBIR LA RESPUESTA</span></label>'+
-    '<label class="chk'+(d.resp==='alt'?' on':'')+'"><input type="radio" name="resp" value="alt"'+(d.resp==='alt'?' checked':'')+'><span>🔢 ELEGIR ENTRE 4 ALTERNATIVAS</span></label>'+
-    '</div>';
   modal('<h2>'+titulo+'</h2>'+
-    '<label>¿CON QUÉ OPERACIONES QUIERES JUGAR?</label>'+
+    '<label>¿CON QUÉ BLOQUES DE REGLAS QUIERES JUGAR?</label>'+
     '<div class="checks">'+checks+'</div>'+
-    respSel+
     dur+
     '<div class="kbd" style="margin-top:12px;text-align:left;line-height:1.7">'+
-      'Tica las que quieras practicar. En los niveles bajos salen sumas, restas, multiplicaciones y divisiones <b>simples</b>; '+
-      'mientras más subes, más grandes se ponen los números.'+
-      '<br><b>Escribir</b> la respuesta es más difícil y enseña más; <b>alternativas</b> es más rápido y sirve para partir o para ir contra el reloj. '+
-      'Puedes cambiarlo cuando quieras: sale en esta misma ventana cada vez que aprietas JUGAR.'+
+      'Tica lo que quieras practicar. En <b>carrera</b> el nivel manda: del 1 al 10 salen solo las básicas y con las reglas a la vista; '+
+      'del 11 al 30 se van las ayudas y entran hiatos, plurales y compuestas; del 31 en adelante entran las diacríticas, los porqués y las excepciones.'+
       (modo==='arcade'?'<br>Cada acierto te suma <b>medio segundo</b> al reloj.':'')+
-      (modo==='entrenar'?'<br>Adentro puedes elegir además la dificultad y machacar una sola operación.':'')+
+      (modo==='entrenar'?'<br>Adentro puedes además elegir un solo bloque y la dificultad.':'')+
     '</div>'+
     '<div class="row" style="margin-top:16px">'+
       '<button id="setBack" class="ghost">◀ ATRÁS</button>'+
@@ -1445,27 +1991,15 @@ function abrirSetup(modo){
     var c=l.querySelector('input');
     c.onchange=function(){ l.classList.toggle('on',c.checked); SFX.clic(); };
   });
-  /* los dos redondeles de "como responder" se pintan solos (el generico de arriba solo sabe de tickets) */
-  Array.prototype.forEach.call(document.querySelectorAll('#modalBody input[name="resp"]'),function(r){
-    r.onchange=function(){
-      Array.prototype.forEach.call(document.querySelectorAll('#modalBody input[name="resp"]'),function(x){
-        x.parentNode.classList.toggle('on',x.checked);
-      });
-      SFX.clic();
-    };
-  });
   $('#setBack').onclick=function(){ SFX.clic(); cerrarModal(); };
   $('#setGo').onclick=function(){
     var sel={}, n=0;
     Array.prototype.forEach.call(document.querySelectorAll('#modalBody .chk input'),function(c){
-      var o=c.getAttribute('data-op'); if(!o) return;      /* los redondeles de respuesta no son operaciones */
-      sel[o]=c.checked;
-      if(c.checked && o!=='mix') n++;
+      var o=parseInt(c.getAttribute('data-cat'),10); sel[o]=c.checked;
+      if(c.checked) n++;
     });
-    if(!n){ alert('Tica al menos una operación (suma, resta, multiplicación o división).'); return; }
-    d.ops=sel; OPS=sel;
-    var r=document.querySelector('#modalBody input[name="resp"]:checked');
-    d.resp = r ? r.value : 'escribir';
+    if(!n){ alert('Tica al menos un bloque de reglas.'); return; }
+    d.cats=sel; leerCats();
     if(modo==='arcade') d.arcDur=parseInt($('#setDur').value,10)||60;
     save(); cerrarModal(); SFX.clic(); jugar(modo);
   };
@@ -1487,8 +2021,7 @@ function hud(){
   $('#meLiga').textContent=L[1]+' · NIVEL '+d.level;
   var need=reqEjer(d.level), pct=Math.min(100,d.cred/need*100);
   $('#xpbar').style.width=pct+'%';
-  $('#xptxt').textContent=fmt(d.cred)+' de '+need+' ejercicios rápidos';
-  /* el cuadro del nivel toma el color de tu liga y late cuando estas por subir */
+  $('#xptxt').textContent=fmt(d.cred)+' de '+need+' palabras rápidas';
   var lb=$('#lvlbox');
   lb.style.borderColor=L[2];
   lb.style.boxShadow='5px 5px 0 rgba(0,0,0,.6),0 0 26px '+L[2]+'55,inset 0 0 22px '+L[2]+'22';
@@ -1496,7 +2029,7 @@ function hud(){
   lb.classList.toggle('cerca', MODE==='carrera' && pct>=75);
 }
 
-/* ---------- reloj del ejercicio ---------- */
+/* ---------- reloj de la palabra ---------- */
 function startClock(seguir){
   if(!seguir) t0=performance.now();
   clearInterval(tick);
@@ -1514,79 +2047,79 @@ function startClock(seguir){
   },100);
 }
 
-/* ---------- nuevo ejercicio ---------- */
-function newProblem(sameLevel){
+/* ---------- pintar la palabra ---------- */
+var OPCIONES=[];     /* las opciones de la palabra de ahora: la tecla 1 es la primera */
+function pintarPalabra(){
+  var vis=IT.v, html='';
+  for(var i=0;i<vis.length;i++){
+    var ch=vis[i];
+    if(ch===' '){ html+='<span class="lt sp"></span>'; continue; }
+    if(ch==='_'){ html+='<span class="lt hueco" id="hueco">?</span>'; continue; }
+    html+='<span class="lt c">'+esc(ch)+'</span>';
+  }
+  var w=$('#word');
+  w.classList.remove('shake'); w.style.animation='none'; void w.offsetWidth; w.style.animation='';
+  w.innerHTML=html;
+  /* las opciones, con su numerito como en los otros juegos */
+  OPCIONES=IT.o;
+  $('#opts').innerHTML=IT.o.map(function(o,i){
+    return '<button class="opt" data-i="'+i+'"><sup>'+(i+1)+'</sup>'+esc(nombreOpcion(o))+'</button>';
+  }).join('');
+  Array.prototype.forEach.call($('#opts').querySelectorAll('.opt'),function(b){
+    b.onclick=function(){ responder(parseInt(b.getAttribute('data-i'),10)); };
+  });
+  /* en los primeros niveles le digo ademas de que bloque es */
+  var L=nivelActivo();
+  if(L<=5){
+    $('#tipo').textContent='👉 Bloque: '+CATNOM[IT.c];
+    $('#tipo').classList.remove('hide');
+  } else $('#tipo').classList.add('hide');
+}
+function newWord(){
   var d=DB[user];
   desdeRepaso=false; pistaUsada=false;
   $('#repaso').classList.add('hide');
+  var forzar=null;
   if(MODE==='entrenar'){
-    var op=$('#trainOp').value;
-    P0=makeProblem(nivelActivo(), op==='all'?null:op);
-  } else if(MODE==='arcade'){
-    P0=makeProblem(Math.max(1,d.level));
-  } else {
-    /* repaso espaciado: lo que fallaste vuelve a aparecer */
-    if(d.repaso.length && Math.random()<0.28){
-      var r=d.repaso.shift(); P0=r; desdeRepaso=true; $('#repaso').classList.remove('hide');
-    } else {
-      if(!sameLevel) genLevel = d.level + (d.streak>=2 ? Math.min(3,d.streak-1) : 0);
-      else genLevel = d.level;
-      P0=makeProblem(genLevel);
-    }
+    var v=$('#trainCat').value;
+    if(v!=='all') forzar=parseInt(v,10);
   }
-  var pe=$('#prob');
-  pe.classList.remove('shake'); pe.style.animation='none'; void pe.offsetWidth; pe.style.animation='';
-  pe.textContent=P0.text+' =';
+  if(MODE==='carrera' && d.repaso.length && Math.random()<0.28){
+    var p=d.repaso.shift(), r=PORP[p];
+    if(r){ IT=r; desdeRepaso=true; $('#repaso').classList.remove('hide'); }
+    else IT=sacarPalabra(nivelActivo(),forzar);
+  } else {
+    IT=sacarPalabra(nivelActivo(),forzar);
+  }
+  pintarPalabra();
   $('#fb').classList.add('hide'); $('#answerBox').classList.remove('hide');
-  pintarRespuesta();
+  /* las ruedas de apoyo: niveles 1 a 10 */
+  var ay=$('#ayudaFija');
+  if(nivelActivo()<=10 && MODE!=='arcade'){ ay.innerHTML=textoAyuda(); ay.classList.remove('hide'); }
+  else ay.classList.add('hide');
   hud(); startClock();
 }
 
 /* ---------- responder ---------- */
-var OPC=[];
-function pintarRespuesta(){
-  var alt = user && DB[user].resp==='alt';
-  $('#escribirBox').classList.toggle('hide',!!alt);
-  $('#send').classList.toggle('hide',!!alt);
-  $('#altBox').classList.toggle('hide',!alt);
-  if(alt){
-    OPC=alternativas(P0);
-    var html='';
-    for(var i=0;i<OPC.length;i++) html+='<button class="op" data-i="'+i+'"><sup>'+(i+1)+'</sup>'+fmtN(OPC[i])+'</button>';
-    $('#altBox').innerHTML=html;
-    Array.prototype.forEach.call($('#altBox').querySelectorAll('.op'),function(b){
-      b.onclick=function(){ marcarOpcion(parseInt(b.getAttribute('data-i'),10)); };
-    });
-  } else { OPC=[]; $('#ans').value=''; $('#ans').focus(); }
-}
-function marcarOpcion(i){
-  if(!$('#fb').classList.contains('hide')) return;
-  var v=OPC[i], good=Math.abs(v-P0.ans)<1e-9;
-  var bs=$('#altBox').querySelectorAll('.op');
-  if(bs[i]) bs[i].classList.add(good?'ok':'err');
-  if(!good){ for(var k=0;k<OPC.length;k++){ if(Math.abs(OPC[k]-P0.ans)<1e-9 && bs[k]) bs[k].classList.add('real'); } }
-  submitVal(v);
-}
-function submit(){
-  if(!$('#fb').classList.contains('hide')) return;
-  if(MODE==='arcade' && arcadeLeft<=0) return;
-  var v=parseNum($('#ans').value);
-  if(!isFinite(v)) return;
-  submitVal(v);
-}
-function submitVal(v){
+function responder(idx){          /* idx = cual de las opciones toco */
   if(!$('#fb').classList.contains('hide')) return;
   if(MODE==='arcade' && arcadeLeft<=0) return;
   clearInterval(tick);
   var secs=(performance.now()-t0)/1000, d=DB[user];
-  if(secs>180) secs=180;                       /* te fuiste a otra cosa: no cuenta como record */
-  var good=Math.abs(v-P0.ans)<1e-9;
-  var K=opKey(P0);
+  if(secs>180) secs=180;
+  var good = (idx===IT.ans);
+  var K=String(IT.c);
   d.time+=secs; sesion.t+=secs;
-  d.byOp[K].t+=secs; d.byOp[K][good?'ok':'fail']++;
-  d.hist.unshift({t:P0.text,ok:good,s:Math.round(secs*10)/10}); if(d.hist.length>12) d.hist.pop();
-
+  d.byCat[K].t+=secs; d.byCat[K][good?'ok':'fail']++;
+  d.hist.unshift({t:IT.p,ok:good,s:Math.round(secs*10)/10}); if(d.hist.length>12) d.hist.pop();
   if(good) misionDelDia(d);
+
+  /* marco la opcion que toco y, si fallo, la que era */
+  var bs=$('#opts').querySelectorAll('.opt');
+  if(bs[idx]) bs[idx].classList.add(good?'ok':'err');
+  if(!good && bs[IT.ans]) bs[IT.ans].classList.add('real');
+  var h=$('#hueco');
+  if(h){ h.textContent = IT.r===''?'·':IT.r; h.classList.add(good?'ok':'err'); }
 
   if(MODE==='arcade'){
     if(good){
@@ -1596,8 +2129,10 @@ function submitVal(v){
       arcadePts+=ptsArc; anotarPartida(true,ptsArc);      /* se guardan al terminar el reloj */
       arcadeLeft+=BONO; pintarReloj();
               SFX.ok(); flash('var(--neon)'); flota('+1 ⏱ +0,5 s'); }
-    else { arcadeFail++; d.fail++; sesion.fail++; anotarPartida(false); SFX.mal(); flash('var(--hot)'); $('#prob').classList.add('shake'); }
-    save(); newProblem(true); return;          /* arcade no se detiene: sigue de largo */
+    else { arcadeFail++; d.fail++; sesion.fail++; anotarPartida(false); d.streak=0; SFX.mal(); flash('var(--hot)'); $('#word').classList.add('shake'); }
+    save();
+    if(arcadeLeft>0) newWord();      /* el contrarreloj no se detiene: sigue de largo */
+    return;
   }
 
   $('#answerBox').classList.add('hide');
@@ -1622,41 +2157,37 @@ function submitVal(v){
     flash('var(--neon)'); bump('#pts');
     if(up){ subirNivel(d); }
     $('#fb').classList.remove('bad');
-    $('#fbTitle').textContent = up ? ('¡NIVEL '+d.level+'! Ahora necesitas '+reqEjer(d.level)+' ejercicios rápidos')
-                                   : ('¡CORRECTO! '+cr.ico+' '+cr.tag+(d.streak>=3?' · racha de '+d.streak+' 🔥':''));
-    $('#fbText').textContent=tip(P0);
+    $('#fbTitle').textContent = up ? ('¡NIVEL '+d.level+'! Ahora necesitas '+reqEjer(d.level)+' palabras rápidas')
+                                   : ('¡CORRECTO! Se escribe '+IT.p+' '+cr.ico+' '+cr.tag+(d.streak>=3?' · racha de '+d.streak+' 🔥':''));
+    $('#fbText').innerHTML=explica(IT);
     $('#fbPts').textContent = (MODE==='entrenar'
         ? 'Entrenamiento: no suma para el nivel, pero sí a tus estadísticas. '
-        : cr.ico+' '+cr.tag+' en '+secs.toFixed(1)+' s → vale '+fmt(cr.c)+' ejercicio'+(cr.c===1?'':'s')+
+        : cr.ico+' '+cr.tag+' en '+secs.toFixed(1)+' s → vale '+fmt(cr.c)+' palabra'+(cr.c===1?'':'s')+
           ' · te faltan '+fmt(Math.max(0,reqEjer(d.level)-d.cred))+' de '+reqEjer(d.level)+' · ')
       + '+'+pts+' pts'+(pistaUsada?' (mitad por usar pista)':'');
-    $('#next').textContent='SEGUIR ▶ (un poco más difícil)';
+    $('#next').textContent='SEGUIR ▶';
     $('#next').className='';
   } else {
     d.fail++; sesion.fail++; d.streak=0; anotarPartida(false);
-    SFX.mal(); flash('var(--hot)'); $('#prob').classList.add('shake');
-    /* si lo vuelve a fallar, vuelve a la cola de repaso (por eso no miro desdeRepaso) */
-    var yaEnRepaso=false;
-    for(var rr=0;rr<d.repaso.length;rr++){ if(d.repaso[rr].text===P0.text) yaEnRepaso=true; }
-    if(!yaEnRepaso && d.repaso.length<12) d.repaso.push({a:P0.a,b:P0.b,op:P0.op,ans:P0.ans,text:P0.text,kind:P0.kind,t:P0.t});
+    SFX.mal(); flash('var(--hot)'); $('#word').classList.add('shake');
+    /* si la vuelve a fallar, vuelve a la cola de repaso (por eso no miro desdeRepaso) */
+    if(d.repaso.length<12 && d.repaso.indexOf(IT.p)<0) d.repaso.push(IT.p);
     $('#fb').classList.add('bad');
-    var cerca = Math.abs(v-P0.ans) <= Math.max(1, Math.abs(P0.ans)*0.05);
-    $('#fbTitle').textContent = cerca ? ('¡UF! POR POQUITO. Era '+fmtN(P0.ans)) : ('CASI. Era '+fmtN(P0.ans));
-    $('#fbText').textContent=tip(P0);
-    $('#fbPts').textContent='Este no suma ejercicios, pero te lo voy a preguntar de nuevo más adelante 🔁';
+    $('#fbTitle').textContent = 'CASI. Se escribe '+IT.p;
+    $('#fbText').innerHTML=explica(IT);
+    $('#fbPts').textContent='Esta no suma, pero te la voy a preguntar de nuevo más adelante 🔁 · se te cortó la racha';
     $('#next').textContent='SEGUIR ▶ (mismo nivel)';
     $('#next').className='cy';
   }
   save(); hud(); chequearMedallas();
 }
-/* la mision del dia cuenta aciertos en cualquier modo */
 function misionDelDia(d){
   if(d.dias.last!==hoy()) marcarDia(d);
   d.dias.hechos++;
   if(!d.dias.cumplida && d.dias.hechos>=d.dias.meta){
     d.dias.cumplida=true; d.misiones++;
     var bono=50+d.level*3; d.pts+=bono;
-    toast('🎁 MISIÓN DEL DÍA CUMPLIDA','Los '+d.dias.meta+' de hoy: bono de '+bono+' puntos.');
+    toast('🎁 MISIÓN DEL DÍA CUMPLIDA','Las '+d.dias.meta+' de hoy: bono de '+bono+' puntos.');
     SFX.medalla(); confetti(40);
   }
 }
@@ -1664,107 +2195,73 @@ function subirNivel(d){
   var L=liga(d.level);
   $('#lvlupNum').textContent=d.level;
   $('#lvlupTxt').style.color=L[2];
-  $('#lvlupSub').textContent=L[1]+' · ahora necesitas '+reqEjer(d.level)+' ejercicios';
+  $('#lvlupSub').textContent=L[1]+' · ahora necesitas '+reqEjer(d.level)+' palabras';
   $('#lvlupSub').style.color=L[2];
   var o=$('#lvlup'); o.classList.add('go');
   SFX.nivel(); confetti(150);
   setTimeout(function(){ confetti(60); },500);
   var lb=$('#lvlbox'); lb.classList.remove('up'); void lb.offsetWidth; lb.classList.add('up');
   setTimeout(function(){ o.classList.remove('go'); },2200);
+  if(d.level===11) toast('🚲 SE VAN LAS RUEDITAS','Desde ahora sin cartel de reglas, y entran hiatos, plurales y compuestas.');
+  if(d.level===31) toast('🎓 NIVEL EXPERTO','Entran las tildes diacríticas, los cuatro porqués y las excepciones. Y a toda velocidad.');
 }
 
 /* ---------- botones del juego ---------- */
-$('#send').onclick=submit;
-$('#ans').onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); submit(); } };
 $('#again').onclick=function(){
   $('#fb').classList.add('hide'); $('#answerBox').classList.remove('hide');
-  pistaUsada=true;                                          /* reintento no da credito completo */
-  pintarRespuesta();
+  pistaUsada=true;
+  pintarPalabra();
   startClock();
 };
-$('#next').onclick=function(){ newProblem(DB[user].streak===0); };
+$('#next').onclick=function(){ newWord(); };
 $('#bPista').onclick=function(){
-  if(pistaUsada){ toast('💡 YA TIENES LA PISTA','Cada ejercicio da una sola.'); return; }
+  if(pistaUsada){ toast('💡 YA TIENES LA PISTA','Cada palabra da una sola.'); return; }
   pistaUsada=true; DB[user].pistas++; SFX.clic();
-  toast('💡 PISTA', pista(P0));
+  toast('💡 PISTA', pista(IT));
   save();
 };
 $('#bSkip').onclick=function(){
-  DB[user].saltos++; DB[user].streak=0; SFX.clic(); save(); hud(); newProblem(true);
+  DB[user].saltos++; DB[user].streak=0; SFX.clic(); save(); hud(); newWord();
 };
-/* los botones de info estan en el lobby y en la pausa: se conectan por clase */
 function wire(sel,fn){ Array.prototype.forEach.call(document.querySelectorAll(sel),function(b){ b.onclick=fn; }); }
 function pintarSonido(){ wire('.bSound',toggleSonido);
   Array.prototype.forEach.call(document.querySelectorAll('.bSound'),function(b){ b.textContent=mute?'🔇':'🔊'; }); }
 function toggleSonido(){
-  mute=!mute; try{ localStorage.setItem('cm_mute',mute?'1':'0'); }catch(e){}
+  mute=!mute; try{ localStorage.setItem('sc_mute',mute?'1':'0'); }catch(e){}
   pintarSonido(); if(!mute) SFX.ok();
 }
 pintarSonido();
 
-/* ---------- un solo teclado en el celular ----------
-   En una pantalla tactil el teclado del sistema se come media pantalla y el
-   juego ya trae el suyo, asi que dejo el campo en solo lectura: no salta el
-   teclado del sistema pero el del juego sigue escribiendo igual.
-   En el computador no cambia nada: se escribe con el teclado de verdad. */
-var TACTIL = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
-             ('ontouchstart' in window) || navigator.maxTouchPoints>0;
-function ajustarTeclado(tactil){
-  var i=$('#ans'); if(!i) return;
-  if(tactil){
-    i.readOnly=true;
-    i.setAttribute('inputmode','none');       /* Android */
-    i.setAttribute('placeholder','Toca los números de abajo');
-    document.body.classList.add('tactil');
-  } else {
-    i.readOnly=false;
-    i.setAttribute('inputmode','decimal');
-    i.setAttribute('placeholder','Tu respuesta y Enter');
-    document.body.classList.remove('tactil');
-  }
-}
-ajustarTeclado(TACTIL);
-
-/* teclado en pantalla */
-document.querySelectorAll('.pad button').forEach(function(b){
-  b.onclick=function(){
-    var k=b.getAttribute('data-k'); SFX.clic();
-    var i=$('#ans');
-    if(k==='del') i.value=i.value.slice(0,-1);
-    else if(k===','){ if(i.value.indexOf(',')<0 && i.value!=='') i.value+=','; }
-    else i.value+=k;
-    if(!TACTIL) i.focus();          /* en el celular no le doy foco: abriria el teclado */
-  };
-});
-
-/* atajos */
+/* atajos: 1-9 eligen vocal, 0 es "no lleva tilde" */
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){
-    if($('#modal').classList.contains('go')){ cerrarModal(); return; }   /* 1o cierra la ventana */
-    if(paused){ reanudar(); return; }                                    /* 2o quita la pausa */
-    if(enJuego()) pausar();                                              /* 3o pausa el juego */
+    if($('#modal').classList.contains('go')){ cerrarModal(); return; }
+    if(paused){ reanudar(); return; }
+    if(enJuego()) pausar();
     return;
   }
   if(!user) return;
   if(paused){ if(e.key==='Enter') reanudar(); return; }
-  if(e.key==='Enter' && !$('#fb').classList.contains('hide')){ $('#next').click(); return; }
   if($('#modal').classList.contains('go')) return;
-  if(!enJuego()){                                    /* en el lobby: Enter juega */
+  if(e.key==='Enter' && !$('#fb').classList.contains('hide')){ $('#next').click(); return; }
+  if(!enJuego()){
     if(e.key==='Enter') $('#lbPlay').click();
     return;
   }
-  if(user && DB[user].resp==='alt' && !$('#answerBox').classList.contains('hide') && e.key>='1' && e.key<='4'){
-    var nOp=parseInt(e.key,10)-1;
-    if(OPC[nOp]!==undefined){ e.preventDefault(); marcarOpcion(nOp); }
+  if(document.activeElement && document.activeElement.tagName==='SELECT') return;
+  if($('#answerBox').classList.contains('hide')) return;
+  if(e.key>='1' && e.key<='9'){
+    var n=parseInt(e.key,10)-1;
+    if(OPCIONES[n]!==undefined){ e.preventDefault(); responder(n); }
     return;
   }
-  if(document.activeElement===$('#ans') && e.key.length===1 && '0123456789,.'.indexOf(e.key)>=0) return;
+  if(e.key==='0'){ e.preventDefault(); responder(-1); return; }
   var k=e.key.toLowerCase();
-  if(k==='p' && !$('#answerBox').classList.contains('hide')) $('#bPista').click();
-  if(k==='s' && !$('#answerBox').classList.contains('hide')) $('#bSkip').click();
+  if(k==='p') $('#bPista').click();
+  if(k==='s') $('#bSkip').click();
 });
 
-/* ---------- ventanas: estadisticas / medallas / ranking / ayuda ---------- */
+/* ---------- ventanas: estadisticas / medallas / ranking / reglas / ayuda ---------- */
 /* ============================================================
    RECORDS DE PARTIDA
    Cada vez que se termina una partida (contrarreloj, o salir al lobby /
@@ -1862,7 +2359,7 @@ function salirAlLobby(){
    ============================================================ */
 var API = 'https://make-me-crazy.pages.dev/api';
 if (location.hostname === '127.0.0.1' || location.hostname === 'localhost') API = '/api';   /* pruebas */
-var JUEGO = 'maths';
+var JUEGO = 'sc';
 var nubeClave = '';          /* la contrasena de esta sesion, solo en memoria */
 var nubeOn = false;          /* lo que eligio este aparato */
 try { nubeOn = localStorage.getItem('mmc_online') === '1'; } catch (e) { }
@@ -2130,32 +2627,31 @@ function barrita(pct,color){
 }
 function verStats(){
   var d=DB[user], tot=d.ok+d.fail;
-  var nombres={'+':'Sumas','−':'Restas','×':'Multiplicaciones','÷':'Divisiones','mix':'Combinadas'};
   var filas='', peor=null, peorP=101;
-  for(var op in nombres){
-    var o=d.byOp[op], t=o.ok+o.fail;
+  for(var c=1;c<=6;c++){
+    var o=d.byCat[String(c)], t=o.ok+o.fail;
     var p=t?Math.round(o.ok/t*100):0;
     var med=o.ok?(o.t/(o.ok+o.fail)):0;
-    if(t>=8 && p<peorP){ peorP=p; peor=nombres[op]; }
-    filas+='<tr><td style="width:34%">'+nombres[op]+'</td><td style="width:40%">'+barrita(p)+'</td>'+
+    if(t>=8 && p<peorP){ peorP=p; peor=CATNOM[c]; }
+    filas+='<tr><td style="width:34%">'+CATNOM[c]+'</td><td style="width:34%">'+barrita(p)+'</td>'+
            '<td>'+(t?p+'% de '+t:'-')+'</td><td>'+(med?med.toFixed(1)+'s':'-')+'</td></tr>';
   }
   var ligaIdx=LIGAS.indexOf(liga(d.level));
   var lineas=LIGAS.map(function(L,i){ return '<div class="'+(i<=ligaIdx?'on':'')+'" title="'+L[1]+'"></div>'; }).join('');
   var hist=d.hist.length? d.hist.map(function(h){
-      return '<tr><td>'+(h.ok?'✔':'✘')+'</td><td>'+h.t+'</td><td>'+fmt(h.s)+' s</td></tr>'; }).join('') : '';
+      return '<tr><td>'+(h.ok?'✔':'✘')+'</td><td>'+esc(h.t)+'</td><td>'+fmt(h.s)+' s</td></tr>'; }).join('') : '';
   modal('<h2>📊 TUS NÚMEROS</h2>'+
     '<div class="ligaline">'+lineas+'</div>'+
     '<p style="font-size:14px;line-height:1.9;margin:0 0 12px">'+
       '<b>Nivel '+d.level+'</b> · liga '+liga(d.level)[1]+'<br>'+
-      'Ejercicios: <b>'+tot+'</b> · precisión <b>'+(tot?Math.round(d.ok/tot*100):0)+'%</b> · mejor racha <b>'+d.best+'</b><br>'+
+      'Palabras: <b>'+tot+'</b> · precisión <b>'+(tot?Math.round(d.ok/tot*100):0)+'%</b> · mejor racha <b>'+d.best+'</b><br>'+
       'Respuestas relámpago: <b>'+d.rayos+'</b> · pistas usadas: <b>'+d.pistas+'</b> · saltadas: <b>'+d.saltos+'</b><br>'+
       'Mejor contrarreloj: <b>'+textoArcade(d)+'</b> · días seguidos jugando: <b>'+d.dias.seguidos+'</b><br>'+
       'Tiempo total jugando: <b>'+Math.round(d.time/60)+' min</b>'+
     '</p>'+
-    (peor?'<div class="warn">🎯 Tu punto débil ahora son las <b>'+peor.toLowerCase()+'</b> ('+peorP+'%). Entra a ENTRENAR y dale solo a eso un rato.</div>':'')+
-    '<table><thead><tr><th>OPERACIÓN</th><th>PRECISIÓN</th><th>ACIERTOS</th><th>TIEMPO</th></tr></thead><tbody>'+filas+'</tbody></table>'+
-    (hist?'<h2 style="font-size:17px;margin:16px 0 6px">ÚLTIMOS EJERCICIOS</h2><table><tbody>'+hist+'</tbody></table>':'')+
+    (peor?'<div class="warn">🎯 Tu punto débil ahora es <b>'+peor.toLowerCase()+'</b> ('+peorP+'%). Entra a ENTRENAR y dale solo a ese bloque un rato.</div>':'')+
+    '<table><thead><tr><th>BLOQUE</th><th>PRECISIÓN</th><th>ACIERTOS</th><th>TIEMPO</th></tr></thead><tbody>'+filas+'</tbody></table>'+
+    (hist?'<h2 style="font-size:17px;margin:16px 0 6px">ÚLTIMAS PALABRAS</h2><table><tbody>'+hist+'</tbody></table>':'')+
     '<div class="row" style="margin-top:14px"><button id="bExport" class="sm ghost">📤 COPIAR MI PROGRESO</button>'+
     '<button id="bImport" class="sm ghost">📥 PEGAR PROGRESO</button>'+
     '<button id="bReset" class="sm hot">🗑 BORRAR MI CUENTA</button></div>'+
@@ -2202,7 +2698,7 @@ function verRanking(){
   var body=rows.map(function(r,i){
     var d=r[1], L=liga(d.level), tot=d.ok+d.fail;
     var corona=['🥇','🥈','🥉'][i]||(i+1);
-    return '<tr class="'+(r[0]===user?'yo':'')+'"><td>'+corona+'</td><td>'+(d.avatar||'🧠')+' '+r[0]+'</td>'+
+    return '<tr class="'+(r[0]===user?'yo':'')+'"><td>'+corona+'</td><td>'+(d.avatar||'✏️')+' '+esc(r[0])+'</td>'+
       '<td style="color:'+L[2]+';font-weight:800">'+L[1]+'</td><td>'+d.level+'</td><td>'+fmtN(d.pts)+'</td>'+
       '<td>'+(tot?Math.round(d.ok/tot*100)+'%':'-')+'</td><td>'+d.best+'</td><td>'+fmtN(d.mejorPartida||0)+'</td><td>'+textoArcade(d)+'</td></tr>';
   }).join('') || '<tr><td colspan="9">Todavía no juega nadie.</td></tr>';
@@ -2210,30 +2706,74 @@ function verRanking(){
     '<th>PUNTOS</th><th>PRECIS.</th><th>RACHA</th><th>PARTIDA</th><th>CONTRARRELOJ</th></tr></thead><tbody>'+body+'</tbody></table>'+
     '<div class="kbd" style="margin-top:10px">Son los jugadores guardados en este computador.</div>');
 }
+function verReglas(){
+  modal('<h2>📘 TODAS LAS REGLAS DE SC?</h2><div class="reglas">'+
+  '<h3>1 · B / V</h3>'+
+  'Se escriben con <b>b</b>: antes de otra consonante (<b>bl</b>anco, <b>br</b>azo, o<b>b</b>tener), las terminaciones '+
+  '<b>-aba, -abas, -ábamos</b> del imperfecto (canta<b>ba</b>, jugá<b>ba</b>mos), los verbos terminados en <b>-bir</b> '+
+  '(escri<b>bir</b>, reci<b>bir</b>, su<b>bir</b>) salvo hervir, servir y vivir, y las palabras que empiezan en '+
+  '<b>bu-, bur-, bus-</b> (buscar, burro).<br>'+
+  'Se escriben con <b>v</b>: después de <b>n</b> (i<b>nv</b>ierno, e<b>nv</b>iar), las terminaciones <b>-ívoro</b> '+
+  '(carn<b>ívoro</b>), los adjetivos en <b>-ave, -eve, -ivo, -iva</b> (su<b>ave</b>, br<b>eve</b>, act<b>ivo</b>) y '+
+  'las palabras que empiezan en <b>vice-, villa-</b>.'+
+  '<h3>2 · C / S / Z</h3>'+
+  'El mismo sonido se escribe de tres maneras. La <b>z</b> va antes de <b>a, o, u</b> (<b>za</b>pato, <b>zo</b>rro, a<b>zú</b>car) '+
+  'y la <b>c</b> antes de <b>e, i</b> (<b>ce</b>ro, co<b>ci</b>na). Por eso lápi<b>z</b> hace lápi<b>c</b>es.<br>'+
+  'Van con <b>c</b> los verbos en <b>-cer</b> y <b>-cir</b> (ha<b>cer</b>, de<b>cir</b>, cono<b>cer</b>) y las terminaciones '+
+  '<b>-ción</b> cuando la familia tiene t o d (canta<b>r</b> → can<b>ción</b>).<br>'+
+  'Van con <b>z</b> las terminaciones <b>-eza, -anza, -azo</b> (bell<b>eza</b>, esper<b>anza</b>, port<b>azo</b>).'+
+  '<h3>3 · G / J</h3>'+
+  'Antes de <b>e</b> e <b>i</b> las dos suenan igual. Van con <b>g</b>: <b>-gen</b> (ima<b>gen</b>, ori<b>gen</b>), '+
+  '<b>-gia, -gio, -gión</b> (ma<b>gia</b>, cole<b>gio</b>, re<b>gión</b>), <b>-logía</b> (bio<b>logía</b>) y los verbos '+
+  'en <b>-ger</b> y <b>-gir</b> (prote<b>ger</b>, diri<b>gir</b>). Las dos únicas excepciones son <b>tejer</b> y <b>crujir</b>.<br>'+
+  'Van con <b>j</b>: las terminaciones <b>-aje</b> y <b>-eje</b> (vi<b>aje</b>, mens<b>aje</b>), las palabras que '+
+  'empiezan en <b>aje-, eje-</b> (<b>eje</b>mplo) y todo el pasado de traer y decir (tra<b>j</b>e, di<b>j</b>o).'+
+  '<h3>4 · LA H</h3>'+
+  'No suena, así que hay que sabérsela. Llevan h las palabras que empiezan en <b>hue-</b> (hueso, huevo, huerta), '+
+  '<b>hie-</b> (hielo, hierro, hierba), <b>hum-</b> (humo, húmedo), <b>hosp-, host-, herm-, hist-, horm-, holg-</b>, '+
+  'y todo el verbo <b>haber</b> y el verbo <b>hacer</b> con su familia (deshacer, rehacer).<br>'+
+  'También va h en medio de palabra: alco<b>h</b>ol, almo<b>h</b>ada, za<b>n</b>a<b>h</b>oria, ve<b>h</b>ículo, pro<b>h</b>ibir.<br>'+
+  'Si la palabra no cae en ninguna de esas listas, lo más probable es que NO lleve.'+
+  '<h3>5 · LL / Y</h3>'+
+  'Van con <b>ll</b>: las terminaciones <b>-illo, -illa</b> (bols<b>illo</b>, or<b>illa</b>, cuch<b>illo</b>) y casi '+
+  'todas las palabras en <b>-alle, -elle, -ello</b> (c<b>alle</b>, cu<b>ello</b>).<br>'+
+  'Van con <b>y</b>: las formas de los verbos terminados en <b>-uir</b> (constru<b>y</b>e, inclu<b>y</b>e, '+
+  'destru<b>y</b>ó), las palabras que empiezan en <b>ye-</b> o <b>yu-</b> (yema, yunta) y los plurales de las '+
+  'palabras terminadas en y (re<b>y</b> → re<b>y</b>es).'+
+  '<h3>6 · LAS RARAS</h3>'+
+  '<b>X</b> · suena "ks": e<b>x</b>amen, é<b>x</b>ito, e<b>x</b>acto, te<b>x</b>to. No es lo mismo que una s sola.<br>'+
+  '<b>CC</b> · va cuando la familia de la palabra tiene <b>ct</b>: a<b>ct</b>o → a<b>cc</b>ión, dire<b>ct</b>o → '+
+  'dire<b>cc</b>ión, produ<b>ct</b>o → produ<b>cc</b>ión. Si no hay ct, va una sola c: cana<b>c</b>ión no, ¡can<b>c</b>ión!<br>'+
+  '<b>SC</b> · dos letras para un solo sonido: e<b>sc</b>ena, pi<b>sc</b>ina, a<b>sc</b>ensor, adole<b>sc</b>ente.<br>'+
+  '<b>XC</b> · no confundir con la anterior: e<b>xc</b>elente, e<b>xc</b>epción, e<b>xc</b>eso.<br>'+
+  '<b>RR</b> · solo entre vocales: pe<b>rr</b>o, tie<b>rr</b>a. Después de <b>n, l, s</b> va una sola aunque suene '+
+  'fuerte: e<b>nr</b>edo, a<b>lr</b>ededor, ho<b>nr</b>ado.<br>'+
+  '<b>M antes de B y P</b> · siempre, sin excepción: ca<b>mp</b>o, ho<b>mb</b>re, sie<b>mp</b>re, ta<b>mb</b>ién. '+
+  'Antes de <b>v</b>, en cambio, va <b>n</b>: i<b>nv</b>ierno.'+
+  '</div>');
+}
 function verAyuda(){
   modal('<h2>❓ CÓMO SE JUEGA</h2>'+
    '<p style="line-height:1.85;font-size:14.5px">'+
-   '<b>🏁 CARRERA</b> — el modo principal. Cada nivel te pide juntar ejercicios rápidos: 5 para el nivel 2, 10 para el 3, 30 cuando vas en el 160.<br><br>'+
+   'Sale una palabra con un <b>hueco</b>. Tú tocas la opción que va ahí: la letra o el grupo de letras correcto. '+
+   'Con el teclado es más rápido: cada opción tiene su numerito (1, 2, 3, 4).<br><br>'+
+   '<b>🏁 CARRERA</b> — el modo principal. Cada nivel te pide juntar palabras rápidas: 5 para el nivel 2, 10 para el 3, 30 cuando vas en el 160.<br><br>'+
    '<b>Cada acierto vale según tu tiempo:</b><br>'+
-   '⚡ RELÁMPAGO (menos de media meta) = 1,5 ejercicios<br>'+
+   '⚡ RELÁMPAGO (menos de media meta) = 1,5 palabras<br>'+
    '✔ RÁPIDO (bajo la meta) = 1<br>'+
    '🐢 LENTO (hasta el doble) = 0,6<br>'+
    '😴 MUY LENTO = 0,3<br>'+
-   'La meta baja de 14 s en el nivel 1 a 10 s en el 160. Por eso arriba necesitas 30 rápidos… o 50 lentos.<br><br>'+
-   '<b>🎯 ENTRENAR</b> — eliges la operación y la dificultad. No sube de nivel, pero sirve para machacar tu punto débil.<br>'+
-   '<b>⏱ CONTRARRELOJ</b> — todos los que puedas contra el reloj. Eliges cuánto rato: 60 segundos, 2, 3, 5 o 10 minutos, '+
+   'La meta baja de casi 11 s en el nivel 1 a 4 s del nivel 50 en adelante. Mientras más subes, más apurado.<br><br>'+
+   '<b>La curva:</b> del nivel 1 al 10 tienes el cartel con las reglas siempre a la vista y solo salen agudas, graves y esdrújulas '+
+   '(y en los 5 primeros te digo de qué bloque es). Del 11 al 30 se va el cartel y entran la b/v y la g/j. '+
+   'Del 31 en adelante entra todo: la c/s/z y las raras (x, cc, sc, rr, m antes de b y p), y a toda velocidad.<br><br>'+
+   '<b>🎯 ENTRENAR</b> — eliges el bloque y la dificultad. No sube de nivel, pero sirve para machacar lo que te cuesta.<br>'+
+   '<b>⏱ CONTRARRELOJ</b> — todas las que puedas contra el reloj: 60 segundos, 2, 3, 5 o 10 minutos, '+
    'y <b>cada acierto te regala medio segundo más</b>. Se guarda un récord por cada duración.<br><br>'+
-   '<b>⌨ / 🔢 CÓMO RESPONDER</b> — antes de cada partida eliges si <b>escribes</b> la respuesta o si <b>eliges entre 4 alternativas</b> '+
-   '(teclas 1, 2, 3 y 4). Las alternativas falsas son los errores típicos: uno más, uno menos, el acarreo olvidado o la operación cambiada.<br><br>'+
-   '<b>⚙ ANTES DE JUGAR</b> — cada vez que aprietas JUGAR sale una ventana para ticar con qué operaciones quieres jugar '+
-   '(suma, resta, multiplicación, división y combinadas), y ATRÁS si te arrepentiste. Sirve para los tres modos, '+
-   'así que en nivel 1 también puedes hacer multiplicaciones y divisiones simples.<br><br>'+
    '<b>🔁 Repaso:</b> lo que fallas vuelve a aparecerte más adelante hasta que te salga.<br>'+
-   '<b>💡 Pista:</b> te dice la estrategia sin darte el resultado, pero vale la mitad.<br>'+
-   '<b>🏠 LOBBY:</b> desde ahí eliges modo y ves tus números. <b>Esc</b> pausa el juego y detiene el cronómetro.<br>'+
-   '<b>📱 En el celular:</b> el juego usa <b>su propio teclado</b>, el del sistema no aparece (si no, no cabría el ejercicio). '+
-   'Si prefieres no escribir nada, elige el modo <b>alternativas</b> antes de jugar.<br>'+
-   '<b>Atajos (computador):</b> Enter responde y sigue · 1-4 alternativa · P pista · S saltar · Esc pausa/cierra.</p>');
+   '<b>💡 Pista:</b> te dice dónde va la fuerza y en qué termina, pero no la vocal, y vale la mitad.<br>'+
+   '<b>📘 REGLAS:</b> el resumen completo, con hiatos, diacríticas, porqués, plurales y todas las excepciones.<br>'+
+   '<b>Atajos:</b> 1-9 vocal · 0 sin tilde · Enter seguir · P pista · S saltar · Esc pausa.</p>');
 }
 wire('.bStats',verStats); wire('.bMedals',verMedallas); wire('.bRank',verRanking); wire('.bGlobal',verRankingGlobal);
 
@@ -2241,108 +2781,76 @@ wire('.bStats',verStats); wire('.bMedals',verMedallas); wire('.bRank',verRanking
 var VSJUEGO = {
   normaliza: function (g) {
     g = g || {};
-    var ops = g.ops || {};
-    var r = {
+    var c = g.cats || {}, r = {
       modo: g.modo === 'mismas' ? 'mismas' : 'distintas',
-      resp: g.resp === 'alt' ? 'alt' : 'escribir',   /* los mismos dos modos del juego */
-      ops: { '+': ops['+'] !== false, '-': ops['-'] !== false, '*': ops['*'] !== false, '/': ops['/'] !== false }
+      cats: {}
     };
-    if (!r.ops['+'] && !r.ops['-'] && !r.ops['*'] && !r.ops['/']) r.ops['+'] = true;
+    var alguno = false;
+    for (var k = 1; k <= 6; k++) { r.cats[k] = c[k] !== false; if (r.cats[k]) alguno = true; }
+    if (!alguno) r.cats[4] = true;
     return r;
   },
-  reglasHTML: function (r) {
-    var o = [['+', '➕ SUMAS'], ['-', '➖ RESTAS'], ['*', '✖️ MULTIPLICACIONES'], ['/', '➗ DIVISIONES']];
-    return '<label style="margin-top:12px">QUÉ ENTRA EN EL DUELO</label><div class="vsopt" id="vsOpsBox">' +
-      o.map(function (x) {
-        return '<button data-op="' + x[0] + '" class="cy">' + x[1] + '</button>';
-      }).join('') + '</div>' +
-      '<label>CÓMO SE CONTESTA</label><div class="vsopt" id="vsRespBox">' +
-      '<button data-r="escribir" class="cy">⌨ ESCRIBIR LA RESPUESTA</button>' +
-      '<button data-r="alt" class="cy">🔢 ELEGIR ENTRE 4 ALTERNATIVAS</button></div>';
+  reglasHTML: function () {
+    var h = '<label style="margin-top:12px">QUÉ BLOQUES ENTRAN</label><div class="vsopt" id="vsCatsBox">';
+    for (var k = 1; k <= 6; k++) h += '<button data-c="' + k + '" class="cy">' + CATTICK[k] + '</button>';
+    return h + '</div>' +
+      '<div class="kbd" style="line-height:1.7">Se contesta igual que en el juego de siempre: ' +
+      'tocas la opción que va en el hueco.</div>';
   },
   engancha: function (r) {
-    Array.prototype.forEach.call(document.querySelectorAll('#vsOpsBox button'), function (b) {
-      var k = b.getAttribute('data-op');
-      b.classList.toggle('on', !!r.ops[k]);
+    Array.prototype.forEach.call(document.querySelectorAll('#vsCatsBox button'), function (b) {
+      var k = b.getAttribute('data-c');
+      b.classList.toggle('on', !!r.cats[k]);
       b.onclick = function () {
-        r.ops[k] = !r.ops[k];
-        if (!r.ops['+'] && !r.ops['-'] && !r.ops['*'] && !r.ops['/']) r.ops[k] = true;
-        b.classList.toggle('on', !!r.ops[k]);
-        try { SFX.clic(); } catch (e) { }
-      };
-    });
-    Array.prototype.forEach.call(document.querySelectorAll('#vsRespBox button'), function (b) {
-      b.classList.toggle('on', b.getAttribute('data-r') === r.resp);
-      b.onclick = function () {
-        r.resp = b.getAttribute('data-r');
-        Array.prototype.forEach.call(document.querySelectorAll('#vsRespBox button'), function (x) {
-          x.classList.toggle('on', x === b);
-        });
+        r.cats[k] = !r.cats[k];
+        var n = 0; for (var j = 1; j <= 6; j++) if (r.cats[j]) n++;
+        if (!n) r.cats[k] = true;
+        b.classList.toggle('on', !!r.cats[k]);
         try { SFX.clic(); } catch (e) { }
       };
     });
   },
-  lee: function () { },                     /* los ticados ya escriben en el objeto */
+  lee: function () { },
   firma: function (r) {
-    return ['+', '-', '*', '/'].filter(function (o) { return r.ops[o]; }).join('') + ':' + r.resp;
+    var l = []; for (var k = 1; k <= 6; k++) if (r.cats[k]) l.push(k);
+    return l.join('');
   },
   resumen: function (r) {
-    var n = { '+': 'sumas', '-': 'restas', '*': 'multiplicaciones', '/': 'divisiones' };
-    var l = ['+', '-', '*', '/'].filter(function (o) { return r.ops[o]; }).map(function (o) { return n[o]; });
-    return l.join(', ') + ' · ' + (r.resp === 'alt' ? '4 alternativas' : 'escribiendo');
+    var l = []; for (var k = 1; k <= 6; k++) if (r.cats[k]) l.push(k);
+    return 'bloques ' + l.join(', ');
   },
-  /* la lista completa del duelo, generada con la semilla del servidor */
   generar: function (nivel, r, n) {
-    var antes = { '+': OPS['+'], '-': OPS['-'], '*': OPS['*'], '/': OPS['/'], mix: OPS.mix };
-    OPS['+'] = !!r.ops['+']; OPS['-'] = !!r.ops['-'];
-    OPS['*'] = !!r.ops['*']; OPS['/'] = !!r.ops['/'];
-    OPS.mix = false;                         /* en un duelo de 1 minuto, nada de combinadas */
+    var antes = {};
+    for (var k = 1; k <= 6; k++) { antes[k] = CATS[k]; CATS[k] = !!r.cats[k]; }
+    var memoria = ultimas.slice();
+    ultimas.length = 0;                       /* la memoria de repetidas parte igual en los dos */
     var out = [];
     try {
       for (var i = 0; i < n; i++) {
-        var p = makeProblem(nivel);
-        var alts = alternativas(p);
-        out.push({ texto: p.text, ans: p.ans, ops: alts });
+        var it = sacarPalabra(nivel);
+        out.push({ v: it.v, r: it.r, o: it.o, ans: it.ans, p: it.p, c: it.c });
       }
     } finally {
-      OPS['+'] = antes['+']; OPS['-'] = antes['-']; OPS['*'] = antes['*']; OPS['/'] = antes['/']; OPS.mix = antes.mix;
+      for (var k2 = 1; k2 <= 6; k2++) CATS[k2] = antes[k2];
+      ultimas.length = 0;
+      memoria.forEach(function (x) { ultimas.push(x); });
     }
     return out;
   },
-  pinta: function (q) { return esc(q.texto) + ' <span style="opacity:.55">=</span>'; },
+  pinta: function (q) {
+    var partes = q.v.split('_');
+    return esc(partes[0]) +
+      '<span style="color:var(--sun);border-bottom:3px dashed var(--sun);padding:0 .12em">?</span>' +
+      esc(partes[1] || '');
+  },
   responde: function (q, host, cb) {
-    var r = VS.reglasDuelo || { resp: 'escribir' };
-    if (r.resp !== 'alt') {
-      host.innerHTML = '<div class="vsesc"><input id="vsIn" inputmode="decimal" autocomplete="off" placeholder="?">' +
-        '<button id="vsOk" class="cy" style="flex:0 0 96px">✔</button></div>' +
-        '<div class="vspad">' +
-        [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (d) { return '<button data-k="' + d + '">' + d + '</button>'; }).join('') +
-        '<button data-k=",">,</button><button data-k="0">0</button><button data-k="del" class="hot">⌫</button></div>';
-      var inp = host.querySelector('#vsIn');
-      function manda() {
-        var v = parseNum(inp.value);
-        if (inp.value.trim() === '') return;
-        cb(isFinite(v) && Math.abs(v - q.ans) < 1e-9);
-      }
-      host.querySelector('#vsOk').onclick = manda;
-      inp.onkeydown = function (e) { if (e.key === 'Enter') manda(); };
-      Array.prototype.forEach.call(host.querySelectorAll('[data-k]'), function (b) {
-        b.onclick = function () {
-          var k = b.getAttribute('data-k');
-          if (k === 'del') inp.value = inp.value.slice(0, -1); else inp.value += k;
-          inp.focus();
-        };
-      });
-      try { inp.focus(); } catch (e) { }
-      return;
-    }
-    host.innerHTML = '<div class="vsops">' + q.ops.map(function (v, i) {
-      return '<button data-i="' + i + '"><sup style="font-size:11px;opacity:.55">' + (i + 1) + '</sup>' + fmtN(v) + '</button>';
+    host.innerHTML = '<div class="vsops">' + q.o.map(function (o, i) {
+      return '<button data-i="' + i + '"><sup style="font-size:11px;opacity:.55">' + (i + 1) + '</sup>' +
+        esc(nombreOpcion(o)) + '</button>';
     }).join('') + '</div>';
     Array.prototype.forEach.call(host.querySelectorAll('[data-i]'), function (b) {
       b.onclick = function () {
-        var v = q.ops[parseInt(b.getAttribute('data-i'), 10)];
-        var bien = Math.abs(v - q.ans) < 1e-9;
+        var bien = parseInt(b.getAttribute('data-i'), 10) === q.ans;
         b.classList.add(bien ? 'bien' : 'mal');
         cb(bien);
       };
@@ -3036,66 +3544,100 @@ wire('.bVersus', function () { try { SFX.clic(); } catch (e) { } abrirVersus(); 
 wire('.bAmigos', function () { try { SFX.clic(); } catch (e) { } verAmigos(); });
 VS.sonar = setInterval(vsSonarLobby, 4000);
 setInterval(function () { if (VS.chatCon && !VS.enCurso) vsCargarChat(); }, 3000);
- wire('.bHelp',verAyuda);
+
+wire('.bReglas',verReglas); wire('.bHelp',verAyuda);
 
 /* ============================================================
    AUTOCOMPROBACION: abre index.html?test
+   Revisa el banco palabra por palabra (que la tilde este donde
+   dice la regla, que la vocal sea clickeable, que las excepciones
+   tengan su explicacion) y ademas juega una partida completa.
    ============================================================ */
 if(location.search.indexOf('test')>=0){
   var bad=[], respaldo=null;
-  try{ respaldo=localStorage.getItem('crazymath'); }catch(e){}
+  try{ respaldo=localStorage.getItem('sc'); }catch(e){}
 
-  /* --- generador y explicaciones --- */
-  for(var L=1; L<=200; L++){
-    for(var i=0;i<40;i++){
-      var p=makeProblem(L);
-      if(!isFinite(p.ans)||p.ans<0) bad.push(['ans',L,p.text,p.ans]);
-      if(p.kind==='simple'){
-        var calc=p.op==='+'?p.a+p.b:p.op==='−'?p.a-p.b:p.op==='×'?p.a*p.b:p.a/p.b;
-        if(Math.abs(calc-p.ans)>1e-9) bad.push(['calc',L,p.text]);
-        if(p.op==='÷' && Math.abs(p.ans*2-Math.round(p.ans*2))>1e-9) bad.push(['div',L,p.text,p.ans]);
-      }
-      var s=tip(p);
-      if(typeof s!=='string'||s.length<10||s.indexOf('undefined')>=0||s.indexOf('NaN')>=0) bad.push(['tip',L,p.text,s]);
-      var s2=pista(p);
-      if(typeof s2!=='string'||s2.length<10||s2.indexOf('undefined')>=0) bad.push(['pista',L,p.text]);
-      if(['+','−','×','÷','mix'].indexOf(opKey(p))<0) bad.push(['opkey',p.op]);
-    }
-    if(reqEjer(L)<5||metaSeg(L)<8||scorePts(L,5,3)<1) bad.push(['econ',L]);
-    if(L>1 && reqEjer(L)<reqEjer(L-1)) bad.push(['curva-baja',L]);
-  }
-  /* --- entrenamiento: la operacion pedida es la que sale --- */
-  [['+','+'],['-','−'],['*','×'],['/','÷']].forEach(function(par){
-    for(var k=0;k<40;k++){
-      var q=makeProblem(ri(1,200),par[0]);
-      if(q.op!==par[1]) bad.push(['force',par[0],q.op]);
-    }
+  /* --- el banco --- */
+  var vistas={}, huecos={};
+  BANCO.forEach(function(it){
+    var k=it.p+'|'+it.v;
+    if(vistas[k]) bad.push(['repetida',it.p]);
+    vistas[k]=1;
+    if((it.v.split('_').length-1)!==1) bad.push(['sin-un-solo-hueco',it.p,it.v]);
+    if(it.ans<0) bad.push(['respuesta-fuera-de-opciones',it.p,it.r]);
+    if(it.o.length<2) bad.push(['pocas-opciones',it.p]);
+    if(conHueco(it.v,it.r)!==it.p) bad.push(['no-reconstruye',it.p,conHueco(it.v,it.r)]);
+    if([1,2,3,4,5,6].indexOf(it.c)<0) bad.push(['bloque',it.p,it.c]);
+    if([1,2,3].indexOf(it.d)<0) bad.push(['dificultad',it.p,it.d]);
+    if(it.v.indexOf('[')>=0||it.p.indexOf('[')>=0) bad.push(['corchete-suelto',it.p]);
+    /* EL invariante: un hueco tiene que tener UNA sola respuesta buena.
+       Si "casa" y "caza" estuvieran las dos, "ca_a" no se podria contestar. */
+    var h=it.v+'|'+it.o.join('/');
+    if(huecos[h]!==undefined && huecos[h]!==it.r) bad.push(['hueco-ambiguo',it.v,huecos[h],it.r]);
+    huecos[h]=it.r;
   });
-  for(var k2=0;k2<20;k2++){ if(makeProblem(120,'mix').kind!=='combo') bad.push(['force-mix']); }
+  if(BANCO.length<400) bad.push(['banco-chico',BANCO.length]);
+  for(var cc=1;cc<=6;cc++){
+    for(var dd=1;dd<=3;dd++){
+      var cuantas=BANCO.filter(function(x){ return x.c===cc && x.d===dd; }).length;
+      if(cuantas<8) bad.push(['pocas-palabras',cc,dd,cuantas]);
+    }
+  }
+  if(nombreOpcion('')!=='nada') bad.push(['sin-h-mal-escrita']);
+  if(conHueco('co_ina','c')!=='cocina') bad.push(['conHueco-roto']);
 
-  /* --- anclas de la curva --- */
+  /* --- la curva de niveles --- */
   if(reqEjer(1)!==5) bad.push(['req1',reqEjer(1)]);
   if(reqEjer(3)!==10) bad.push(['req3',reqEjer(3)]);
   if(reqEjer(160)!==30) bad.push(['req160',reqEjer(160)]);
-  if(Math.abs(metaSeg(160)-10)>0.01) bad.push(['meta160',metaSeg(160)]);
-  if(credito(160,9).c!==1||credito(160,15).c!==0.6||credito(160,4).c!==1.5||credito(160,25).c!==0.3) bad.push(['bandas']);
+  if(Math.abs(metaSeg(1)-10.86)>0.01) bad.push(['meta1',metaSeg(1)]);
+  if(metaSeg(50)!==4) bad.push(['meta50',metaSeg(50)]);
+  if(metaSeg(200)!==4) bad.push(['meta200',metaSeg(200)]);
+  for(var L=2;L<=200;L++){ if(reqEjer(L)<reqEjer(L-1)) bad.push(['curva-baja',L]); if(metaSeg(L)>metaSeg(L-1)) bad.push(['meta-sube',L]); }
+  if(credito(1,3).c!==1.5||credito(1,9).c!==1||credito(1,20).c!==0.6||credito(1,40).c!==0.3) bad.push(['bandas']);
   function simular(nivel,segs){ var c=0,n=0; while(c<reqEjer(nivel)&&n<500){ c+=credito(nivel,segs).c; n++; } return n; }
-  if(simular(1,5)!==4) bad.push(['sim-nv1-rapido',simular(1,5)]);
-  if(simular(1,12)!==5) bad.push(['sim-nv1-normal',simular(1,12)]);
-  if(simular(3,12)!==10) bad.push(['sim-nv3',simular(3,12)]);
-  if(simular(160,9)!==30) bad.push(['sim-160-rapido',simular(160,9)]);
-  if(simular(160,15)!==50) bad.push(['sim-160-lento',simular(160,15)]);
+  if(simular(1,4)!==4) bad.push(['sim-nv1-rapido',simular(1,4)]);
+  if(simular(1,9)!==5) bad.push(['sim-nv1-normal',simular(1,9)]);
+  if(simular(3,9)!==10) bad.push(['sim-nv3',simular(3,9)]);
+  if(simular(160,1.5)!==20) bad.push(['sim-160-relampago',simular(160,1.5)]);
+  if(simular(160,6)!==50) bad.push(['sim-160-lento',simular(160,6)]);
 
-  /* --- lectura y escritura de numeros --- */
-  if(parseNum('79,5')!==79.5) bad.push(['parse-coma']);
-  if(parseNum('1.234,5')!==1234.5) bad.push(['parse-miles']);
-  if(parseNum('79.5')!==79.5) bad.push(['parse-punto']);
-  if(parseNum('1.234')!==1234 && parseNum('1.234')!==1.234) bad.push(['parse-amb']);
-  if(parseNum('  80 ')!==80) bad.push(['parse-espacios']);
-  if(fmtN(12345)!=='12.345') bad.push(['fmtN',fmtN(12345)]);
-  if(fmtN(79.5)!=='79,5') bad.push(['fmtN-dec',fmtN(79.5)]);
+  /* --- que palabras salen en cada nivel --- */
+  (function(){
+    CATS={1:true,2:true,3:true,4:true,5:true,6:true};
+    var b=bolsa(1);
+    b.forEach(function(it){
+      if([4,5].indexOf(it.c)<0) bad.push(['nv1-bloque',it.p,it.c]);
+      if(it.d!==1) bad.push(['nv1-dificil',it.p]);
+    });
+    if(b.length<20) bad.push(['nv1-pocas',b.length]);
+    var b20=bolsa(20);
+    if(!b20.some(function(it){ return it.c===1; })) bad.push(['nv20-sin-bv']);
+    if(b20.some(function(it){ return it.c===6; })) bad.push(['nv20-con-raras']);
+    if(b20.some(function(it){ return it.d>2; })) bad.push(['nv20-muy-dificil']);
+    var b40=bolsa(40);
+    if(!b40.some(function(it){ return it.c===6; })) bad.push(['nv40-sin-raras']);
+    if(!b40.some(function(it){ return it.d===3; })) bad.push(['nv40-sin-dificiles']);
+    /* si destica todo, igual tiene que salir algo */
+    CATS={1:false,2:false,3:false,4:false,5:false,6:false};
+    if(!bolsa(1).length) bad.push(['bolsa-vacia']);
+    /* si tica un bloque que su nivel no toca, se le dan igual palabras de ese bloque */
+    CATS={1:false,2:true,3:false,4:false,5:false,6:false};
+    var soloC=bolsa(1);
+    if(!soloC.length) bad.push(['bolsa-bloque-adelantado']);
+    if(soloC.some(function(it){ return it.c!==2; })) bad.push(['bolsa-no-respeta-ticado']);
+    CATS={1:true,2:true,3:true,4:true,5:true,6:true};
+    /* forzar un bloque (modo entrenar) */
+    var f=bolsa(1,6);
+    if(!f.length||f.some(function(it){ return it.c!==6; })) bad.push(['forzar-bloque']);
+  })();
 
-  /* --- dias seguidos --- */
+  /* --- reloj y dias --- */
+  if(mmss(600)!=='10:00') bad.push(['mmss-600',mmss(600)]);
+  if(mmss(59)!=='59 s') bad.push(['mmss-59',mmss(59)]);
+  if(mmss(65)!=='1:05') bad.push(['mmss-65',mmss(65)]);
+  if(mmss(-3)!=='0 s') bad.push(['mmss-negativo',mmss(-3)]);
+  if(nomDur(600)!=='10 minutos'||nomDur(60)!=='60 segundos') bad.push(['nomdur']);
   (function(){
     var d=blank(); d.dias={last:ayerDe(hoy()),seguidos:4};
     if(marcarDia(d)!==5) bad.push(['dia-seguido']);
@@ -3103,15 +3645,13 @@ if(location.search.indexOf('test')>=0){
     var d2=blank(); d2.dias={last:'2000-01-01',seguidos:9};
     if(marcarDia(d2)!==1) bad.push(['dia-cortado']);
   })();
-
-  /* --- medallas: ninguna se cae ni se desbloquea sola --- */
   (function(){
     var d=blank();
     MEDALLAS.forEach(function(m){ try{ if(m.t(d)) bad.push(['medalla-gratis',m.id]); }catch(e){ bad.push(['medalla-rota',m.id,e.message]); } });
     d.ok=1; if(!MEDALLAS[0].t(d)) bad.push(['medalla-primer']);
   })();
 
-  /* --- multiusuario y migracion de cuentas viejas --- */
+  /* --- cuentas: guardar, migrar y borrar --- */
   (function(){
     var real=DB; DB={};
     DB['Ana']=blank(); DB['Ana'].level=15; DB['Ana'].cred=3; DB['Ana'].pin='1234';
@@ -3119,144 +3659,18 @@ if(location.search.indexOf('test')>=0){
     var vuelta=JSON.parse(JSON.stringify(DB));
     if(vuelta['Ana'].level!==15||vuelta['Ana'].cred!==3) bad.push(['no-guarda-progreso']);
     if(vuelta['Beto'].level!==1) bad.push(['cuenta-nueva-no-parte-en-1']);
-    var viejo=migrar({pin:'',level:22,xp:140,pts:900,ok:60,fail:10,best:7,streak:0,time:400});
-    if(viejo.level!==22||viejo.pts!==900||viejo.cred!==0||!viejo.byOp['÷']||viejo.xp!==undefined) bad.push(['migracion',JSON.stringify(viejo).slice(0,60)]);
-    if(!viejo.ops||viejo.ops['+']!==true||viejo.ops['/']!==true||viejo.arcDur!==60) bad.push(['migracion-ops']);
-    if(viejo.resp!=='escribir') bad.push(['migracion-resp',viejo.resp]);
-    if(viejo.mejorPartida!==0) bad.push(['migracion-mejor-partida']);
-    var conAlt=migrar({level:9,pts:120,resp:'alt',mejorPartida:777});
-    if(conAlt.resp!=='alt'||conAlt.mejorPartida!==777) bad.push(['migracion-pisa-modo']);
-    if(viejo.resp!=='escribir') bad.push(['migracion-resp',viejo.resp]);
-    if(viejo.mejorPartida!==0) bad.push(['migracion-mejor-partida']);
-    var conAlt=migrar({level:9,pts:120,resp:'alt',mejorPartida:777});
-    if(conAlt.resp!=='alt'||conAlt.mejorPartida!==777) bad.push(['migracion-pisa-modo']);
-    var conOps=migrar({level:5,ops:{'+':true,'-':false,'*':false,'/':false,'mix':false},arcDur:300});
-    if(conOps.ops['-']!==false||conOps.arcDur!==300) bad.push(['migracion-pisa-lo-elegido']);
-    DB=real;
-  })();
-
-  /* --- borrar cuentas: se va la elegida y las demas quedan intactas --- */
-  (function(){
-    var real=DB; DB={};
-    DB['Ana']=blank(); DB['Ana'].level=15; DB['Ana'].pts=700;
-    DB['Beto']=blank(); DB['Beto'].level=3;
-    DB['Cata']=blank(); DB['Cata'].level=9; DB['Cata'].pin='1111';
+    var viejo=migrar({pin:'',level:22,pts:900,ok:60,fail:10,best:7,streak:0,time:400});
+    if(viejo.level!==22||viejo.pts!==900||viejo.cred!==0||!viejo.byCat['3']) bad.push(['migracion']);
+    if(!viejo.cats||viejo.cats[1]!==true||viejo.arcDur!==60) bad.push(['migracion-cats']);
+    var conCats=migrar({level:5,cats:{1:true,2:false,3:false,4:false,5:false,6:false},arcDur:300});
+    if(conCats.cats[2]!==false||conCats.arcDur!==300) bad.push(['migracion-pisa-lo-elegido']);
     if(quitarCuenta('NoExiste')) bad.push(['borra-fantasma']);
     if(!quitarCuenta('Beto')) bad.push(['no-borra']);
     if(DB['Beto']) bad.push(['sigue-ahi']);
-    if(!DB['Ana'] || DB['Ana'].level!==15 || DB['Ana'].pts!==700) bad.push(['borro-de-mas']);
-    if(!DB['Cata'] || DB['Cata'].level!==9) bad.push(['borro-de-mas-2']);
-    if(Object.keys(DB).length!==2) bad.push(['cuenta-cuentas',Object.keys(DB).length]);
-    /* borrar todas deja el computador limpio */
+    if(!DB['Ana'] || DB['Ana'].level!==15) bad.push(['borro-de-mas']);
     DB={}; save();
     if(Object.keys(DB).length!==0) bad.push(['borrar-todas']);
     DB=real;
-  })();
-
-  /* --- las operaciones ticadas mandan, tambien en los niveles bajos --- */
-  (function(){
-    var real=OPS, i, q;
-    OPS={'+':false,'-':false,'*':true,'/':false,'mix':false};
-    for(i=0;i<80;i++){ q=makeProblem(ri(1,10));
-      if(q.op!=='×') bad.push(['ops-solo-por',q.text]);
-      if(q.a>10||q.b>10) bad.push(['ops-por-no-simple',q.text]); }
-    OPS={'+':false,'-':false,'*':false,'/':true,'mix':false};
-    for(i=0;i<80;i++){ q=makeProblem(ri(1,10));
-      if(q.op!=='÷') bad.push(['ops-solo-entre',q.text]);
-      if(q.b>12||q.ans>12) bad.push(['ops-entre-no-simple',q.text]); }
-    OPS={'+':false,'-':true,'*':false,'/':false,'mix':false};
-    for(i=0;i<40;i++){ if(makeProblem(3).op!=='−') bad.push(['ops-solo-menos']); }
-    OPS={'+':true,'-':false,'*':false,'/':false,'mix':false};
-    for(i=0;i<150;i++){ if(makeProblem(150).kind==='combo') bad.push(['ops-mix-apagado']); }
-    OPS={'+':true,'-':true,'*':true,'/':true,'mix':true};
-    var hayCombo=false;
-    for(i=0;i<300;i++){ if(makeProblem(150).kind==='combo') hayCombo=true; }
-    if(!hayCombo) bad.push(['ops-mix-encendido']);
-    OPS={'+':false,'-':false,'*':false,'/':false,'mix':false};
-    if(makeProblem(5).op!=='+') bad.push(['ops-sin-nada-ticado']);
-    OPS=real;
-  })();
-
-  /* --- el reloj del contrarreloj se lee bien hasta los 10 minutos --- */
-  if(mmss(600)!=='10:00') bad.push(['mmss-600',mmss(600)]);
-  if(mmss(59)!=='59 s') bad.push(['mmss-59',mmss(59)]);
-  if(mmss(65)!=='1:05') bad.push(['mmss-65',mmss(65)]);
-  if(mmss(60.5)!=='1:01') bad.push(['mmss-medio',mmss(60.5)]);
-  if(mmss(-3)!=='0 s') bad.push(['mmss-negativo',mmss(-3)]);
-  if(nomDur(600)!=='10 minutos'||nomDur(60)!=='60 segundos') bad.push(['nomdur']);
-  if(DURS[DURS.length-1]!==600) bad.push(['dur-maxima',DURS[DURS.length-1]]);
-
-  /* --- la muralla de formulas quedo rayada --- */
-  (function(){
-    var todas=FORMULAS.map(function(f){ return f[0]+' '+f[1]; }).join(' | ');
-    ['mc²','STOKES','RELATIVIDAD','SCHRÖDINGER','MAXWELL','PITÁGORAS','BAYES','HEISENBERG'].forEach(function(x){
-      if(todas.indexOf(x)<0) bad.push(['falta-formula',x]);
-    });
-    if(FORMULAS.length<40) bad.push(['pocas-formulas',FORMULAS.length]);
-    var n=document.querySelectorAll('#wall b').length;
-    if(n<21) bad.push(['muralla-vacia',n]);
-  })();
-
-  /* --- alternativas: siempre 4, distintas, sin negativos y con una sola correcta --- */
-  (function(){
-    for(var L=1;L<=200;L+=3){
-      for(var i=0;i<25;i++){
-        var p=makeProblem(L), o=alternativas(p);
-        if(o.length!==4) bad.push(['alt-cantidad',L,o.length]);
-        var vistos={}, correctas=0;
-        for(var k=0;k<o.length;k++){
-          var v=o[k];
-          if(vistos[v]) bad.push(['alt-repetida',L,p.text,v]);
-          vistos[v]=1;
-          if(!isFinite(v)||v<0) bad.push(['alt-rara',L,p.text,v]);
-          if(Math.abs(v-p.ans)<1e-9) correctas++;
-          if(Math.abs(p.ans-Math.round(p.ans))<1e-9 && Math.abs(v-Math.round(v))>1e-9) bad.push(['alt-decimal',L,p.text,v]);
-        }
-        if(correctas!==1) bad.push(['alt-correctas',L,p.text,correctas]);
-      }
-    }
-  })();
-
-  /* --- alternativas: siempre 4, distintas, sin negativos y con una sola correcta --- */
-  (function(){
-    for(var L=1;L<=200;L+=3){
-      for(var i=0;i<25;i++){
-        var p=makeProblem(L), o=alternativas(p);
-        if(o.length!==4) bad.push(['alt-cantidad',L,o.length]);
-        var vistos={}, correctas=0;
-        for(var k=0;k<o.length;k++){
-          var v=o[k];
-          if(vistos[v]) bad.push(['alt-repetida',L,p.text,v]);
-          vistos[v]=1;
-          if(!isFinite(v)||v<0) bad.push(['alt-rara',L,p.text,v]);
-          if(Math.abs(v-p.ans)<1e-9) correctas++;
-          if(Math.abs(p.ans-Math.round(p.ans))<1e-9 && Math.abs(v-Math.round(v))>1e-9) bad.push(['alt-decimal',L,p.text,v]);
-        }
-        if(correctas!==1) bad.push(['alt-correctas',L,p.text,correctas]);
-      }
-    }
-  })();
-
-  /* --- un solo teclado: en tactil el campo queda de solo lectura --- */
-  (function(){
-    ajustarTeclado(true);
-    if(!$('#ans').readOnly) bad.push(['tactil-no-bloquea-teclado']);
-    if($('#ans').getAttribute('inputmode')!=='none') bad.push(['tactil-inputmode']);
-    if(!document.body.classList.contains('tactil')) bad.push(['tactil-sin-clase']);
-    /* el teclado del juego tiene que seguir escribiendo aunque este en readonly */
-    $('#ans').value='';
-    document.querySelector('.pad button[data-k="7"]').click();
-    document.querySelector('.pad button[data-k="5"]').click();
-    document.querySelector('.pad button[data-k=","]').click();
-    document.querySelector('.pad button[data-k="2"]').click();
-    if($('#ans').value!=='75,2') bad.push(['tactil-no-escribe',$('#ans').value]);
-    document.querySelector('.pad button[data-k="del"]').click();
-    if($('#ans').value!=='75,') bad.push(['tactil-no-borra',$('#ans').value]);
-    ajustarTeclado(false);
-    if($('#ans').readOnly) bad.push(['escritorio-bloqueado']);
-    if($('#ans').getAttribute('inputmode')!=='decimal') bad.push(['escritorio-inputmode']);
-    if(document.body.classList.contains('tactil')) bad.push(['escritorio-con-clase-tactil']);
-    $('#ans').value='';
   })();
 
   /* --- modo online: con un servidor de mentira, sin tocar internet --- */
@@ -3346,85 +3760,48 @@ if(location.search.indexOf('test')>=0){
     if(ordenar(uno,dos)>=0) bad.push(['orden-dos-contrarreloj']);
   })();
 
-  /* --- prueba de humo de la interfaz: jugar de verdad sin explotar --- */
+  /* --- prueba de humo: jugar de verdad por la interfaz --- */
   try{
     DB={}; user=null;
     $('#name').value='TestBot'; $('#pin').value=''; $('#enter').click();
     if(!user) bad.push(['ui-no-entra']);
-    /* al entrar tiene que caer en el LOBBY, no en el juego */
     if($('#lobby').classList.contains('hide')) bad.push(['ui-no-lobby']);
     if(!$('#game').classList.contains('hide')) bad.push(['ui-juego-sin-pedir']);
     if($('#lbName').textContent!=='TestBot') bad.push(['ui-lobby-nombre']);
 
-    /* JUGAR abre la ventana de antes, no el juego */
     $('#lbPlay').click();
     if(!$('#modal').classList.contains('go')) bad.push(['ui-setup-no-abre']);
-    if(!$('#game').classList.contains('hide')) bad.push(['ui-setup-entra-solo']);
-    if(document.querySelectorAll('#modalBody .chk input[data-op]').length!==5) bad.push(['ui-setup-sin-checks']);
-    if(!$('#modalClose').classList.contains('hide')) bad.push(['ui-setup-con-cerrar']);
-    $('#setBack').click();                      /* ATRAS: me quedo donde estaba */
+    if(document.querySelectorAll('#modalBody .chk input').length!==6) bad.push(['ui-setup-sin-checks']);
+    $('#setBack').click();
     if($('#modal').classList.contains('go')) bad.push(['ui-setup-atras']);
     if(!$('#game').classList.contains('hide')) bad.push(['ui-setup-atras-entra']);
 
     $('#lbPlay').click();
     Array.prototype.forEach.call(document.querySelectorAll('#modalBody .chk input'),function(c){ c.checked=false; });
     var alertaReal=window.alert, avisos=0; window.alert=function(){ avisos++; };
-    $('#setGo').click();                        /* sin ninguna ticada no deja jugar */
+    $('#setGo').click();
     window.alert=alertaReal;
-    if(!avisos) bad.push(['ui-setup-sin-operaciones']);
-    if(!$('#game').classList.contains('hide')) bad.push(['ui-setup-jugo-sin-ops']);
+    if(!avisos) bad.push(['ui-setup-sin-bloques']);
+    if(!$('#game').classList.contains('hide')) bad.push(['ui-setup-jugo-sin-bloques']);
 
-    document.querySelector('#modalBody .chk input[data-op="+"]').checked=true;
-    $('#setGo').click();                        /* solo sumas: partida predecible */
+    document.querySelector('#modalBody .chk input[data-cat="4"]').checked=true;
+    $('#setGo').click();
     if($('#game').classList.contains('hide')) bad.push(['ui-play-no-entra']);
-    if(DB['TestBot'].ops['/']!==false||DB['TestBot'].ops['+']!==true) bad.push(['ui-setup-no-guarda-ops']);
-    for(var pp=0;pp<15;pp++){ if(makeProblem(1).op!=='+') bad.push(['ui-setup-no-aplica-ops']); }
+    if(DB['TestBot'].cats[2]!==false||DB['TestBot'].cats[4]!==true) bad.push(['ui-setup-no-guarda-bloques']);
+
+    /* la palabra esta pintada y las vocales son botones */
+    if(!$('#word').querySelectorAll('.lt').length) bad.push(['ui-sin-letras']);
+    if($('#opts').querySelectorAll('.opt').length!==OPCIONES.length) bad.push(['ui-opciones-descuadradas']);
+    if(!$('#word').querySelector('.lt.hueco')) bad.push(['ui-sin-hueco']);
+    if($('#ayudaFija').classList.contains('hide')) bad.push(['ui-sin-ruedas-nivel1']);
+    if($('#tipo').classList.contains('hide')) bad.push(['ui-sin-tipo-nivel1']);
 
     var antes=DB['TestBot'].level;
-    for(var j=0;j<6;j++){                       /* 6 aciertos: tiene que subir de nivel */
-      $('#ans').value=String(P0.ans).replace('.',','); submit(); $('#next').click();
-    }
+    for(var j=0;j<7;j++){ responder(IT.ans); $('#next').click(); }
     if(DB['TestBot'].level<=antes) bad.push(['ui-no-sube-nivel',DB['TestBot'].level]);
-    if(DB['TestBot'].dias.hechos!==6) bad.push(['ui-mision-no-cuenta',DB['TestBot'].dias.hechos]);
-
-    /* --- modo ALTERNATIVAS --- */
-    DB['TestBot'].resp='alt';
-    setMode('carrera');
-    if($('#altBox').classList.contains('hide')) bad.push(['ui-alt-no-aparece']);
-    if(!$('#escribirBox').classList.contains('hide')) bad.push(['ui-alt-no-esconde-teclado']);
-    if(!$('#send').classList.contains('hide')) bad.push(['ui-alt-deja-boton-responder']);
-    if($('#altBox').querySelectorAll('.op').length!==4) bad.push(['ui-alt-sin-4']);
-    var okIdx=-1;
-    for(var oi=0;oi<OPC.length;oi++){ if(Math.abs(OPC[oi]-P0.ans)<1e-9) okIdx=oi; }
-    if(okIdx<0) bad.push(['ui-alt-sin-correcta']);
-    var okAntes=DB['TestBot'].ok;
-    marcarOpcion(okIdx);
-    if(DB['TestBot'].ok!==okAntes+1) bad.push(['ui-alt-no-cuenta']);
-    if(!$('#altBox').querySelectorAll('.op.ok').length) bad.push(['ui-alt-no-marca']);
-    $('#next').click();
-    var okIdx2=-1;
-    for(var oj=0;oj<OPC.length;oj++){ if(Math.abs(OPC[oj]-P0.ans)<1e-9) okIdx2=oj; }
-    var failAntes=DB['TestBot'].fail;
-    marcarOpcion((okIdx2+1)%4);
-    if(DB['TestBot'].fail!==failAntes+1) bad.push(['ui-alt-no-cuenta-fallo']);
-    if(!$('#altBox').querySelectorAll('.op.real').length) bad.push(['ui-alt-no-muestra-correcta']);
-    $('#next').click();
-    /* volver a escribir */
-    DB['TestBot'].resp='escribir'; setMode('carrera');
-    if(!$('#altBox').classList.contains('hide')) bad.push(['ui-escribir-no-vuelve']);
-    if($('#escribirBox').classList.contains('hide')) bad.push(['ui-escribir-sin-teclado']);
-    $('#ans').value=String(P0.ans).replace('.',','); submit(); $('#next').click();
-
-    /* la ventana de antes de jugar deja elegir como responder y lo guarda */
-    $('#lbPlay').click();
-    if(document.querySelectorAll('#modalBody input[name="resp"]').length!==2) bad.push(['ui-setup-sin-modo-respuesta']);
-    document.querySelector('#modalBody input[name="resp"][value="alt"]').checked=true;
-    $('#setGo').click();
-    if(DB['TestBot'].resp!=='alt') bad.push(['ui-setup-no-guarda-modo',DB['TestBot'].resp]);
-    if(DB['TestBot'].ops['+']!==true) bad.push(['ui-setup-modo-pisa-operaciones']);
-    if(DB['TestBot'].ops['null']!==undefined || ('null' in DB['TestBot'].ops)) bad.push(['ui-setup-op-basura']);
-    DB['TestBot'].resp='escribir'; setMode('carrera');
-    $('#ans').value=String(P0.ans).replace('.',','); submit(); $('#next').click();
+    if(DB['TestBot'].dias.hechos!==7) bad.push(['ui-mision-no-cuenta',DB['TestBot'].dias.hechos]);
+    if(DB['TestBot'].ok!==7) bad.push(['ui-no-cuenta-aciertos',DB['TestBot'].ok]);
+    if(DB['TestBot'].byCat['4'].ok!==7) bad.push(['ui-no-cuenta-bloque']);
 
     /* --- si no hay internet, queda pendiente y se reintenta al reconectar --- */
     (function(){
@@ -3459,44 +3836,74 @@ if(location.search.indexOf('test')>=0){
     delete DB['Rival'];
     nuevaPartida();
 
+    /* tocar la opcion con el mouse tambien responde */
+    var botonOp=$('#opts').querySelector('.opt');
+    if(!botonOp) bad.push(['ui-sin-boton-opcion']);
+    else {
+      botonOp.click();
+      if($('#fb').classList.contains('hide')) bad.push(['ui-clic-no-responde']);
+      /* el hueco se pinta con la letra que era, antes de pasar a la siguiente */
+      if(!$('#word').querySelector('.lt.hueco.ok, .lt.hueco.err')) bad.push(['ui-hueco-no-se-pinta']);
+      $('#next').click();
+    }
 
-    /* PAUSA: congela el reloj y no regala tiempo */
+    /* PAUSA: congela el reloj */
     var tAntes=t0;
     pausar();
     if(!paused || !$('#pause').classList.contains('go')) bad.push(['ui-no-pausa']);
-    pausaT=pausaT-3000;                         /* simulo que llevaba 3 s detenido */
+    pausaT=pausaT-3000;
     reanudar();
     if(paused) bad.push(['ui-no-reanuda']);
-    if(t0 <= tAntes) bad.push(['ui-pausa-no-congela',t0-tAntes]);
     if(t0-tAntes < 2900) bad.push(['ui-pausa-mal-descontada',t0-tAntes]);
 
-    var failAntes2=DB['TestBot'].fail;
-    $('#ans').value='999999999'; submit();      /* fallar */
-    if(DB['TestBot'].fail!==failAntes2+1) bad.push(['ui-no-cuenta-fallo']);
+    /* fallar a proposito: se guarda para repaso y se corta la racha */
+    var fallos=DB['TestBot'].fail;
+    responder(IT.ans>=0 ? -1 : 0);
+    if(DB['TestBot'].fail!==fallos+1) bad.push(['ui-no-cuenta-fallo']);
+    if(DB['TestBot'].streak!==0) bad.push(['ui-no-corta-racha']);
     if(!DB['TestBot'].repaso.length) bad.push(['ui-no-guarda-repaso']);
-    $('#again').click(); $('#bPista').click(); $('#bSkip').click();
+    if(!$('#word').querySelectorAll('.lt.real,.lt.err').length) bad.push(['ui-no-marca-error']);
+    $('#again').click();
+    if($('#fb').classList.contains('hide')===false) bad.push(['ui-reintentar']);
+    $('#bPista').click(); $('#bSkip').click();
     verStats(); cerrarModal();
     verMedallas(); cerrarModal();
     verRanking(); cerrarModal();
+    verReglas();
+    var reglasTxt=$('#modalBody').textContent;
+    if(reglasTxt.indexOf('acción')<0) bad.push(['ui-reglas-sin-cc']);
+    if(reglasTxt.indexOf('invierno')<0) bad.push(['ui-reglas-sin-bv']);
+    if(reglasTxt.indexOf('bolsillo')<0) bad.push(['ui-reglas-sin-lly']);
+    ['B / V','C / S / Z','G / J','LA H','LL / Y','LAS RARAS'].forEach(function(tit,rb){
+      if(reglasTxt.toUpperCase().indexOf(tit)<0) bad.push(['ui-reglas-sin-bloque',rb+1,tit]);
+    });
+    cerrarModal();
     verAyuda(); cerrarModal();
 
-    setMode('entrenar'); $('#trainOp').value='/'; $('#trainOp').onchange();
-    if(P0.op!=='÷') bad.push(['ui-entrenar-op',P0.op]);
+    /* entrenar: el bloque elegido manda, y con nivel alto se van las ruedas */
+    setMode('entrenar'); $('#trainCat').value='5'; $('#trainLvl').value='40'; $('#trainCat').onchange();
+    if(IT.c!==5) bad.push(['ui-entrenar-bloque',IT.c]);
+    if(!$('#ayudaFija').classList.contains('hide')) bad.push(['ui-ruedas-en-nivel-alto']);
+    if(!$('#tipo').classList.contains('hide')) bad.push(['ui-tipo-en-nivel-alto']);
+    $('#trainCat').value='3'; $('#trainCat').onchange();
+    if(IT.c!==3) bad.push(['ui-entrenar-bloque3']);
 
-    $('#mArcade').click();                      /* el boton de modo tambien pasa por la ventana */
+    /* contrarreloj */
+    $('#mArcade').click();
     if(!$('#setDur')) bad.push(['ui-setup-sin-duracion']);
-    $('#setDur').value='600';                   /* 10 minutos seguidos */
+    $('#setDur').value='600';
     $('#setGo').click();
     if(DB['TestBot'].arcDur!==600) bad.push(['ui-dur-no-guarda',DB['TestBot'].arcDur]);
     if(arcadeLeft!==600||arcadeDur!==600) bad.push(['ui-dur-no-aplica',arcadeLeft]);
     var reloj=arcadeLeft;
-    $('#ans').value=String(P0.ans).replace('.',','); submit();
+    responder(IT.ans);
     if(arcadeOk!==1) bad.push(['ui-arcade']);
     if(Math.abs(arcadeLeft-(reloj+0.5))>1e-9) bad.push(['ui-arcade-bono',arcadeLeft]);
-    $('#ans').value='999999999'; submit();      /* fallar no regala tiempo */
+    responder(IT.ans>=0 ? -1 : 0);
     if(Math.abs(arcadeLeft-(reloj+0.5))>1e-9) bad.push(['ui-arcade-bono-fallo',arcadeLeft]);
-    pausar();                                   /* pausar el contrarreloj detiene el reloj */
-    var quedaban=arcadeLeft; arcadeStep();      /* si el tick siguiera vivo, bajaria solo */
+    if($('#fb').classList.contains('hide')===false) bad.push(['ui-arcade-se-detiene']);
+    pausar();
+    var quedaban=arcadeLeft; arcadeStep();
     if(arcadeLeft!==quedaban-1) bad.push(['ui-arcade-pausa']);
     reanudar();
     /* --- los puntos del contrarreloj se suman SOLO al terminar --- */
@@ -3514,7 +3921,7 @@ if(location.search.indexOf('test')>=0){
 
     /* --- salirse antes de que suene la campana: esos puntos NO se guardan --- */
     setMode('arcade');
-    $('#ans').value=String(P0.ans).replace('.',','); submit();
+    responder(IT.ans);
     if(arcadePts<=0) bad.push(['abandono-sin-puntos-en-juego']);
     var ptsAntesAbandono=DB['TestBot'].pts, ptsEnJuego=arcadePts;
     salirAlLobby();
@@ -3523,23 +3930,19 @@ if(location.search.indexOf('test')>=0){
     if(ptsEnJuego<=0) bad.push(['abandono-test-malo']);
 
     setMode('carrera');
-    $('#bLobby').click();                       /* volver al lobby desde el juego */
+    $('#bLobby').click();
     if($('#lobby').classList.contains('hide')) bad.push(['ui-no-vuelve-al-lobby']);
-    if(tick && !$('#game').classList.contains('hide')) bad.push(['ui-reloj-vivo-en-lobby']);
     $('#lbSalir').click(); salirDeVerdad();
     if(user) bad.push(['ui-no-sale']);
-    /* la ventana de cuentas se arma y lista lo que hay */
     DB['Otro']=blank();
     verCuentas();
     if(document.querySelectorAll('.bDel').length!==Object.keys(DB).length) bad.push(['ui-cuentas-lista']);
-    if($('#modalBody').textContent.indexOf('Otro')<0) bad.push(['ui-cuentas-nombre']);
     cerrarModal();
-    if($('#toCuentas').classList.contains('hide')) bad.push(['ui-boton-cuentas-oculto']);
-    DB={}; renderUsers();                       /* dejo la pantalla limpia */
+    DB={}; renderUsers();
     if($('#login').classList.contains('hide')) bad.push(['ui-no-login']);
   }catch(e){ bad.push(['ui-excepcion',e.message,String(e.stack||'').split('\n').slice(0,3).join(' | ')]); }
   clearInterval(tick); clearInterval(arcadeTick);
-  try{ if(respaldo===null) localStorage.removeItem('crazymath'); else localStorage.setItem('crazymath',respaldo); }catch(e){}
+  try{ if(respaldo===null) localStorage.removeItem('tildes'); else localStorage.setItem('sc',respaldo); }catch(e){}
 
 
 /* ---------- 11. VERSUS: que los dos aparatos armen LA MISMA lista ---------- */
@@ -3596,7 +3999,7 @@ if(location.search.indexOf('test')>=0){
   document.title = bad.length ? ('TEST FAIL '+bad.length) : 'TEST OK';
   document.body.insertAdjacentHTML('afterbegin',
     '<pre id="testout" style="position:fixed;z-index:99;background:#000;color:#0f0;padding:8px;max-width:96vw;white-space:pre-wrap">RESULT='+
-    (bad.length ? ('FAIL '+bad.length+'\n'+JSON.stringify(bad.slice(0,10))) : 'OK')+'</pre>');
+    (bad.length ? ('FAIL '+bad.length+'\n'+JSON.stringify(bad.slice(0,12))) : 'OK')+'</pre>');
 }
 
 /* ---------- app de celular: se instala en la pantalla de inicio ----------

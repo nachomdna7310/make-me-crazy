@@ -3207,7 +3207,7 @@ function vsEsperarReto(duelo, clave) {
 function vsArrancar(d) {
   if (VS.enCurso && VS.duelo && VS.duelo.id === d.id) return;
   vsLimpiar();
-  VS.enCurso = true; VS.terminado = false;
+  VS.enCurso = true; VS.terminado = false; VS.contado = false; VS.premio = 0;
   VS.duelo = d; VS.modo = d.modo; VS.ok = 0; VS.fail = 0; VS.i = 0;
   VS.respondida = -1; VS.bloqueada = -1; VS.ultMarca = 0;
   var reglas = VSJUEGO.normaliza(vsParse(d.reglas));
@@ -3398,8 +3398,25 @@ function vsRendirse() {
 function vsFin() {
   if (VS.terminado) return;      /* pueden llegar varias respuestas con 'fin' */
   VS.terminado = true;
-  var d = VS.duelo;
   vsLimpiar();
+  vsPintarFin();                 /* el resultado se ve YA, sin esperar la red */
+  /* y despues una ultima lectura: el que cerro el duelo puede ir una respuesta
+     adelante del otro, y el marcador final tiene que ser el mismo en las dos
+     pantallas. Si algo cambio, se repinta (sin volver a contar la partida). */
+  var d0 = VS.duelo;
+  if (d0 && d0.id) {
+    vsPedir('traer', { id: d0.id }, function (r) {
+      if (!r || !r.ok || !r.duelo || !VS.duelo) return;
+      if (r.duelo.yo.ok !== VS.duelo.yo.ok || r.duelo.el.ok !== VS.duelo.el.ok) {
+        VS.duelo = r.duelo;
+        vsPintarFin();
+      }
+    });
+  }
+}
+function vsPintarFin() {
+  var d = VS.duelo;
+  if (!d) return;
   var mios = d.yo.ok, suyos = d.el.ok;      /* los del servidor: los dos ven lo mismo */
   var meRendi = d.rendido && d.rendido === vsMiClave();
   var gane, empate;
@@ -3408,8 +3425,9 @@ function vsFin() {
   $('#vsMkYo').textContent = mios;
   $('#vsMkEl').textContent = suyos;
   var dd = DB[user];
-  var premio = 0;
-  if (dd) {
+  var premio = VS.premio || 0;
+  if (dd && !VS.contado) {
+    VS.contado = true;           /* repintar no puede contar el duelo dos veces */
     dd.vsJug = (dd.vsJug || 0) + 1;
     if (empate) dd.vsEmp = (dd.vsEmp || 0) + 1;
     else if (gane) dd.vsGan = (dd.vsGan || 0) + 1;
@@ -3427,6 +3445,7 @@ function vsFin() {
       premio += Math.min(60, (Number(mios) || 0) * 2);   /* y lo que respondio bien */
       dd.pts = (Number(dd.pts) || 0) + premio;
     }
+    VS.premio = premio;
     save();
   }
   try { gane ? SFX.nivel() : SFX.fin(); if (gane) confetti(90); } catch (e) { }
@@ -4013,7 +4032,8 @@ if(location.search.indexOf('test')>=0){
   if (!ptsGanando) bad.push(['vs-ganar-no-paga']);
   /* perder tiene que pagar menos que ganar, pero algo */
   DB = { 'Ficticio2': blank() }; user = 'Ficticio2';
-  VS.terminado = false; VS.ok = 1; VS.fail = 3;
+  /* un duelo nuevo parte con los contadores en cero, igual que en vsArrancar */
+  VS.terminado = false; VS.contado = false; VS.premio = 0; VS.ok = 1; VS.fail = 3;
   VS.duelo = { id: 'y', estado: 'fin', modo: 'distintas', ronda: 0, alarga: 0, rendido: '',
                nivel: 10, resultado: 'perdi',
                yo: { nombre: 'Ficticio2', ok: 1, fail: 3, i: 4 },

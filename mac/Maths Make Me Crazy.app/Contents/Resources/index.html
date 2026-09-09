@@ -1812,6 +1812,15 @@ function nubeActiva() { return !!(user && DB[user] && DB[user].online && nubeCla
    Ahora cada cuenta de este aparato se publica sola, con una llave que se
    guarda solo aca (autoClave). Quien quiera entrar desde OTRO celular igual
    puede ponerse contrasena con el boton de abajo de la tabla. */
+/* la llave es una credencial: azar de verdad, no Math.random */
+function llaveAlAzar(){
+  try{
+    var b = new Uint8Array(24); crypto.getRandomValues(b);
+    return Array.prototype.map.call(b, function(x){ return ('0'+x.toString(16)).slice(-2); }).join('');
+  }catch(e){
+    return String(Date.now()) + Math.random().toString(36).slice(2,12);   /* navegador muy viejo */
+  }
+}
 function subirCuenta(n, cb){
   cb = cb || function(){};
   var d = DB[n];
@@ -1819,7 +1828,7 @@ function subirCuenta(n, cb){
   var clave = d.autoClave;
   if(!clave){
     if(d.online){ cb(null); return; }   /* cuenta con contrasena propia: la sube su dueno */
-    clave = 'auto' + Math.random().toString(36).slice(2,12);
+    clave = 'auto' + llaveAlAzar();
   }
   nubeEntrar(n, clave, function(r){
     if(!r || !r.ok){ cb(r); return; }   /* sin internet, o el nombre ya es de otra persona */
@@ -2370,7 +2379,7 @@ if(location.search.indexOf('test')>=0){
     llamadas.length=0; subirCuenta('Pepito');
     var pide=llamadas[0];
     if(!pide||pide.url.indexOf('/cuenta')<0) bad.push(['auto-no-crea-cuenta']);
-    else if(!pide.cuerpo.clave||pide.cuerpo.clave.length<3||pide.cuerpo.nombre!=='Pepito') bad.push(['auto-clave-mala',JSON.stringify(pide.cuerpo)]);
+    else if(!pide.cuerpo.clave||pide.cuerpo.clave.length<20||pide.cuerpo.nombre!=='Pepito') bad.push(['auto-clave-mala',JSON.stringify(pide.cuerpo)]);
     llamadas.length=0; subirCuenta('Ema');            /* cuenta con contrasena propia: no se toca */
     if(llamadas.length) bad.push(['auto-pisa-cuenta-con-clave']);
     DB['Pepito'].autoClave='autoSecreta555';

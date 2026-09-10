@@ -1952,10 +1952,12 @@ function terminarArcade(){
     tarjeta+
     '<div class="row" style="margin-top:14px"><button id="arcOtra">OTRA VEZ ⏱</button>'+
     '<button id="arcCambiar" class="sun">⚙ CAMBIAR</button>'+
-    '<button id="arcVolver" class="ghost">VOLVER A CARRERA</button></div>');
+    '<button id="arcVolver" class="ghost">VOLVER A CARRERA</button>' +
+    '<button id="arcLobby" class="cy">🏠 LOBBY</button></div>');
   $('#arcOtra').onclick=function(){ cerrarModal(); setMode('arcade'); };
   $('#arcCambiar').onclick=function(){ cerrarModal(); abrirSetup('arcade'); };
   $('#arcVolver').onclick=function(){ cerrarModal(); abrirSetup('carrera'); };
+  $('#arcLobby').onclick=function(){ cerrarModal(); salirAlLobby(); };
 }
 
 /* ---------- ventana de antes de jugar ---------- */
@@ -4047,7 +4049,12 @@ if(location.search.indexOf('test')>=0){
     if(arcadePts<=0) bad.push(['arcade-no-acumula',arcadePts]);
     if(DB['TestBot'].pts!==ptsAntesArc) bad.push(['arcade-suma-antes-de-tiempo']);
     var enJuegoArc=arcadePts;
-    terminarArcade(); cerrarModal();
+    terminarArcade();
+    /* al terminar la partida tiene que haber salida al lobby */
+    if(!$('#arcLobby')) bad.push(['fin-partida-sin-boton-de-lobby']);
+    else { $('#arcLobby').onclick();
+      if($('#lobby').classList.contains('hide')) bad.push(['boton-de-lobby-no-lleva-al-lobby']); }
+    cerrarModal();
     if(DB['TestBot'].pts!==ptsAntesArc+enJuegoArc) bad.push(['arcade-no-suma-al-final',DB['TestBot'].pts-ptsAntesArc,enJuegoArc]);
     if(arcadePts!==0) bad.push(['arcade-no-limpia']);
 
